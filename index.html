@@ -25,7 +25,7 @@ button{cursor:pointer;border-radius:12px;padding:10px 14px;background:var(--cd);
 .dash{border-style:dashed;color:var(--mu)}
 .qa{display:grid;grid-template-columns:1fr 1fr;gap:10px}.qa button{padding:14px;box-shadow:var(--sh)}
 .banner{background:#ff9f1a22;border:1px solid #ff9f1a88;border-radius:14px;padding:10px 14px;margin-top:10px;font-size:14px}
-.sum{color:var(--mu);margin:0 0 4px}
+.mhd{display:flex;align-items:center;gap:12px;padding:8px 0}.d3{display:grid;grid-template-columns:1fr 1.6fr 1.2fr;gap:6px}a.btn{display:block;text-align:center;text-decoration:none;color:inherit;border-radius:12px;padding:10px;background:var(--cd);border:1px solid var(--bd);font-size:15px}.sum{color:var(--mu);margin:0 0 4px}
 .flt{display:grid;grid-template-columns:1fr 1fr;gap:8px;margin:6px 0 8px}
 #list{display:grid;grid-template-columns:repeat(auto-fill,minmax(150px,1fr));gap:12px;margin-top:10px}
 .card{display:flex;flex-direction:column;align-items:flex-start;gap:2px;text-align:start;padding:10px;border-radius:18px;box-shadow:var(--sh)}
@@ -41,7 +41,7 @@ dialog{border:0;border-radius:22px;padding:0;width:min(560px,94vw);max-height:92
 dialog::backdrop{background:#000a}.in{padding:18px;display:flex;flex-direction:column;gap:10px}
 .row{display:flex;gap:8px;align-items:center}
 .fld{display:flex;gap:8px;align-items:center;background:var(--cd);border:1px solid var(--bd);border-radius:12px;padding:6px 12px}
-.fld span{color:var(--mu);font-size:13px;min-width:84px}.fld b{flex:1;direction:ltr;text-align:start;word-break:break-all;font-weight:600}
+.fld{flex-wrap:wrap}.fld button{padding:6px 10px}.fld span{color:var(--mu);font-size:13px;min-width:84px}.fld b{flex:1;direction:ltr;text-align:start;word-break:break-all;font-weight:600}
 .thumbs{display:grid;grid-template-columns:repeat(auto-fill,minmax(110px,1fr));gap:8px}
 .thumbs img{width:100%;aspect-ratio:1;object-fit:cover;border-radius:12px;border:1px solid var(--bd)}
 .file{display:flex;align-items:center;justify-content:center;aspect-ratio:1;border-radius:12px;border:1px solid var(--bd);background:var(--cd);font-size:13px;text-align:center;padding:6px;word-break:break-all}
@@ -59,20 +59,20 @@ dialog::backdrop{background:#000a}.in{padding:18px;display:flex;flex-direction:c
 .lk input::placeholder{color:#ffffffaa;letter-spacing:0;font-size:14px}.lk input:focus{outline:2px solid #fff8}
 #pin{font-size:24px;letter-spacing:8px}.lk button{background:#ffffff22;border-color:#ffffff44;color:#fff;padding:12px}
 .lk .pri{background:#fff;color:#075e54;font-weight:700;font-size:17px}.lk #le{color:#ffc2c2;margin:0;min-height:1em}
-.lk p:empty{display:none}.lk h2{font-weight:600}.lk .bio{width:60px;height:60px;border-radius:50%;margin:0 auto;font-size:28px;padding:0;background:#ffffff2e}.lnks{display:flex;justify-content:center;gap:4px 14px;flex-wrap:wrap;margin-top:2px}.lk .lnk{background:none;border:0;color:#ffffffbb;font-size:13px;padding:6px;text-decoration:underline}
+.lk img.pf{border-radius:50%;object-fit:cover;width:100px;height:100px;border:3px solid #ffffff99}.lk p:empty{display:none}.lk h2{font-weight:600}.lk .bio{width:60px;height:60px;border-radius:50%;margin:0 auto;font-size:28px;padding:0;background:#ffffff2e}.lnks{display:flex;justify-content:center;gap:4px 14px;flex-wrap:wrap;margin-top:2px}.lk .lnk{background:none;border:0;color:#ffffffbb;font-size:13px;padding:6px;text-decoration:underline}
 </style></head><body>
 
-<div id="ls"><div class="lk"><img src="icons/icon-192.png" alt=""><h2 id="lt"></h2><p class="note" id="ln"></p>
+<div id="ls"><div class="lk"><img id="lkimg" src="icons/icon-192.png" alt=""><h2 id="lt"></h2><p class="note" id="ln"></p>
 <input id="em" type="email" dir="ltr" placeholder="ایمیل (برای کد بازیابی)">
 <input id="rc" dir="ltr" placeholder="کد بازیابی" autocomplete="off">
 <input id="pin" type="password" inputmode="numeric" autocomplete="off" placeholder="رمز عددی">
 <p id="le"></p><button class="pri" id="lgo">ورود</button><button id="lbio" class="bio" aria-label="اثر انگشت">👆</button>
-<div class="lnks"><button class="lnk" id="fg">فراموشی رمز</button><button class="lnk" id="lsend">ارسال کد به ایمیل</button><button class="lnk" id="lbk">بازگشت</button><button class="lnk" id="lrs">بازیابی از پشتیبان</button></div></div></div>
+<div class="lnks"><button class="lnk" id="fg">فراموشی رمز</button><button class="lnk" id="lsend">ارسال کد به ایمیل</button><button class="lnk" id="lbk">بازگشت</button></div></div></div>
 
 <div id="app" hidden>
 <header><img src="icons/icon-192.png" alt=""><h1>مدارک من</h1><button id="lockb">🔒</button></header>
 <section id="v-home" class="pad"></section>
-<section id="v-docs" class="pad" hidden><div class="flt"><select id="sm"></select><select id="sc"></select></div><input id="q" type="search" placeholder="🔎 جستجو در مدارک…"><div id="list"></div></section>
+<section id="v-docs" class="pad" hidden><div id="mh"></div><div class="flt"><select id="sm"></select><select id="sc"></select></div><input id="q" type="search" placeholder="🔎 جستجو در مدارک…"><div id="list"></div></section>
 <section id="v-notes" class="pad" hidden><p class="note" style="margin:8px 0 12px">برای یادآوری مطمئن، در هر یادداشت دکمهٔ «افزودن به تقویم گوشی» را بزن.</p><div id="nl"></div></section>
 <button class="fab pri" id="add" aria-label="افزودن">＋</button>
 <nav id="nav"><button data-v="home"><span>🏠</span>خانه</button><button data-v="docs"><span>🗂️</span>مدارک</button><button data-v="notes"><span>📝</span>یادداشت</button><button id="gear"><span>⚙️</span>تنظیمات</button></nav>
@@ -91,7 +91,7 @@ dialog::backdrop{background:#000a}.in{padding:18px;display:flex;flex-direction:c
 <div class="acts"><button class="pri" id="fs" type="submit">ذخیره</button><button type="button" id="fx">انصراف</button></div></form></dialog>
 
 <dialog id="dn"><div class="in"><h2 style="margin:0">📝 یادداشت</h2><input id="nt" placeholder="عنوان"><textarea id="nx" rows="3" placeholder="متن یادداشت…" style="width:100%;padding:11px 12px;border:1px solid var(--bd);border-radius:12px;background:var(--cd)"></textarea>
-<label class="note">تاریخ و ساعت</label><input id="nd" type="datetime-local">
+<label class="note">تاریخ (شمسی) و ساعت</label><div class="d3"><select id="nd1"></select><select id="nd2"></select><select id="nd3"></select></div><input id="nd4" type="time" value="09:00">
 <label class="note">یادآوری</label><select id="nr"><option value="-1">بدون یادآوری</option><option value="0">در همان زمان</option><option value="15">۱۵ دقیقه قبل</option><option value="60">۱ ساعت قبل</option><option value="1440">۱ روز قبل</option><option value="10080">۱ هفته قبل</option></select>
 <select id="nm"></select>
 <button id="nics">📅 افزودن به تقویم گوشی (یادآوری مطمئن)</button>
@@ -100,16 +100,16 @@ dialog::backdrop{background:#000a}.in{padding:18px;display:flex;flex-direction:c
 <dialog id="dg"><div class="in"><div class="row"><h2 style="margin:0;flex:1">📥 دریافت فایل</h2><button id="gx">✕</button></div><input id="gq" placeholder="🔎 نام مدرک یا عضو…"><p class="note">⬇️ ذخیره در گوشی · 📤 ارسال با برنامه‌ها</p><div id="gl" style="display:flex;flex-direction:column;gap:8px"></div></div></dialog>
 <dialog id="di"><div class="in" id="dib"></div></dialog>
 <dialog id="dv"><div class="in" id="vb"></div></dialog><dialog id="ds"><div class="in" id="sb"></div></dialog>
-<input id="rfile" type="file" accept=".json,.madarek" hidden><input id="pfile" type="file" accept="image/*" hidden><div id="toast"></div>
+<input id="rfile" type="file" accept=".json,.madarek" hidden><input id="pfile" type="file" accept="image/*" hidden><input id="pcam" type="file" accept="image/*" capture="user" hidden><div id="toast"></div>
 
 <script>
 const $=s=>document.querySelector(s),esc=s=>String(s).replace(/[&<>"']/g,c=>({'&':'&amp;','<':'&lt;','>':'&gt;','"':'&quot;',"'":'&#39;'}[c]));
 const BASE={passport:['🛂','پاسپورت',['شماره پاسپورت','تاریخ انقضا']],id:['🪪','کارت شناسایی',['شماره کارت','تاریخ انقضا']],ins:['🏥','بیمه',['کد بیمه','شماره عضویت']],fida:['🔢','کد فیدا / اختصاصی',['کد فیدا']],cv:['📄','رزومه (CV)',[]],other:['🗂️','سایر',[]]};
 const te=new TextEncoder(),td=new TextDecoder(),rnd=n=>crypto.getRandomValues(new Uint8Array(n));
-let db,M=null,cfg,ej=null,bio=null,prof={members:[{id:'me',name:'من'}],cats:[]},items=[],notes=[],cat='',mem='all',tab='home',urls=[],vu=[],edit=null,keep=[],started=0,ned=null;
+let db,M=null,cfg,adm=null,ej=null,bio=null,prof={members:[{id:'me',name:'من'}],cats:[]},items=[],notes=[],cat='',mem='all',tab='home',urls=[],vu=[],edit=null,keep=[],started=0,ned=null;
 const CATS=()=>({...BASE,...Object.fromEntries(prof.cats.map(c=>[c.id,[c.icon,c.name,[]]]))});
 const mname=id=>(prof.members.find(m=>m.id===id)||prof.members[0]).name;
-const fmt=d=>new Date(d).toLocaleString('fa-IR',{dateStyle:'medium',timeStyle:'short'});
+const fmt=d=>new Date(d).toLocaleString('fa-IR-u-ca-persian',{dateStyle:'medium',timeStyle:'short'});
 const toast=m=>{const t=$('#toast');t.textContent=m;t.classList.add('on');setTimeout(()=>t.classList.remove('on'),2600)};
 const P=r=>new Promise((ok,no)=>{r.onsuccess=()=>ok(r.result);r.onerror=()=>no(r.error)});
 const open=()=>P(Object.assign(indexedDB.open('madarek',1),{onupgradeneeded:e=>{e.target.result.createObjectStore('items',{keyPath:'id'});e.target.result.createObjectStore('meta')}}));
@@ -122,7 +122,8 @@ const decK=(k,o)=>crypto.subtle.decrypt({name:'AES-GCM',iv:o.iv},k,o.ct),enc=b=>
 const impM=raw=>crypto.subtle.importKey('raw',raw,'AES-GCM',true,['encrypt','decrypt']),aes=b=>crypto.subtle.importKey('raw',b,'AES-GCM',false,['encrypt','decrypt']);
 async function wrapPin(pin){const raw=await crypto.subtle.exportKey('raw',M),salt=rnd(16);cfg.salt=salt;cfg.wrap=await encK(await kdf(pin,salt),raw)}
 async function newCode(){const raw=await crypto.subtle.exportKey('raw',M),A='ABCDEFGHJKLMNPQRSTUVWXYZ23456789',c=[...rnd(16)].map(x=>A[x%32]).join('').match(/.{4}/g).join('-'),s=rnd(16);cfg.rsalt=s;cfg.rwrap=await encK(await kdf(c,s),raw);if(ej){ej.code=c;await mput(ej,'ej')}return c}
-const saveProf=async()=>mput(await enc(te.encode(JSON.stringify(prof))),'prof'),saveNotes=async()=>mput(await enc(te.encode(JSON.stringify(notes))),'notes');
+async function syncAdm(){const p=prof.members.find(m=>m.id==='me')?.photo;if(p){adm=p;await mput(p,'adm')}else{adm=null;await P(st('meta','readwrite').delete('adm'))}}
+const saveProf=async()=>{await mput(await enc(te.encode(JSON.stringify(prof))),'prof');await syncAdm()},saveNotes=async()=>mput(await enc(te.encode(JSON.stringify(notes))),'notes');
 async function migrate(oldK){for(const r of await P(st('items').getAll())){const d=async o=>o.iv?decK(oldK,o):o.ct;r.m=await enc(await d(r.m));for(const f of r.files)Object.assign(f,await enc(await d(f)));if(r.th)r.th=await enc(await d(r.th));r.mem=r.mem||'me';await P(st('items','readwrite').put(r))}}
 /* email recovery (EmailJS) */
 async function sendCode(){if(!ej)return toast('ارسال خودکار راه‌اندازی نشده؛ کد را از ایمیلی که هنگام ساخت رمز فرستادی بردار');
@@ -141,13 +142,13 @@ function showCode(code,cb){$('#rcode').textContent=code;
  $('#rcp').onclick=()=>navigator.clipboard.writeText(code).then(()=>toast('کپی شد ✓'));
  $('#rok').onclick=()=>{$('#dr').close();cb&&cb()};$('#dr').oncancel=e=>e.preventDefault();$('#dr').showModal()}
 function lock(mode,oldK,auto){
- const d=$('#ls'),S=(i,v)=>$(i).hidden=!v,err=m=>$('#le').textContent=m;d.hidden=false;$('#app').hidden=true;
+ const d=$('#ls'),S=(i,v)=>$(i).hidden=!v,err=m=>$('#le').textContent=m;d.hidden=false;$('#app').hidden=true;{const im=$('#lkimg');im.src=adm||'icons/icon-192.png';im.classList.toggle('pf',!!adm)}
  $('#pin').value=$('#rc').value=$('#em').value='';err('');
- S('#rc',mode==='recover');S('#em',mode==='setup');S('#fg',mode==='unlock');S('#lbk',mode==='recover');S('#lsend',mode==='recover'&&ej);S('#lrs',mode!=='recover');S('#lbio',mode==='unlock'&&bio&&window.PublicKeyCredential);
+ S('#rc',mode==='recover');S('#em',mode==='setup');S('#fg',mode==='unlock');S('#lbk',mode==='recover');S('#lsend',mode==='recover'&&ej);S('#lbio',mode==='unlock'&&bio&&window.PublicKeyCredential);
  $('#lt').textContent={setup:'خوش آمدی 👋',unlock:'مدارک من',recover:'بازیابی رمز'}[mode];$('#lgo').textContent={setup:'ساخت رمز',unlock:'ورود',recover:'ثبت رمز جدید'}[mode];
  $('#ln').textContent={setup:(oldK!==undefined?'به‌روزرسانی: رمز و ایمیل را وارد کن؛ اطلاعاتت حفظ می‌شود. ':'')+'رمز و ایمیلت را وارد کن؛ کد بازیابی برایت ساخته می‌شود.',unlock:'',recover:`کد بازیابی که به ${cfg?.email||'ایمیلت'} فرستاده شده را وارد کن و رمز تازه بساز.`}[mode];
  $('#pin').placeholder=mode==='recover'?'رمز جدید (حداقل ۴ رقم)':'رمز عددی (حداقل ۴ رقم)';
- $('#fg').onclick=()=>{lock('recover');sendCode()};$('#lbk').onclick=()=>lock('unlock');$('#lrs').onclick=()=>$('#rfile').click();$('#lsend').onclick=sendCode;
+ $('#fg').onclick=()=>{lock('recover');sendCode()};$('#lbk').onclick=()=>lock('unlock');$('#lsend').onclick=sendCode;
  $('#lbio').onclick=async()=>{try{const out=await bioAssert(bio.id);M=await impM(await decK(await aes(bio.prf?out:bio.bk),bio.wrap));d.hidden=true;start()}catch(e){M=null;err('اثر انگشت تأیید نشد')}};
  $('#pin').onkeydown=e=>{if(e.key==='Enter')$('#lgo').click()};
  $('#lgo').onclick=async()=>{const pin=$('#pin').value;if(pin.length<4)return err('رمز حداقل ۴ رقم باشد');
@@ -159,9 +160,9 @@ function lock(mode,oldK,auto){
    else{M=await impM(await decK(await kdf($('#rc').value.replace(/\s/g,'').toUpperCase(),cfg.rsalt),cfg.rwrap));await wrapPin(pin);await saveCfg();d.hidden=true;start();toast('رمز جدید ثبت شد ✓')}
   }catch(e){M=null;err(mode==='recover'?'کد بازیابی اشتباه است':'رمز اشتباه است')}};
  if(auto&&mode==='unlock'&&bio&&window.PublicKeyCredential)setTimeout(()=>$('#lbio').click(),500)}
-async function boot(){db=await open();cfg=await mget('cfg');ej=await mget('ej')||null;bio=await mget('bio')||null;
+async function boot(){db=await open();cfg=await mget('cfg');ej=await mget('ej')||null;bio=await mget('bio')||null;adm=await mget('adm')||null;
  if(!cfg)return lock('setup');if(cfg.ver===2)return lock('unlock',undefined,1);if(cfg.nolock)return lock('setup',null);
- $('#lt').textContent='ورود';$('#ln').textContent='رمز فعلی را وارد کن؛ برنامه به نسخهٔ جدید ارتقا می‌یابد.';['#rc','#em','#fg','#lbk','#lrs','#lbio','#lsend'].forEach(i=>$(i).hidden=1);
+ $('#lt').textContent='ورود';$('#ln').textContent='رمز فعلی را وارد کن؛ برنامه به نسخهٔ جدید ارتقا می‌یابد.';['#rc','#em','#fg','#lbk','#lbio','#lsend'].forEach(i=>$(i).hidden=1);
  $('#lgo').onclick=async()=>{try{const k=await kdf($('#pin').value,cfg.salt);await decK(k,cfg.check);lock('setup',k)}catch(e){$('#le').textContent='رمز اشتباه است'}}}
 /* data */
 async function start(){const p=await mget('prof');if(p)try{prof=JSON.parse(td.decode(await dec(p)))}catch(e){}
@@ -177,14 +178,13 @@ const hue=s=>[...s].reduce((a,c)=>a+c.charCodeAt(0),0)*47%360;
 const cardH=i=>{const C=CATS(),c=C[i.cat]||C.other;return`<button class="card" data-id="${i.id}">${i.tu?`<img class="cv" src="${i.tu}" alt="">`:`<div class="ph">${c[0]}</div>`}<b>${esc(i.m.title)}</b><small>${c[0]} ${esc(c[1])} · ${esc(mname(i.mem))}</small></button>`};
 function go(v){tab=v;render();scrollTo(0,0)}
 function render(){['home','docs','notes'].forEach(v=>$('#v-'+v).hidden=tab!==v);document.querySelectorAll('#nav [data-v]').forEach(b=>b.classList.toggle('on',b.dataset.v===tab));({home:rHome,docs:rDocs,notes:rNotes})[tab]()}
-function rHome(){const C=CATS(),cnt=f=>items.filter(f).length,soon=notes.filter(n=>n.due&&!n.done&&new Date(n.due)<=new Date(Date.now()+864e5)).sort((a,b)=>a.due>b.due?1:-1).slice(0,3);
- $('#v-home').innerHTML=`<h2 style="margin:6px 0 0">سلام 👋</h2><p class="sum">${items.length} مدرک · ${prof.members.length} عضو · ${notes.filter(n=>!n.done).length} یادداشت فعال</p>
+function rHome(){const cnt=f=>items.filter(f).length,soon=notes.filter(n=>n.due&&!n.done&&new Date(n.due)<=new Date(Date.now()+864e5)).sort((a,b)=>a.due>b.due?1:-1).slice(0,3);
+ $('#v-home').innerHTML=`<h2 style="margin:6px 0 0">سلام 👋</h2><p class="sum">${new Date().toLocaleDateString('fa-IR-u-ca-persian',{weekday:'long',day:'numeric',month:'long',year:'numeric'})}</p>
  ${soon.map(n=>`<div class="banner" data-note="${n.id}">⏰ <b>${esc(n.title)}</b> — ${fmt(n.due)}</div>`).join('')}
- <h3>👨‍👩‍👧 اعضای خانواده</h3><div class="grid">${prof.members.map(m=>`<button class="tile" data-tm="${m.id}">${avH(m)}<b>${esc(m.name)}</b><small>${cnt(i=>i.mem===m.id)} مدرک</small></button>`).join('')}<button class="tile dash" data-q="am"><div class="av" style="background:var(--bd);color:var(--mu)">＋</div>عضو جدید</button></div>
- <h3>🗂️ دسته‌ها</h3><div class="grid">${Object.entries(C).map(([k,v])=>`<button class="tile" data-tc="${k}"><span class="ic">${v[0]}</span><b>${esc(v[1])}</b><small>${cnt(i=>i.cat===k)} مدرک</small></button>`).join('')}</div>
- <h3>⚡ دسترسی سریع</h3><div class="qa"><button data-q="add">＋ مدرک جدید</button><button data-q="recv">📥 دریافت فایل</button><button data-q="note">📝 یادداشت جدید</button><button data-q="bk">💾 پشتیبان‌گیری</button></div>
- ${items.length?`<h3>🕘 تازه‌ها</h3><div id="list">${items.slice(0,4).map(cardH).join('')}</div>`:''}`}
-function rDocs(){const C=CATS(),q=$('#q').value.trim();
+ <h3>👨‍👩‍👧 اعضای خانواده</h3><p class="note" style="margin-bottom:10px">روی هر عضو بزن تا مدارکش را ببینی یا مدرک جدید برایش اضافه کنی.</p>
+ <div class="grid">${prof.members.map(m=>`<button class="tile" data-tm="${m.id}">${avH(m,64)}<b>${esc(m.name)}</b><small>${cnt(i=>i.mem===m.id)} مدرک</small></button>`).join('')}<button class="tile dash" data-q="am"><div class="av" style="background:var(--bd);color:var(--mu);width:64px;height:64px">＋</div>عضو جدید</button></div>`}
+function rDocs(){const C=CATS(),q=$('#q').value.trim(),mo=prof.members.find(m=>m.id===mem);
+ $('#mh').innerHTML=mo?`<div class="mhd"><button data-q="home">→</button>${avH(mo,54)}<div style="flex:1"><b>${esc(mo.name)}</b><div class="note">${items.filter(i=>i.mem===mo.id).length} مدرک</div></div></div><div class="acts"><button class="pri" data-q="add">＋ مدرک جدید</button><button data-q="recv">📥 دریافت فایل</button></div>`:`<div class="acts"><button data-q="recv">📥 دریافت فایل</button><button data-q="bk">💾 پشتیبان‌گیری</button></div>`;
  $('#sm').innerHTML='<option value="all">👨‍👩‍👧 همهٔ اعضا</option>'+prof.members.map(m=>`<option value="${m.id}">👤 ${esc(m.name)}</option>`).join('');$('#sm').value=mem;
  $('#sc').innerHTML='<option value="">🗂️ همهٔ دسته‌ها</option>'+Object.entries(C).map(([k,v])=>`<option value="${k}">${v[0]} ${esc(v[1])}</option>`).join('');$('#sc').value=cat;
  const rows=items.filter(i=>(mem==='all'||i.mem===mem)&&(!cat||i.cat===cat)&&(!q||(i.m.title+i.m.fields.map(f=>f.k+f.v).join(' ')).includes(q)));
@@ -198,7 +198,7 @@ document.addEventListener('click',e=>{const t=e.target.closest('[data-id],[data-
  if(D.id)openDoc(D.id);else if(D.tm){mem=D.tm;cat='';go('docs')}else if(D.tc){cat=D.tc;mem='all';go('docs')}
  else if(D.note)openNote(notes.find(n=>n.id===D.note));
  else if(D.nd){const n=notes.find(x=>x.id===D.nd);n.done=n.done?0:1;saveNotes().then(render)}
- else if(D.q==='add')openForm();else if(D.q==='recv')recv();else if(D.q==='note')openNote();else if(D.q==='bk')backup(1);else if(D.q==='am')addMember()});
+ else if(D.q==='home')go('home');else if(D.q==='add')openForm();else if(D.q==='recv')recv();else if(D.q==='note')openNote();else if(D.q==='bk')backup(1);else if(D.q==='am')addMember()});
 $('#add').onclick=()=>tab==='notes'?openNote():openForm();$('#lockb').onclick=()=>location.reload();
 /* doc form */
 const frow=(k='',v='')=>{const r=document.createElement('div');r.className='kv';r.innerHTML=`<input placeholder="نام (مثلاً کد بیمه)" value="${esc(k)}"><input dir="ltr" placeholder="مقدار" value="${esc(v)}"><button type="button" class="dg">✕</button>`;r.lastChild.onclick=()=>r.remove();$('#fr').append(r)};
@@ -244,10 +244,22 @@ $('#dv').onclose=()=>{vu.forEach(URL.revokeObjectURL);vu=[]};
 function rRecv(){const q=$('#gq').value.trim();$('#gl').innerHTML=items.filter(i=>i.files.length&&(!q||(i.m.title+mname(i.mem)).includes(q))).map(i=>`<div class="fld" style="flex-direction:column;align-items:stretch"><b style="direction:rtl">${esc(i.m.title)} <small class="note">· ${esc(mname(i.mem))}</small></b>${i.files.map((f,n)=>`<div class="row"><span style="flex:1;font-size:14px">📎 ${esc(f.name)}</span><button data-d="${i.id}:${n}">⬇️</button><button data-s="${i.id}:${n}">📤</button></div>`).join('')}</div>`).join('')||'<p class="note">فایلی پیدا نشد.</p>'}
 function recv(){$('#gq').value='';rRecv();$('#dg').showModal()}$('#gq').oninput=rRecv;$('#gx').onclick=()=>$('#dg').close();
 $('#gl').onclick=async e=>{const b=e.target.closest('[data-d],[data-s]');if(!b)return;const [id,n]=(b.dataset.d||b.dataset.s).split(':'),i=items.find(x=>x.id===id),f=await fileOf(i,+n);b.dataset.d?dl(f):shareF([f],f.name,'')};
+/* Jalali picker */
+const JM=['فروردین','اردیبهشت','خرداد','تیر','مرداد','شهریور','مهر','آبان','آذر','دی','بهمن','اسفند'];
+const jf=new Intl.DateTimeFormat('en-u-ca-persian-nu-latn',{year:'numeric',month:'numeric',day:'numeric',timeZone:'UTC'});
+const g2j=d=>{const p=Object.fromEntries(jf.formatToParts(d).map(x=>[x.type,+x.value]));return[p.year,p.month,p.day]};
+function j2g(jy,jm,jd){const b=Date.UTC(jy+621,2,21+Math.round((jm-1)*30.4)+jd-1,12);for(let k=-25;k<=25;k++){const d=new Date(b+k*864e5),j=g2j(d);if(j[0]===jy&&j[1]===jm&&j[2]===jd)return d}return null}
+const jdim=(y,m)=>m<=6?31:m<=11?30:(j2g(y,12,30)?30:29);
+function fillD(){const n=jdim(+$('#nd3').value,+$('#nd2').value),cur=$('#nd1').value;$('#nd1').innerHTML='<option value="">— بدون تاریخ —</option>'+Array.from({length:n},(_,i)=>`<option value="${i+1}">${i+1}</option>`).join('');$('#nd1').value=+cur>n?String(n):cur}
+function setDue(due){const t=g2j(due?new Date(due.slice(0,10)+'T12:00:00Z'):new Date()),cy=g2j(new Date())[0],y0=Math.min(cy,t[0])-1,y1=Math.max(cy,t[0])+10;
+ $('#nd2').innerHTML=JM.map((n,i)=>`<option value="${i+1}">${n}</option>`).join('');$('#nd3').innerHTML=Array.from({length:y1-y0+1},(_,i)=>`<option>${y0+i}</option>`).join('');
+ $('#nd2').value=t[1];$('#nd3').value=t[0];$('#nd1').innerHTML='';fillD();$('#nd1').value=due?t[2]:'';$('#nd4').value=due?due.slice(11,16):'09:00'}
+function readDue(){const d=+$('#nd1').value;if(!d)return'';const g=j2g(+$('#nd3').value,+$('#nd2').value,d);return g?g.toISOString().slice(0,10)+'T'+($('#nd4').value||'09:00'):''}
+$('#nd2').onchange=$('#nd3').onchange=fillD;
 /* notes + reminders */
-function readNote(){const n={...(ned||{id:crypto.randomUUID(),done:0}),title:$('#nt').value.trim(),text:$('#nx').value.trim(),due:$('#nd').value,rem:+$('#nr').value,mem:$('#nm').value,notified:0};if(!n.due)n.rem=-1;return n}
+function readNote(){const n={...(ned||{id:crypto.randomUUID(),done:0}),title:$('#nt').value.trim(),text:$('#nx').value.trim(),due:readDue(),rem:+$('#nr').value,mem:$('#nm').value,notified:0};if(!n.due)n.rem=-1;return n}
 function openNote(n){ned=n||null;$('#nm').innerHTML=prof.members.map(m=>`<option value="${m.id}">👤 ${esc(m.name)}</option>`).join('');
- $('#nt').value=n?.title||'';$('#nx').value=n?.text||'';$('#nd').value=n?.due||'';$('#nr').value=n?String(n.rem):'-1';$('#nm').value=n?.mem||(mem==='all'?'me':mem);$('#ndel').hidden=!n;$('#dn').showModal()}
+ $('#nt').value=n?.title||'';$('#nx').value=n?.text||'';setDue(n?.due);$('#nr').value=n?String(n.rem):'-1';$('#nm').value=n?.mem||(mem==='all'?'me':mem);$('#ndel').hidden=!n;$('#dn').showModal()}
 $('#nx2').onclick=()=>$('#dn').close();
 $('#nsv').onclick=async()=>{const n=readNote();if(!n.title)return toast('عنوان را بنویس');notes=notes.filter(x=>x.id!==n.id);notes.push(n);await saveNotes();$('#dn').close();render();
  if(n.rem>=0&&window.Notification&&Notification.permission==='default')Notification.requestPermission();toast('ذخیره شد ✓')};
@@ -271,22 +283,24 @@ $('#rfile').onchange=async e=>{const f=e.target.files[0];e.target.value='';if(!f
   for(const r of d.items)await P(st('items','readwrite').put(r));await mput(d.cfg,'cfg');if(d.prof)await mput(d.prof,'prof');if(d.notes)await mput(d.notes,'notes');
   toast('بازیابی شد. با رمز همان پشتیبان وارد شو');setTimeout(()=>location.reload(),1200)}catch(x){toast('فایل پشتیبان معتبر نیست')}};
 let pm=null;
-$('#pfile').onchange=async e=>{const f=e.target.files[0];e.target.value='';if(!f||!pm)return;try{const b=await createImageBitmap(f),s=Math.min(b.width,b.height),c=document.createElement('canvas');c.width=c.height=192;c.getContext('2d').drawImage(b,(b.width-s)/2,(b.height-s)/2,s,s,0,0,192,192);prof.members.find(x=>x.id===pm).photo=c.toDataURL('image/jpeg',.85);await saveProf();render();settings();toast('عکس ثبت شد ✓')}catch(x){toast('عکس خوانده نشد')}};
+$('#pfile').onchange=$('#pcam').onchange=async e=>{const f=e.target.files[0];e.target.value='';if(!f||!pm)return;try{const b=await createImageBitmap(f),s=Math.min(b.width,b.height),c=document.createElement('canvas');c.width=c.height=192;c.getContext('2d').drawImage(b,(b.width-s)/2,(b.height-s)/2,s,s,0,0,192,192);prof.members.find(x=>x.id===pm).photo=c.toDataURL('image/jpeg',.85);await saveProf();render();settings();toast('عکس ثبت شد ✓')}catch(x){toast('عکس خوانده نشد')}};
 /* settings */
 function settings(){const hasBio=window.PublicKeyCredential;$('#sb').innerHTML=`<div class="row"><h2 style="margin:0;flex:1">⚙️ تنظیمات</h2><button id="sx">✕</button></div>
-<h3>👨‍👩‍👧 اعضای خانواده</h3>${prof.members.map(m=>`<div class="fld">${avH(m,38)}<b style="direction:rtl">${esc(m.name)}</b><button data-ph="${m.id}">📷</button>${m.photo?`<button class="dg" data-rp="${m.id}">✕</button>`:''}<button data-ren="${m.id}">✎</button>${m.id!=='me'?`<button class="dg" data-dm="${m.id}">🗑</button>`:''}</div>`).join('')}<button data-a="am">＋ عضو جدید</button>
+<h3>👨‍👩‍👧 اعضای خانواده</h3>${prof.members.map(m=>`<div class="fld">${avH(m,38)}<b style="direction:rtl">${esc(m.name)}</b><button data-ph="${m.id}">🖼️</button><button data-pc="${m.id}">📷</button>${m.photo?`<button class="dg" data-rp="${m.id}">✕</button>`:''}<button data-ren="${m.id}">✎</button>${m.id!=='me'?`<button class="dg" data-dm="${m.id}">🗑</button>`:''}</div>`).join('')}<button data-a="am">＋ عضو جدید</button>
 <h3>🗂️ دسته‌بندی‌های من</h3>${prof.cats.map(c=>`<div class="fld"><b style="direction:rtl">${c.icon} ${esc(c.name)}</b><button class="dg" data-dc="${c.id}">🗑</button></div>`).join('')}<button data-a="ac">＋ دستهٔ جدید</button>
 <h3>💾 پشتیبان‌گیری</h3><div class="acts"><button class="pri" data-a="bd">⬇️ ذخیره در گوشی</button><button data-a="bs">📤 ارسال / ابر</button></div><button data-a="rs">📥 بازیابی از فایل پشتیبان</button><p class="note">پشتیبان رمزنگاری‌شده است و مدارک، اعضا، دسته‌ها و یادداشت‌ها را شامل می‌شود.</p>
 <h3>🔐 امنیت</h3><div class="acts"><button data-a="cp">تغییر رمز</button><button data-a="nc">کد بازیابی جدید</button></div>
 ${hasBio?`<button data-a="bio">👆 ${bio?'غیرفعال‌سازی':'فعال‌سازی'} ورود با اثر انگشت</button>`:''}<button data-a="ce">ایمیل بازیابی: ${esc(cfg.email||'—')} ✎</button>
 <button data-a="ej">📧 ارسال خودکار کد هنگام «فراموشی رمز»: ${ej?'روشن ✓ (خاموش کن)':'خاموش (راه‌اندازی)'}</button>
 <p class="note">راه‌اندازی: در emailjs.com ثبت‌نام کن، یک Email Service و یک Template بساز که گیرنده‌اش {{to_email}} و متنش شامل {{code}} باشد، سپس Service ID، Template ID و Public Key را وارد کن. توجه: با روشن بودن این گزینه، کد بازیابی روی همین گوشی هم نگه‌داری می‌شود (در فایل پشتیبان نیست).</p>
-${standalone?'<p class="note">✅ برنامه روی گوشی نصب شده است.</p>':`<h3>📲 نصب روی گوشی</h3><button class="pri" data-a="inst">نصب برنامه / ساخت میان‌بر</button><p class="note">${window.__ip?'مرورگر آمادهٔ نصب مستقیم است.':'اگر پنجرهٔ نصب نیامد، راهنمای مرحله‌به‌مرحله باز می‌شود.'}</p>`}<h3>🔔 اعلان یادآوری</h3><button data-a="nt">فعال‌سازی اعلان‌ها</button>`;if(!$('#ds').open)$('#ds').showModal()}
+${standalone?'<p class="note">✅ برنامه روی گوشی نصب شده است.</p>':`<h3>📲 نصب روی گوشی</h3><button class="pri" data-a="inst">نصب برنامه / ساخت میان‌بر</button><p class="note">${window.__ip?'مرورگر آمادهٔ نصب مستقیم است.':'اگر پنجرهٔ نصب نیامد، راهنمای مرحله‌به‌مرحله باز می‌شود.'}</p>`}<h3>🔔 اعلان یادآوری</h3><button data-a="nt">فعال‌سازی اعلان‌ها</button>
+<h3>📞 پشتیبانی برنامه</h3><div class="fld"><span>شمارهٔ پشتیبان</span><b>09372301428</b></div><div class="acts" style="grid-template-columns:1fr 1fr 1fr"><a class="btn" href="tel:09372301428">📞 تماس</a><a class="btn" href="sms:09372301428">💬 پیامک</a><a class="btn" href="https://wa.me/989372301428" target="_blank" rel="noopener">واتساپ</a></div>`;if(!$('#ds').open)$('#ds').showModal()}
 const retag=async(f,a,b)=>{for(const r of await P(st('items').getAll()))if((f==='mem'?(r.mem||'me'):r.cat)===a){r[f]=b;await P(st('items','readwrite').put(r))}};
 $('#gear').onclick=settings;
 $('#sb').onclick=async e=>{const b=e.target.closest('button');if(!b)return;if(b.id==='sx')return $('#ds').close();const a=b.dataset.a;
  if(a==='am'){await addMember()}
  else if(b.dataset.ph){pm=b.dataset.ph;$('#pfile').click();return}
+ else if(b.dataset.pc){pm=b.dataset.pc;$('#pcam').click();return}
  else if(b.dataset.rp){delete prof.members.find(x=>x.id===b.dataset.rp).photo;await saveProf()}
  else if(b.dataset.ren){const m=prof.members.find(x=>x.id===b.dataset.ren),n=prompt('نام جدید:',m.name);if(n?.trim()){m.name=n.trim();await saveProf()}}
  else if(b.dataset.dm){if(confirm('این عضو حذف شود؟ مدارکش به «من» منتقل می‌شود.')){await retag('mem',b.dataset.dm,'me');prof.members=prof.members.filter(x=>x.id!==b.dataset.dm);await saveProf();if(mem===b.dataset.dm)mem='all'}}
@@ -298,7 +312,7 @@ $('#sb').onclick=async e=>{const b=e.target.closest('button');if(!b)return;if(b.
  else if(a==='ce'){const m=prompt('ایمیل بازیابی:',cfg.email||'');if(m&&/^\S+@\S+\.\S+$/.test(m.trim())){cfg.email=m.trim();await saveCfg()}}
  else if(a==='bio'){if(bio){bio=null;await P(st('meta','readwrite').delete('bio'))}else await bioOn()}
  else if(a==='ej'){if(ej){ej=null;await P(st('meta','readwrite').delete('ej'))}else{const s=prompt('Service ID:'),t=s&&prompt('Template ID:'),k=t&&prompt('Public Key:');if(k){ej={s:s.trim(),t:t.trim(),k:k.trim()};const c=await newCode();await saveCfg();await sendCode()}}}
- else if(a==='inst'){doInstall();return}
+ else if(a==='inst'){$('#ds').close();doInstall();return}
  else if(a==='nt'){if(!window.Notification)toast('اعلان پشتیبانی نمی‌شود');else Notification.requestPermission().then(p=>toast(p==='granted'?'اعلان فعال شد ✓':'اعلان مجاز نشد'));return}
  await load();settings()};
 /* install */
@@ -316,7 +330,7 @@ async function installHelp(){
  $('#dib').innerHTML=`<h2 style="margin:0">📲 نصب برنامه</h2><p class="note">مرورگر هنوز پنجرهٔ نصب خودکار نداده؛ مراحل دستی:</p><div class="fld" style="display:block;line-height:1.9">${how}</div>
  <p class="note" style="margin-top:4px">بررسی خودکار:</p>${ok(location.protocol==='https:'||location.hostname==='localhost','اتصال امن (HTTPS)')}${ok(mf,'فایل manifest خوانده شد')}${ok(ic,'آیکن‌های ۱۹۲ و ۵۱۲')}${ok(sw,'Service Worker فعال است')}${ok(!inapp,'مرورگر مستقل (نه داخل تلگرام/اینستاگرام)')}
  <p class="note">اگر قبلاً یک میان‌بر قدیمی ساخته‌ای، آن را حذف کن و دوباره نصب کن.</p><button class="pri" onclick="$('#di').close()">متوجه شدم</button>`;$('#di').showModal()}
-async function doInstall(){if(window.__ip){const p=window.__ip;window.__ip=null;p.prompt();const r=await p.userChoice;toast(r.outcome==='accepted'?'✓ در حال نصب…':'نصب لغو شد');return}await installHelp()}
+async function doInstall(){if(window.__ip){const p=window.__ip;window.__ip=null;try{p.prompt();const r=await p.userChoice;toast(r.outcome==='accepted'?'✓ در حال نصب…':'نصب لغو شد');return}catch(e){}}await installHelp()}
 addEventListener('appinstalled',()=>toast('✓ برنامه نصب شد'));
 if('serviceWorker'in navigator)navigator.serviceWorker.register('sw.js').catch(()=>{});
 navigator.storage?.persist?.();boot();
