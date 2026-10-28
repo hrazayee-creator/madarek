@@ -1,7 +1,7 @@
 <!doctype html>
 <html lang="fa" dir="rtl"><head>
 <meta charset="utf-8"><meta name="viewport" content="width=device-width,initial-scale=1,viewport-fit=cover">
-<title>مدارک من</title><link rel="manifest" href="manifest.json"><link rel="icon" href="icons/icon-192.png"><link rel="apple-touch-icon" href="icons/apple-180.png">
+<title>مدارک من</title><link rel="manifest" href="manifest.json"><link rel="icon" href="icon-192.png"><link rel="apple-touch-icon" href="apple-180.png">
 <meta name="theme-color" content="#0e9f8e"><meta name="apple-mobile-web-app-capable" content="yes"><meta name="mobile-web-app-capable" content="yes">
 <script>window.__ip=null;addEventListener('beforeinstallprompt',e=>{e.preventDefault();window.__ip=e})</script>
 <style>
@@ -25,7 +25,7 @@ button{cursor:pointer;border-radius:12px;padding:10px 14px;background:var(--cd);
 .dash{border-style:dashed;color:var(--mu)}
 .qa{display:grid;grid-template-columns:1fr 1fr;gap:10px}.qa button{padding:14px;box-shadow:var(--sh)}
 .banner{background:#ff9f1a22;border:1px solid #ff9f1a88;border-radius:14px;padding:10px 14px;margin-top:10px;font-size:14px}
-.mhd{display:flex;align-items:center;gap:12px;padding:8px 0}.d3{display:grid;grid-template-columns:1fr 1.6fr 1.2fr;gap:6px}a.btn{display:block;text-align:center;text-decoration:none;color:inherit;border-radius:12px;padding:10px;background:var(--cd);border:1px solid var(--bd);font-size:15px}.sum{color:var(--mu);margin:0 0 4px}
+.mhd{display:flex;align-items:center;gap:12px;padding:8px 0}.d3{display:grid;grid-template-columns:1fr 1.6fr 1.2fr;gap:6px}a.btn{display:block;text-align:center;text-decoration:none;color:inherit;border-radius:12px;padding:10px;background:var(--cd);border:1px solid var(--bd);font-size:15px}details{background:var(--cd);border:1px solid var(--bd);border-radius:14px;padding:0 12px}summary{cursor:pointer;padding:12px 0;font-weight:700;list-style:none;display:flex;justify-content:space-between}summary::after{content:"▾";color:var(--mu);transition:.2s}details[open] summary::after{transform:rotate(180deg)}details[open] summary{border-bottom:1px solid var(--bd);margin-bottom:10px}.dc{display:flex;flex-direction:column;gap:8px;padding-bottom:12px}.mr{display:flex;flex-wrap:wrap;align-items:center;gap:4px;background:var(--bg);border:1px solid var(--bd);border-radius:12px;padding:5px 8px}.mr b{flex:1 1 90px;min-width:0;overflow:hidden;text-overflow:ellipsis;white-space:nowrap;unicode-bidi:plaintext;text-align:start}.ib{padding:5px 6px;min-width:32px;font-size:14px}.sum{color:var(--mu);margin:0 0 4px}
 .flt{display:grid;grid-template-columns:1fr 1fr;gap:8px;margin:6px 0 8px}
 #list{display:grid;grid-template-columns:repeat(auto-fill,minmax(150px,1fr));gap:12px;margin-top:10px}
 .card{display:flex;flex-direction:column;align-items:flex-start;gap:2px;text-align:start;padding:10px;border-radius:18px;box-shadow:var(--sh)}
@@ -62,7 +62,7 @@ dialog::backdrop{background:#000a}.in{padding:18px;display:flex;flex-direction:c
 .lk img.pf{border-radius:50%;object-fit:cover;width:100px;height:100px;border:3px solid #ffffff99}.lk p:empty{display:none}.lk h2{font-weight:600}.lk .bio{width:60px;height:60px;border-radius:50%;margin:0 auto;font-size:28px;padding:0;background:#ffffff2e}.lnks{display:flex;justify-content:center;gap:4px 14px;flex-wrap:wrap;margin-top:2px}.lk .lnk{background:none;border:0;color:#ffffffbb;font-size:13px;padding:6px;text-decoration:underline}
 </style></head><body>
 
-<div id="ls"><div class="lk"><img id="lkimg" src="icons/icon-192.png" alt=""><h2 id="lt"></h2><p class="note" id="ln"></p>
+<div id="ls"><div class="lk"><img id="lkimg" src="icon-192.png" alt=""><h2 id="lt"></h2><p class="note" id="ln"></p>
 <input id="em" type="email" dir="ltr" placeholder="ایمیل (برای کد بازیابی)">
 <input id="rc" dir="ltr" placeholder="کد بازیابی" autocomplete="off">
 <input id="pin" type="password" inputmode="numeric" autocomplete="off" placeholder="رمز عددی">
@@ -70,7 +70,7 @@ dialog::backdrop{background:#000a}.in{padding:18px;display:flex;flex-direction:c
 <div class="lnks"><button class="lnk" id="fg">فراموشی رمز</button><button class="lnk" id="lsend">ارسال کد به ایمیل</button><button class="lnk" id="lbk">بازگشت</button></div></div></div>
 
 <div id="app" hidden>
-<header><img src="icons/icon-192.png" alt=""><h1>مدارک من</h1><button id="lockb">🔒</button></header>
+<header><div id="hdav"></div><h1 id="hdn"></h1><button id="lockb">🔒</button></header>
 <section id="v-home" class="pad"></section>
 <section id="v-docs" class="pad" hidden><div id="mh"></div><div class="flt"><select id="sm"></select><select id="sc"></select></div><input id="q" type="search" placeholder="🔎 جستجو در مدارک…"><div id="list"></div></section>
 <section id="v-notes" class="pad" hidden><p class="note" style="margin:8px 0 12px">برای یادآوری مطمئن، در هر یادداشت دکمهٔ «افزودن به تقویم گوشی» را بزن.</p><div id="nl"></div></section>
@@ -142,7 +142,7 @@ function showCode(code,cb){$('#rcode').textContent=code;
  $('#rcp').onclick=()=>navigator.clipboard.writeText(code).then(()=>toast('کپی شد ✓'));
  $('#rok').onclick=()=>{$('#dr').close();cb&&cb()};$('#dr').oncancel=e=>e.preventDefault();$('#dr').showModal()}
 function lock(mode,oldK,auto){
- const d=$('#ls'),S=(i,v)=>$(i).hidden=!v,err=m=>$('#le').textContent=m;d.hidden=false;$('#app').hidden=true;{const im=$('#lkimg');im.src=adm||'icons/icon-192.png';im.classList.toggle('pf',!!adm)}
+ const d=$('#ls'),S=(i,v)=>$(i).hidden=!v,err=m=>$('#le').textContent=m;d.hidden=false;$('#app').hidden=true;{const im=$('#lkimg');im.onerror=()=>{im.onerror=null;im.src='data:image/svg+xml,'+encodeURIComponent('<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 96 96"><rect width="96" height="96" rx="22" fill="#0e9f8e"/><rect x="16" y="28" width="64" height="42" rx="7" fill="#fff"/><circle cx="34" cy="43" r="7" fill="#0e786e"/><path d="M22 62a12 10 0 0 1 24 0z" fill="#0e786e"/><rect x="52" y="40" width="20" height="4" rx="2" fill="#96c8c3"/><rect x="52" y="50" width="16" height="4" rx="2" fill="#96c8c3"/></svg>')};im.src=adm||'icon-192.png';im.classList.toggle('pf',!!adm)}
  $('#pin').value=$('#rc').value=$('#em').value='';err('');
  S('#rc',mode==='recover');S('#em',mode==='setup');S('#fg',mode==='unlock');S('#lbk',mode==='recover');S('#lsend',mode==='recover'&&ej);S('#lbio',mode==='unlock'&&bio&&window.PublicKeyCredential);
  $('#lt').textContent={setup:'خوش آمدی 👋',unlock:'مدارک من',recover:'بازیابی رمز'}[mode];$('#lgo').textContent={setup:'ساخت رمز',unlock:'ورود',recover:'ثبت رمز جدید'}[mode];
@@ -177,7 +177,8 @@ const avH=(m,s=46)=>`<div class="av" style="width:${s}px;height:${s}px;font-size
 const hue=s=>[...s].reduce((a,c)=>a+c.charCodeAt(0),0)*47%360;
 const cardH=i=>{const C=CATS(),c=C[i.cat]||C.other;return`<button class="card" data-id="${i.id}">${i.tu?`<img class="cv" src="${i.tu}" alt="">`:`<div class="ph">${c[0]}</div>`}<b>${esc(i.m.title)}</b><small>${c[0]} ${esc(c[1])} · ${esc(mname(i.mem))}</small></button>`};
 function go(v){tab=v;render();scrollTo(0,0)}
-function render(){['home','docs','notes'].forEach(v=>$('#v-'+v).hidden=tab!==v);document.querySelectorAll('#nav [data-v]').forEach(b=>b.classList.toggle('on',b.dataset.v===tab));({home:rHome,docs:rDocs,notes:rNotes})[tab]()}
+function hdr(){const me=prof.members.find(m=>m.id==='me')||prof.members[0];$('#hdav').innerHTML=avH(me,42);$('#hdn').textContent=me.name}
+function render(){hdr();['home','docs','notes'].forEach(v=>$('#v-'+v).hidden=tab!==v);document.querySelectorAll('#nav [data-v]').forEach(b=>b.classList.toggle('on',b.dataset.v===tab));({home:rHome,docs:rDocs,notes:rNotes})[tab]()}
 function rHome(){const cnt=f=>items.filter(f).length,soon=notes.filter(n=>n.due&&!n.done&&new Date(n.due)<=new Date(Date.now()+864e5)).sort((a,b)=>a.due>b.due?1:-1).slice(0,3);
  $('#v-home').innerHTML=`<h2 style="margin:6px 0 0">سلام 👋</h2><p class="sum">${new Date().toLocaleDateString('fa-IR-u-ca-persian',{weekday:'long',day:'numeric',month:'long',year:'numeric'})}</p>
  ${soon.map(n=>`<div class="banner" data-note="${n.id}">⏰ <b>${esc(n.title)}</b> — ${fmt(n.due)}</div>`).join('')}
@@ -199,7 +200,7 @@ document.addEventListener('click',e=>{const t=e.target.closest('[data-id],[data-
  else if(D.note)openNote(notes.find(n=>n.id===D.note));
  else if(D.nd){const n=notes.find(x=>x.id===D.nd);n.done=n.done?0:1;saveNotes().then(render)}
  else if(D.q==='home')go('home');else if(D.q==='add')openForm();else if(D.q==='recv')recv();else if(D.q==='note')openNote();else if(D.q==='bk')backup(1);else if(D.q==='am')addMember()});
-$('#add').onclick=()=>tab==='notes'?openNote():openForm();$('#lockb').onclick=()=>location.reload();
+$('#add').onclick=()=>tab==='notes'?openNote():openForm();$('#lockb').onclick=()=>location.reload();$('#hdav').onclick=()=>settings();
 /* doc form */
 const frow=(k='',v='')=>{const r=document.createElement('div');r.className='kv';r.innerHTML=`<input placeholder="نام (مثلاً کد بیمه)" value="${esc(k)}"><input dir="ltr" placeholder="مقدار" value="${esc(v)}"><button type="button" class="dg">✕</button>`;r.lastChild.onclick=()=>r.remove();$('#fr').append(r)};
 const showKeep=()=>{$('#fe').innerHTML=keep.map((f,n)=>`<div class="fld"><span>📎</span><b style="direction:rtl">${esc(f.name)}</b><button type="button" class="dg" data-k="${n}">✕</button></div>`).join('')};
@@ -268,7 +269,7 @@ $('#nics').onclick=()=>{const n=readNote();if(!n.title||!n.due)return toast('ع�
  const p=x=>String(x).padStart(2,'0'),L=d=>`${d.getFullYear()}${p(d.getMonth()+1)}${p(d.getDate())}T${p(d.getHours())}${p(d.getMinutes())}00`,E=s=>s.replace(/[\\;,]/g,'\\$&').replace(/\n/g,'\\n'),a=new Date(n.due);
  const s=['BEGIN:VCALENDAR','VERSION:2.0','PRODID:-//madarek//FA','BEGIN:VEVENT',`UID:${n.id}@madarek`,'DTSTAMP:'+new Date().toISOString().replace(/[-:]|\.\d+/g,''),'DTSTART:'+L(a),'DTEND:'+L(new Date(a.getTime()+36e5)),'SUMMARY:'+E(n.title),'DESCRIPTION:'+E(n.text||''),...(n.rem>=0?['BEGIN:VALARM','ACTION:DISPLAY','DESCRIPTION:'+E(n.title),`TRIGGER:-PT${n.rem}M`,'END:VALARM']:[]),'END:VEVENT','END:VCALENDAR'].join('\r\n');
  dl(new File([s],'reminder.ics',{type:'text/calendar'}));toast('فایل را باز کن تا در تقویم ثبت شود')};
-async function notify(n){const t='⏰ '+n.title,b=n.text||fmt(n.due);try{if(window.Notification&&Notification.permission==='granted'){const r=await navigator.serviceWorker.ready;return r.showNotification(t,{body:b,icon:'icons/icon-192.png',tag:n.id,dir:'rtl',lang:'fa'})}}catch(e){}toast(t)}
+async function notify(n){const t='⏰ '+n.title,b=n.text||fmt(n.due);try{if(window.Notification&&Notification.permission==='granted'){const r=await navigator.serviceWorker.ready;return r.showNotification(t,{body:b,icon:'icon-192.png',tag:n.id,dir:'rtl',lang:'fa'})}}catch(e){}toast(t)}
 function tick(){if(!M)return;let ch=0;for(const n of notes){if(!n.due||n.done||n.rem<0||n.notified)continue;if(new Date(n.due).getTime()-n.rem*6e4<=Date.now()){n.notified=1;ch=1;notify(n)}}if(ch)saveNotes().then(render)}
 /* backup */
 const b64=b=>{const u=new Uint8Array(b);let s='';for(let i=0;i<u.length;i+=32768)s+=String.fromCharCode.apply(null,u.subarray(i,i+32768));return btoa(s)};
@@ -285,16 +286,18 @@ $('#rfile').onchange=async e=>{const f=e.target.files[0];e.target.value='';if(!f
 let pm=null;
 $('#pfile').onchange=$('#pcam').onchange=async e=>{const f=e.target.files[0];e.target.value='';if(!f||!pm)return;try{const b=await createImageBitmap(f),s=Math.min(b.width,b.height),c=document.createElement('canvas');c.width=c.height=192;c.getContext('2d').drawImage(b,(b.width-s)/2,(b.height-s)/2,s,s,0,0,192,192);prof.members.find(x=>x.id===pm).photo=c.toDataURL('image/jpeg',.85);await saveProf();render();settings();toast('عکس ثبت شد ✓')}catch(x){toast('عکس خوانده نشد')}};
 /* settings */
-function settings(){const hasBio=window.PublicKeyCredential;$('#sb').innerHTML=`<div class="row"><h2 style="margin:0;flex:1">⚙️ تنظیمات</h2><button id="sx">✕</button></div>
-<h3>👨‍👩‍👧 اعضای خانواده</h3>${prof.members.map(m=>`<div class="fld">${avH(m,38)}<b style="direction:rtl">${esc(m.name)}</b><button data-ph="${m.id}">🖼️</button><button data-pc="${m.id}">📷</button>${m.photo?`<button class="dg" data-rp="${m.id}">✕</button>`:''}<button data-ren="${m.id}">✎</button>${m.id!=='me'?`<button class="dg" data-dm="${m.id}">🗑</button>`:''}</div>`).join('')}<button data-a="am">＋ عضو جدید</button>
-<h3>🗂️ دسته‌بندی‌های من</h3>${prof.cats.map(c=>`<div class="fld"><b style="direction:rtl">${c.icon} ${esc(c.name)}</b><button class="dg" data-dc="${c.id}">🗑</button></div>`).join('')}<button data-a="ac">＋ دستهٔ جدید</button>
-<h3>💾 پشتیبان‌گیری</h3><div class="acts"><button class="pri" data-a="bd">⬇️ ذخیره در گوشی</button><button data-a="bs">📤 ارسال / ابر</button></div><button data-a="rs">📥 بازیابی از فایل پشتیبان</button><p class="note">پشتیبان رمزنگاری‌شده است و مدارک، اعضا، دسته‌ها و یادداشت‌ها را شامل می‌شود.</p>
-<h3>🔐 امنیت</h3><div class="acts"><button data-a="cp">تغییر رمز</button><button data-a="nc">کد بازیابی جدید</button></div>
-${hasBio?`<button data-a="bio">👆 ${bio?'غیرفعال‌سازی':'فعال‌سازی'} ورود با اثر انگشت</button>`:''}<button data-a="ce">ایمیل بازیابی: ${esc(cfg.email||'—')} ✎</button>
-<button data-a="ej">📧 ارسال خودکار کد هنگام «فراموشی رمز»: ${ej?'روشن ✓ (خاموش کن)':'خاموش (راه‌اندازی)'}</button>
-<p class="note">راه‌اندازی: در emailjs.com ثبت‌نام کن، یک Email Service و یک Template بساز که گیرنده‌اش {{to_email}} و متنش شامل {{code}} باشد، سپس Service ID، Template ID و Public Key را وارد کن. توجه: با روشن بودن این گزینه، کد بازیابی روی همین گوشی هم نگه‌داری می‌شود (در فایل پشتیبان نیست).</p>
-${standalone?'<p class="note">✅ برنامه روی گوشی نصب شده است.</p>':`<h3>📲 نصب روی گوشی</h3><button class="pri" data-a="inst">نصب برنامه / ساخت میان‌بر</button><p class="note">${window.__ip?'مرورگر آمادهٔ نصب مستقیم است.':'اگر پنجرهٔ نصب نیامد، راهنمای مرحله‌به‌مرحله باز می‌شود.'}</p>`}<h3>🔔 اعلان یادآوری</h3><button data-a="nt">فعال‌سازی اعلان‌ها</button>
-<h3>📞 پشتیبانی برنامه</h3><div class="fld"><span>شمارهٔ پشتیبان</span><b>09372301428</b></div><div class="acts" style="grid-template-columns:1fr 1fr 1fr"><a class="btn" href="tel:09372301428">📞 تماس</a><a class="btn" href="sms:09372301428">💬 پیامک</a><a class="btn" href="https://wa.me/989372301428" target="_blank" rel="noopener">واتساپ</a></div>`;if(!$('#ds').open)$('#ds').showModal()}
+let sopen=new Set();
+function settings(){const hasBio=window.PublicKeyCredential,sec=(k,t,b)=>`<details data-s="${k}" ${sopen.has(k)?'open':''}><summary><span>${t}</span></summary><div class="dc">${b}</div></details>`;
+$('#sb').innerHTML=`<div class="row"><h2 style="margin:0;flex:1">⚙️ تنظیمات</h2><button id="sx">✕</button></div>`
++sec('m',`👨‍👩‍👧 اعضای خانواده (${prof.members.length})`,prof.members.map(m=>`<div class="mr">${avH(m,36)}<b>${esc(m.name)}</b><button class="ib" data-ph="${m.id}" title="گالری">🖼️</button><button class="ib" data-pc="${m.id}" title="دوربین">📷</button>${m.photo?`<button class="ib dg" data-rp="${m.id}" title="حذف عکس">🚫</button>`:''}<button class="ib" data-ren="${m.id}" title="تغییر نام">✎</button>${m.id!=='me'?`<button class="ib dg" data-dm="${m.id}" title="حذف عضو">🗑</button>`:''}</div>`).join('')+'<button data-a="am">＋ عضو جدید</button>')
++sec('c',`🗂️ دسته‌بندی‌های من (${prof.cats.length})`,prof.cats.map(c=>`<div class="mr"><b>${c.icon} ${esc(c.name)}</b><button class="ib dg" data-dc="${c.id}">🗑</button></div>`).join('')+'<button data-a="ac">＋ دستهٔ جدید</button>')
++sec('b','💾 پشتیبان‌گیری و بازیابی','<div class="acts"><button class="pri" data-a="bd">⬇️ ذخیره در گوشی</button><button data-a="bs">📤 ارسال / ابر</button></div><button data-a="rs">📥 بازیابی از فایل پشتیبان</button><p class="note">پشتیبان رمزنگاری‌شده است و مدارک، اعضا، دسته‌ها و یادداشت‌ها را شامل می‌شود.</p>')
++sec('s','🔐 امنیت و بازیابی رمز',`<div class="acts"><button data-a="cp">تغییر رمز</button><button data-a="nc">کد بازیابی جدید</button></div>${hasBio?`<button data-a="bio">👆 ${bio?'غیرفعال‌سازی':'فعال‌سازی'} ورود با اثر انگشت</button>`:''}<button data-a="ce">ایمیل بازیابی: ${esc(cfg.email||'—')} ✎</button><button data-a="ej">📧 ارسال خودکار کد هنگام «فراموشی رمز»: ${ej?'روشن ✓ (خاموش کن)':'خاموش (راه‌اندازی)'}</button><p class="note">راه‌اندازی: در emailjs.com ثبت‌نام کن، یک Email Service و یک Template بساز که گیرنده‌اش {{to_email}} و متنش شامل {{code}} باشد، سپس Service ID، Template ID و Public Key را وارد کن. با روشن بودن این گزینه، کد بازیابی روی همین گوشی هم نگه‌داری می‌شود (در فایل پشتیبان نیست).</p>`)
++sec('i','📲 نصب روی گوشی',standalone?'<p class="note">✅ برنامه روی گوشی نصب شده است.</p>':`<button class="pri" data-a="inst">نصب برنامه / ساخت میان‌بر</button><p class="note">${window.__ip?'مرورگر آمادهٔ نصب مستقیم است.':'اگر پنجرهٔ نصب نیامد، راهنمای مرحله‌به‌مرحله باز می‌شود.'}</p>`)
++sec('n','🔔 اعلان یادآوری','<button data-a="nt">فعال‌سازی اعلان‌ها</button>')
++sec('h','📞 پشتیبانی برنامه','<div class="fld"><span>شمارهٔ پشتیبان</span><b>09372301428</b></div><div class="acts" style="grid-template-columns:1fr 1fr 1fr"><a class="btn" href="tel:09372301428">📞 تماس</a><a class="btn" href="sms:09372301428">💬 پیامک</a><a class="btn" href="https://wa.me/989372301428" target="_blank" rel="noopener">واتساپ</a></div>');
+if(!$('#ds').open)$('#ds').showModal()}
+$('#sb').addEventListener('toggle',e=>{const d=e.target;if(d.dataset&&d.dataset.s)d.open?sopen.add(d.dataset.s):sopen.delete(d.dataset.s)},true);
 const retag=async(f,a,b)=>{for(const r of await P(st('items').getAll()))if((f==='mem'?(r.mem||'me'):r.cat)===a){r[f]=b;await P(st('items','readwrite').put(r))}};
 $('#gear').onclick=settings;
 $('#sb').onclick=async e=>{const b=e.target.closest('button');if(!b)return;if(b.id==='sx')return $('#ds').close();const a=b.dataset.a;
@@ -321,14 +324,14 @@ async function installHelp(){
  const ua=navigator.userAgent,ios=/iPhone|iPad|iPod/.test(ua),inapp=/Telegram|Instagram|FBAN|FBAV|WhatsApp|Line\/|Twitter|wv/i.test(ua),ff=/Firefox/.test(ua);
  let sw=false,mf=false,ic=false;
  try{const r=await navigator.serviceWorker.getRegistration();sw=!!(r&&(r.active||r.installing||r.waiting))}catch(e){}
- try{const j=await(await fetch(document.querySelector('link[rel=manifest]').href)).json(),s=(j.icons||[]).map(i=>i.sizes).join(' ');mf=!!j.name;ic=/192/.test(s)&&/512/.test(s)}catch(e){}
+ try{const mu=document.querySelector('link[rel=manifest]').href,j=await(await fetch(mu)).json();mf=!!j.name;const rs=await Promise.all((j.icons||[]).map(i=>fetch(new URL(i.src,mu)).then(r=>r.ok).catch(()=>false)));ic=rs.length>1&&rs.every(Boolean)}catch(e){}
  const ok=(b,t)=>`<div class="fld"><b style="direction:rtl">${b?'✅':'❌'} ${t}</b></div>`;
  const how=ios?'در <b>Safari</b> دکمهٔ اشتراک ⬆︎ را بزن ← «Add to Home Screen» ← Add. (آیفون نصب خودکار ندارد.)'
   :inapp?'این صفحه داخل مرورگرِ یک برنامه (تلگرام، اینستاگرام …) باز شده و نصب را مسدود می‌کند. منوی ⋮ یا «…» را بزن، «باز کردن در مرورگر / Open in Chrome» را انتخاب کن و دوباره «نصب» را بزن.'
   :ff?'Firefox اندروید: منوی ⋮ ← «Install». برای نصب بهتر از Chrome استفاده کن.'
   :'در <b>Chrome</b> منوی ⋮ (بالا) ← «Install app / نصب برنامه» یا «Add to Home screen». اگر گزینه نبود، ۱۰ ثانیه صفحه را باز نگه دار، یک بار ببند و دوباره باز کن، بعد دوباره «نصب» را بزن.';
  $('#dib').innerHTML=`<h2 style="margin:0">📲 نصب برنامه</h2><p class="note">مرورگر هنوز پنجرهٔ نصب خودکار نداده؛ مراحل دستی:</p><div class="fld" style="display:block;line-height:1.9">${how}</div>
- <p class="note" style="margin-top:4px">بررسی خودکار:</p>${ok(location.protocol==='https:'||location.hostname==='localhost','اتصال امن (HTTPS)')}${ok(mf,'فایل manifest خوانده شد')}${ok(ic,'آیکن‌های ۱۹۲ و ۵۱۲')}${ok(sw,'Service Worker فعال است')}${ok(!inapp,'مرورگر مستقل (نه داخل تلگرام/اینستاگرام)')}
+ <p class="note" style="margin-top:4px">بررسی خودکار:</p>${ok(location.protocol==='https:'||location.hostname==='localhost','اتصال امن (HTTPS)')}${ok(mf,'فایل manifest خوانده شد')}${ok(ic,'فایل‌های آیکن روی GitHub هستند')}${ic?'':'<div class="banner">⚠️ فایل‌های آیکن پیدا نشدند؛ دلیل «This app cannot be installed» همین است. چهار فایل png را درست کنار index.html آپلود کن (نه داخل پوشه).</div>'}${ok(sw,'Service Worker فعال است')}${ok(!inapp,'مرورگر مستقل (نه داخل تلگرام/اینستاگرام)')}
  <p class="note">اگر قبلاً یک میان‌بر قدیمی ساخته‌ای، آن را حذف کن و دوباره نصب کن.</p><button class="pri" onclick="$('#di').close()">متوجه شدم</button>`;$('#di').showModal()}
 async function doInstall(){if(window.__ip){const p=window.__ip;window.__ip=null;try{p.prompt();const r=await p.userChoice;toast(r.outcome==='accepted'?'✓ در حال نصب…':'نصب لغو شد');return}catch(e){}}await installHelp()}
 addEventListener('appinstalled',()=>toast('✓ برنامه نصب شد'));
