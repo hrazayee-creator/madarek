@@ -1,7 +1,7 @@
 <!doctype html>
 <html lang="fa" dir="rtl"><head>
 <meta charset="utf-8"><meta name="viewport" content="width=device-width,initial-scale=1,viewport-fit=cover">
-<title>مدارک من</title><link rel="manifest" href="manifest.json"><link rel="icon" href="icon-192.png"><link rel="apple-touch-icon" href="apple-180.png">
+<title>مدارک من</title><link rel="icon" href="icon-192.png"><link rel="apple-touch-icon" href="apple-180.png">
 <meta name="theme-color" content="#0e9f8e"><meta name="apple-mobile-web-app-capable" content="yes"><meta name="mobile-web-app-capable" content="yes">
 <script>window.__ip=null;addEventListener('beforeinstallprompt',e=>{e.preventDefault();window.__ip=e})</script>
 <style>
@@ -99,6 +99,7 @@ dialog::backdrop{background:#000a}.in{padding:18px;display:flex;flex-direction:c
 
 <dialog id="dg"><div class="in"><div class="row"><h2 style="margin:0;flex:1">📥 دریافت فایل</h2><button id="gx">✕</button></div><input id="gq" placeholder="🔎 نام مدرک یا عضو…"><p class="note">⬇️ ذخیره در گوشی · 📤 ارسال با برنامه‌ها</p><div id="gl" style="display:flex;flex-direction:column;gap:8px"></div></div></dialog>
 <dialog id="di"><div class="in" id="dib"></div></dialog>
+<dialog id="dp"><form class="in" id="dpf" method="dialog"><h2 style="margin:0">🔐 تأیید با رمز</h2><p class="note" id="dpn"></p><input id="dpi" type="password" inputmode="numeric" autocomplete="off" placeholder="رمز عددی"><p id="dpe" class="dg" style="margin:0"></p><div class="acts"><button class="pri" type="submit">تأیید</button><button type="button" id="dpx">انصراف</button></div></form></dialog>
 <dialog id="dv"><div class="in" id="vb"></div></dialog><dialog id="ds"><div class="in" id="sb"></div></dialog>
 <input id="rfile" type="file" accept=".json,.madarek" hidden><input id="pfile" type="file" accept="image/*" hidden><input id="pcam" type="file" accept="image/*" capture="user" hidden><div id="toast"></div>
 
@@ -106,7 +107,7 @@ dialog::backdrop{background:#000a}.in{padding:18px;display:flex;flex-direction:c
 const $=s=>document.querySelector(s),esc=s=>String(s).replace(/[&<>"']/g,c=>({'&':'&amp;','<':'&lt;','>':'&gt;','"':'&quot;',"'":'&#39;'}[c]));
 const BASE={passport:['🛂','پاسپورت',['شماره پاسپورت','تاریخ انقضا']],id:['🪪','کارت شناسایی',['شماره کارت','تاریخ انقضا']],ins:['🏥','بیمه',['کد بیمه','شماره عضویت']],fida:['🔢','کد فیدا / اختصاصی',['کد فیدا']],cv:['📄','رزومه (CV)',[]],other:['🗂️','سایر',[]]};
 const te=new TextEncoder(),td=new TextDecoder(),rnd=n=>crypto.getRandomValues(new Uint8Array(n));
-let db,M=null,cfg,adm=null,ej=null,bio=null,prof={members:[{id:'me',name:'من'}],cats:[]},items=[],notes=[],cat='',mem='all',tab='home',urls=[],vu=[],edit=null,keep=[],started=0,ned=null;
+let lastbk=0,db,M=null,cfg,adm=null,ej=null,bio=null,prof={members:[{id:'me',name:'من'}],cats:[]},items=[],notes=[],cat='',mem='all',tab='home',urls=[],vu=[],edit=null,keep=[],started=0,ned=null;
 const CATS=()=>({...BASE,...Object.fromEntries(prof.cats.map(c=>[c.id,[c.icon,c.name,[]]]))});
 const mname=id=>(prof.members.find(m=>m.id===id)||prof.members[0]).name;
 const fmt=d=>new Date(d).toLocaleString('fa-IR-u-ca-persian',{dateStyle:'medium',timeStyle:'short'});
@@ -122,7 +123,13 @@ const decK=(k,o)=>crypto.subtle.decrypt({name:'AES-GCM',iv:o.iv},k,o.ct),enc=b=>
 const impM=raw=>crypto.subtle.importKey('raw',raw,'AES-GCM',true,['encrypt','decrypt']),aes=b=>crypto.subtle.importKey('raw',b,'AES-GCM',false,['encrypt','decrypt']);
 async function wrapPin(pin){const raw=await crypto.subtle.exportKey('raw',M),salt=rnd(16);cfg.salt=salt;cfg.wrap=await encK(await kdf(pin,salt),raw)}
 async function newCode(){const raw=await crypto.subtle.exportKey('raw',M),A='ABCDEFGHJKLMNPQRSTUVWXYZ23456789',c=[...rnd(16)].map(x=>A[x%32]).join('').match(/.{4}/g).join('-'),s=rnd(16);cfg.rsalt=s;cfg.rwrap=await encK(await kdf(c,s),raw);if(ej){ej.code=c;await mput(ej,'ej')}return c}
-async function syncAdm(){const p=prof.members.find(m=>m.id==='me')?.photo;if(p){adm=p;await mput(p,'adm')}else{adm=null;await P(st('meta','readwrite').delete('adm'))}}
+async function mkIcon(photo,size,circle){const img=await new Promise((ok,no)=>{const i=new Image();i.onload=()=>ok(i);i.onerror=no;i.src=photo}),c=document.createElement('canvas');c.width=c.height=size;const x=c.getContext('2d');if(circle){x.beginPath();x.arc(size/2,size/2,size/2,0,7);x.clip()}const s=Math.min(img.width,img.height);x.drawImage(img,(img.width-s)/2,(img.height-s)/2,s,s,0,0,size,size);return c.toDataURL('image/png')}
+async function setManifest(){let l=document.querySelector('link[rel=manifest]');if(!l){l=document.createElement('link');l.rel='manifest';document.head.append(l)}
+ let href='manifest.json';
+ if(adm){try{const b=new URL('./',location.href).href,m={id:b,name:'مدارک من',short_name:'مدارک',lang:'fa',dir:'rtl',start_url:b,scope:b,display:'standalone',display_override:['standalone','minimal-ui'],background_color:'#0b1f24',theme_color:'#0e9f8e',icons:[{src:await mkIcon(adm,192,1),sizes:'192x192',type:'image/png',purpose:'any'},{src:await mkIcon(adm,512,1),sizes:'512x512',type:'image/png',purpose:'any'},{src:await mkIcon(adm,512,0),sizes:'512x512',type:'image/png',purpose:'maskable'}]};href=URL.createObjectURL(new Blob([JSON.stringify(m)],{type:'application/manifest+json'}))}catch(e){}}
+ l.href=href}
+async function dlIcons(){if(!adm)return toast('اول برای عضو «من» عکس پروفایل بگذار');for(const[n,s,c]of[['icon-192.png',192,1],['icon-512.png',512,1],['maskable-512.png',512,0]]){dl(new File([await(await fetch(await mkIcon(adm,s,c))).blob()],n,{type:'image/png'}));await new Promise(r=>setTimeout(r,500))}toast('سه فایل ساخته شد؛ در GitHub جایگزین فایل‌های هم‌نام کن')}
+async function syncAdm(){const p=prof.members.find(m=>m.id==='me')?.photo;if(p){adm=p;await mput(p,'adm')}else{adm=null;await P(st('meta','readwrite').delete('adm'))}setManifest()}
 const saveProf=async()=>{await mput(await enc(te.encode(JSON.stringify(prof))),'prof');await syncAdm()},saveNotes=async()=>mput(await enc(te.encode(JSON.stringify(notes))),'notes');
 async function migrate(oldK){for(const r of await P(st('items').getAll())){const d=async o=>o.iv?decK(oldK,o):o.ct;r.m=await enc(await d(r.m));for(const f of r.files)Object.assign(f,await enc(await d(f)));if(r.th)r.th=await enc(await d(r.th));r.mem=r.mem||'me';await P(st('items','readwrite').put(r))}}
 /* email recovery (EmailJS) */
@@ -160,13 +167,13 @@ function lock(mode,oldK,auto){
    else{M=await impM(await decK(await kdf($('#rc').value.replace(/\s/g,'').toUpperCase(),cfg.rsalt),cfg.rwrap));await wrapPin(pin);await saveCfg();d.hidden=true;start();toast('رمز جدید ثبت شد ✓')}
   }catch(e){M=null;err(mode==='recover'?'کد بازیابی اشتباه است':'رمز اشتباه است')}};
  if(auto&&mode==='unlock'&&bio&&window.PublicKeyCredential)setTimeout(()=>$('#lbio').click(),500)}
-async function boot(){db=await open();cfg=await mget('cfg');ej=await mget('ej')||null;bio=await mget('bio')||null;adm=await mget('adm')||null;
+async function boot(){db=await open();cfg=await mget('cfg');ej=await mget('ej')||null;bio=await mget('bio')||null;adm=await mget('adm')||null;setManifest();
  if(!cfg)return lock('setup');if(cfg.ver===2)return lock('unlock',undefined,1);if(cfg.nolock)return lock('setup',null);
  $('#lt').textContent='ورود';$('#ln').textContent='رمز فعلی را وارد کن؛ برنامه به نسخهٔ جدید ارتقا می‌یابد.';['#rc','#em','#fg','#lbk','#lbio','#lsend'].forEach(i=>$(i).hidden=1);
  $('#lgo').onclick=async()=>{try{const k=await kdf($('#pin').value,cfg.salt);await decK(k,cfg.check);lock('setup',k)}catch(e){$('#le').textContent='رمز اشتباه است'}}}
 /* data */
 async function start(){const p=await mget('prof');if(p)try{prof=JSON.parse(td.decode(await dec(p)))}catch(e){}
- const n=await mget('notes');if(n)try{notes=JSON.parse(td.decode(await dec(n)))}catch(e){}
+ lastbk=await mget('lastbk')||0;const n=await mget('notes');if(n)try{notes=JSON.parse(td.decode(await dec(n)))}catch(e){}
  $('#app').hidden=false;await load();tick();
  if(!started++){setInterval(tick,30000);document.addEventListener('visibilitychange',()=>{if(document.hidden)sessionStorage.h=Date.now();else{if(Date.now()-(+sessionStorage.h||Date.now())>120000)location.reload();else tick()}})}}
 async function load(){const rows=await P(st('items').getAll());urls.forEach(URL.revokeObjectURL);urls=[];items=[];
@@ -181,7 +188,7 @@ function hdr(){const me=prof.members.find(m=>m.id==='me')||prof.members[0];$('#h
 function render(){hdr();['home','docs','notes'].forEach(v=>$('#v-'+v).hidden=tab!==v);document.querySelectorAll('#nav [data-v]').forEach(b=>b.classList.toggle('on',b.dataset.v===tab));({home:rHome,docs:rDocs,notes:rNotes})[tab]()}
 function rHome(){const cnt=f=>items.filter(f).length,soon=notes.filter(n=>n.due&&!n.done&&new Date(n.due)<=new Date(Date.now()+864e5)).sort((a,b)=>a.due>b.due?1:-1).slice(0,3);
  $('#v-home').innerHTML=`<h2 style="margin:6px 0 0">سلام 👋</h2><p class="sum">${new Date().toLocaleDateString('fa-IR-u-ca-persian',{weekday:'long',day:'numeric',month:'long',year:'numeric'})}</p>
- ${soon.map(n=>`<div class="banner" data-note="${n.id}">⏰ <b>${esc(n.title)}</b> — ${fmt(n.due)}</div>`).join('')}
+ ${soon.map(n=>`<div class="banner" data-note="${n.id}">⏰ <b>${esc(n.title)}</b> — ${fmt(n.due)}</div>`).join('')}${items.length&&Date.now()-lastbk>6048e5?`<div class="banner" data-q="bk">💾 ${lastbk?'آخرین پشتیبان '+Math.floor((Date.now()-lastbk)/864e5)+' روز پیش بود':'هنوز پشتیبان نگرفته‌ای'}؛ برای امنیت مدارکت یکی بگیر (بزن)</div>`:''}
  <h3>👨‍👩‍👧 اعضای خانواده</h3><p class="note" style="margin-bottom:10px">روی هر عضو بزن تا مدارکش را ببینی یا مدرک جدید برایش اضافه کنی.</p>
  <div class="grid">${prof.members.map(m=>`<button class="tile" data-tm="${m.id}">${avH(m,64)}<b>${esc(m.name)}</b><small>${cnt(i=>i.mem===m.id)} مدرک</small></button>`).join('')}<button class="tile dash" data-q="am"><div class="av" style="background:var(--bd);color:var(--mu);width:64px;height:64px">＋</div>عضو جدید</button></div>`}
 function rDocs(){const C=CATS(),q=$('#q').value.trim(),mo=prof.members.find(m=>m.id===mem);
@@ -224,6 +231,10 @@ $('#fm').onsubmit=async e=>{e.preventDefault();$('#fs').disabled=true;
   await P(st('items','readwrite').put({id:edit?.id||crypto.randomUUID(),cat:$('#fc').value,mem:$('#fmem').value,ts:edit?.ts||Date.now(),m:await enc(te.encode(JSON.stringify({title:$('#ft').value.trim(),fields}))),files:all.map(a=>a.rec),th}));
   $('#df').close();await load();toast(add.length?'ذخیره شد ✓ — نسخهٔ گالری مستقل است؛ خودت حذفش کن':'ذخیره شد ✓')
  }catch(err){toast('خطا در ذخیره')}finally{$('#fs').disabled=false}};
+function askPin(why){return new Promise(res=>{const d=$('#dp');$('#dpn').textContent=why||'';$('#dpi').value='';$('#dpe').textContent='';let done=0;const fin=v=>{if(done)return;done=1;if(d.open)d.close();res(v)};
+ $('#dpx').onclick=()=>fin(false);d.oncancel=()=>fin(false);
+ $('#dpf').onsubmit=async e=>{e.preventDefault();try{await decK(await kdf($('#dpi').value,cfg.salt),cfg.wrap);fin(true)}catch(x){$('#dpe').textContent='رمز اشتباه است';$('#dpi').value=''}};
+ d.showModal();$('#dpi').focus()})}
 /* doc view / share / receive */
 const textOf=i=>i.m.title+' ('+mname(i.mem)+')\n'+i.m.fields.map(f=>`${f.k}: ${f.v}`).join('\n');
 const fileOf=async(i,n)=>new File([await dec(i.files[n])],i.files[n].name,{type:i.files[n].type});
@@ -240,7 +251,7 @@ async function openDoc(id){const i=items.find(x=>x.id===id),C=CATS(),c=C[i.cat]|
  $('#vb').onclick=async e=>{const cp=e.target.closest('[data-cp]');if(cp){await navigator.clipboard.writeText(i.m.fields[cp.dataset.cp].v);toast('کپی شد ✓')}const t=e.target.closest('[data-n]');if(t)dl(fs[t.dataset.n])};
  $('#vt').onclick=async()=>{await navigator.clipboard.writeText(textOf(i));toast('کپی شد ✓')};$('#vo').onclick=()=>fs.forEach(dl);$('#ve').onclick=()=>{$('#dv').close();openForm(i)};
  $('#vm').onclick=()=>{location.href=`mailto:?subject=${encodeURIComponent(i.m.title)}&body=${encodeURIComponent(textOf(i))}`};$('#vs').onclick=()=>shareF(fs,i.m.title,textOf(i));
- $('#vd').onclick=async()=>{if(confirm('این مدرک از برنامه حذف شود؟ (فایل گالری دست‌نخورده می‌ماند)')){await P(st('items','readwrite').delete(id));$('#dv').close();load()}};$('#dv').showModal()}
+ $('#vd').onclick=async()=>{if(confirm('این مدرک از برنامه حذف شود؟ (فایل گالری دست‌نخورده می‌ماند)')&&await askPin('برای حذف مدرک، رمز را وارد کن')){await P(st('items','readwrite').delete(id));$('#dv').close();load()}};$('#dv').showModal()}
 $('#dv').onclose=()=>{vu.forEach(URL.revokeObjectURL);vu=[]};
 function rRecv(){const q=$('#gq').value.trim();$('#gl').innerHTML=items.filter(i=>i.files.length&&(!q||(i.m.title+mname(i.mem)).includes(q))).map(i=>`<div class="fld" style="flex-direction:column;align-items:stretch"><b style="direction:rtl">${esc(i.m.title)} <small class="note">· ${esc(mname(i.mem))}</small></b>${i.files.map((f,n)=>`<div class="row"><span style="flex:1;font-size:14px">📎 ${esc(f.name)}</span><button data-d="${i.id}:${n}">⬇️</button><button data-s="${i.id}:${n}">📤</button></div>`).join('')}</div>`).join('')||'<p class="note">فایلی پیدا نشد.</p>'}
 function recv(){$('#gq').value='';rRecv();$('#dg').showModal()}$('#gq').oninput=rRecv;$('#gx').onclick=()=>$('#dg').close();
@@ -276,15 +287,15 @@ const b64=b=>{const u=new Uint8Array(b);let s='';for(let i=0;i<u.length;i+=32768
 const ub=s=>Uint8Array.from(atob(s),c=>c.charCodeAt(0)).buffer;
 async function backup(share){const data={app:'madarek',v:3,cfg,prof:await mget('prof'),notes:await mget('notes'),items:await P(st('items').getAll())};
  const f=new File([JSON.stringify(data,(k,v)=>v instanceof ArrayBuffer||v instanceof Uint8Array?{$b:b64(v)}:v)],`madarek-backup-${new Date().toISOString().slice(0,10)}.madarek.json`,{type:'application/json'});
- if(share&&navigator.canShare?.({files:[f]}))try{await navigator.share({files:[f],title:'پشتیبان مدارک'})}catch(e){}else{dl(f);toast('پشتیبان ذخیره شد ✓')}}
+ if(share&&navigator.canShare?.({files:[f]}))try{await navigator.share({files:[f],title:'پشتیبان مدارک'});lastbk=Date.now();await mput(lastbk,'lastbk')}catch(e){}else{dl(f);lastbk=Date.now();await mput(lastbk,'lastbk');toast('پشتیبان ذخیره شد ✓')}}
 $('#rfile').onchange=async e=>{const f=e.target.files[0];e.target.value='';if(!f)return;
  try{const d=JSON.parse(await f.text(),(k,v)=>v&&v.$b!==undefined?ub(v.$b):v);if(d.app!=='madarek'||!d.cfg)throw 0;
-  if(!confirm('همهٔ اطلاعات فعلی برنامه با این پشتیبان جایگزین می‌شود. ادامه؟'))return;
+  if(!confirm('همهٔ اطلاعات فعلی برنامه با این پشتیبان جایگزین می‌شود. ادامه؟')||!await askPin('برای بازیابی پشتیبان، رمز را وارد کن'))return;
   await P(st('items','readwrite').clear());await P(st('meta','readwrite').clear());
   for(const r of d.items)await P(st('items','readwrite').put(r));await mput(d.cfg,'cfg');if(d.prof)await mput(d.prof,'prof');if(d.notes)await mput(d.notes,'notes');
   toast('بازیابی شد. با رمز همان پشتیبان وارد شو');setTimeout(()=>location.reload(),1200)}catch(x){toast('فایل پشتیبان معتبر نیست')}};
 let pm=null;
-$('#pfile').onchange=$('#pcam').onchange=async e=>{const f=e.target.files[0];e.target.value='';if(!f||!pm)return;try{const b=await createImageBitmap(f),s=Math.min(b.width,b.height),c=document.createElement('canvas');c.width=c.height=192;c.getContext('2d').drawImage(b,(b.width-s)/2,(b.height-s)/2,s,s,0,0,192,192);prof.members.find(x=>x.id===pm).photo=c.toDataURL('image/jpeg',.85);await saveProf();render();settings();toast('عکس ثبت شد ✓')}catch(x){toast('عکس خوانده نشد')}};
+$('#pfile').onchange=$('#pcam').onchange=async e=>{const f=e.target.files[0];e.target.value='';if(!f||!pm)return;try{const b=await createImageBitmap(f),s=Math.min(b.width,b.height),c=document.createElement('canvas');c.width=c.height=384;c.getContext('2d').drawImage(b,(b.width-s)/2,(b.height-s)/2,s,s,0,0,384,384);prof.members.find(x=>x.id===pm).photo=c.toDataURL('image/jpeg',.88);await saveProf();render();settings();toast('عکس ثبت شد ✓')}catch(x){toast('عکس خوانده نشد')}};
 /* settings */
 let sopen=new Set();
 function settings(){const hasBio=window.PublicKeyCredential,sec=(k,t,b)=>`<details data-s="${k}" ${sopen.has(k)?'open':''}><summary><span>${t}</span></summary><div class="dc">${b}</div></details>`;
@@ -293,7 +304,7 @@ $('#sb').innerHTML=`<div class="row"><h2 style="margin:0;flex:1">⚙️ تنظی
 +sec('c',`🗂️ دسته‌بندی‌های من (${prof.cats.length})`,prof.cats.map(c=>`<div class="mr"><b>${c.icon} ${esc(c.name)}</b><button class="ib dg" data-dc="${c.id}">🗑</button></div>`).join('')+'<button data-a="ac">＋ دستهٔ جدید</button>')
 +sec('b','💾 پشتیبان‌گیری و بازیابی','<div class="acts"><button class="pri" data-a="bd">⬇️ ذخیره در گوشی</button><button data-a="bs">📤 ارسال / ابر</button></div><button data-a="rs">📥 بازیابی از فایل پشتیبان</button><p class="note">پشتیبان رمزنگاری‌شده است و مدارک، اعضا، دسته‌ها و یادداشت‌ها را شامل می‌شود.</p>')
 +sec('s','🔐 امنیت و بازیابی رمز',`<div class="acts"><button data-a="cp">تغییر رمز</button><button data-a="nc">کد بازیابی جدید</button></div>${hasBio?`<button data-a="bio">👆 ${bio?'غیرفعال‌سازی':'فعال‌سازی'} ورود با اثر انگشت</button>`:''}<button data-a="ce">ایمیل بازیابی: ${esc(cfg.email||'—')} ✎</button><button data-a="ej">📧 ارسال خودکار کد هنگام «فراموشی رمز»: ${ej?'روشن ✓ (خاموش کن)':'خاموش (راه‌اندازی)'}</button><p class="note">راه‌اندازی: در emailjs.com ثبت‌نام کن، یک Email Service و یک Template بساز که گیرنده‌اش {{to_email}} و متنش شامل {{code}} باشد، سپس Service ID، Template ID و Public Key را وارد کن. با روشن بودن این گزینه، کد بازیابی روی همین گوشی هم نگه‌داری می‌شود (در فایل پشتیبان نیست).</p>`)
-+sec('i','📲 نصب روی گوشی',standalone?'<p class="note">✅ برنامه روی گوشی نصب شده است.</p>':`<button class="pri" data-a="inst">نصب برنامه / ساخت میان‌بر</button><p class="note">${window.__ip?'مرورگر آمادهٔ نصب مستقیم است.':'اگر پنجرهٔ نصب نیامد، راهنمای مرحله‌به‌مرحله باز می‌شود.'}</p>`)
++sec('i','📲 نصب و آیکن برنامه',(standalone?'<p class="note">✅ برنامه روی گوشی نصب شده است.</p>':`<button class="pri" data-a="inst">نصب برنامه روی گوشی</button><p class="note">${window.__ip?'مرورگر آمادهٔ نصب مستقیم است. در پنجرهٔ Chrome گزینهٔ «Install» را بزن (نه Create shortcut) تا برنامه در لیست برنامه‌های گوشی بیاید.':'اگر پنجرهٔ نصب نیامد، راهنمای مرحله‌به‌مرحله باز می‌شود.'}</p>`)+`<p class="note">آیکن برنامه از عکس پروفایل عضو «من» ساخته می‌شود${adm?' ✓':' (اول عکس بگذار)'}. اگر بعد از نصب هنوز آیکن قدیمی بود، برنامه را حذف و دوباره نصب کن.</p><button data-a="icn">🖼️ دریافت فایل‌های آیکن (برای آپلود روی GitHub)</button><p class="note">⚠️ اگر repo عمومی باشد، با آپلود این فایل‌ها عکسِ تو برای همه قابل دیدن می‌شود. روش خودکار بالا عکس را فقط روی گوشی نگه می‌دارد.</p>`)
 +sec('n','🔔 اعلان یادآوری','<button data-a="nt">فعال‌سازی اعلان‌ها</button>')
 +sec('h','📞 پشتیبانی برنامه','<div class="fld"><span>شمارهٔ پشتیبان</span><b>09372301428</b></div><div class="acts" style="grid-template-columns:1fr 1fr 1fr"><a class="btn" href="tel:09372301428">📞 تماس</a><a class="btn" href="sms:09372301428">💬 پیامک</a><a class="btn" href="https://wa.me/989372301428" target="_blank" rel="noopener">واتساپ</a></div>');
 if(!$('#ds').open)$('#ds').showModal()}
@@ -306,15 +317,16 @@ $('#sb').onclick=async e=>{const b=e.target.closest('button');if(!b)return;if(b.
  else if(b.dataset.pc){pm=b.dataset.pc;$('#pcam').click();return}
  else if(b.dataset.rp){delete prof.members.find(x=>x.id===b.dataset.rp).photo;await saveProf()}
  else if(b.dataset.ren){const m=prof.members.find(x=>x.id===b.dataset.ren),n=prompt('نام جدید:',m.name);if(n?.trim()){m.name=n.trim();await saveProf()}}
- else if(b.dataset.dm){if(confirm('این عضو حذف شود؟ مدارکش به «من» منتقل می‌شود.')){await retag('mem',b.dataset.dm,'me');prof.members=prof.members.filter(x=>x.id!==b.dataset.dm);await saveProf();if(mem===b.dataset.dm)mem='all'}}
+ else if(b.dataset.dm){if(confirm('این عضو حذف شود؟ مدارکش به «من» منتقل می‌شود.')&&await askPin('برای حذف عضو، رمز را وارد کن')){await retag('mem',b.dataset.dm,'me');prof.members=prof.members.filter(x=>x.id!==b.dataset.dm);await saveProf();if(mem===b.dataset.dm)mem='all'}}
  else if(a==='ac'){const ic=prompt('یک ایموجی برای آیکن (مثلاً 🚗):','📁'),n=ic&&prompt('نام دسته:');if(n?.trim()){prof.cats.push({id:'c'+crypto.randomUUID().slice(0,6),icon:ic.trim()||'📁',name:n.trim()});await saveProf()}}
  else if(b.dataset.dc){if(confirm('دسته حذف شود؟ مدارکش به «سایر» می‌روند.')){await retag('cat',b.dataset.dc,'other');prof.cats=prof.cats.filter(x=>x.id!==b.dataset.dc);await saveProf();if(cat===b.dataset.dc)cat=''}}
  else if(a==='bd')return backup(0);else if(a==='bs')return backup(1);else if(a==='rs')return $('#rfile').click();
- else if(a==='cp'){const p=prompt('رمز جدید (حداقل ۴ رقم):');if(p&&p.length>=4){await wrapPin(p);await saveCfg();toast('رمز تغییر کرد ✓')}return}
- else if(a==='nc'){const c=await newCode();await saveCfg();showCode(c);return}
+ else if(a==='cp'){if(!await askPin('رمز فعلی را وارد کن'))return;const p=prompt('رمز جدید (حداقل ۴ رقم):');if(p&&p.length>=4){await wrapPin(p);await saveCfg();toast('رمز تغییر کرد ✓')}return}
+ else if(a==='nc'){if(!await askPin('رمز را وارد کن'))return;const c=await newCode();await saveCfg();showCode(c);return}
  else if(a==='ce'){const m=prompt('ایمیل بازیابی:',cfg.email||'');if(m&&/^\S+@\S+\.\S+$/.test(m.trim())){cfg.email=m.trim();await saveCfg()}}
  else if(a==='bio'){if(bio){bio=null;await P(st('meta','readwrite').delete('bio'))}else await bioOn()}
  else if(a==='ej'){if(ej){ej=null;await P(st('meta','readwrite').delete('ej'))}else{const s=prompt('Service ID:'),t=s&&prompt('Template ID:'),k=t&&prompt('Public Key:');if(k){ej={s:s.trim(),t:t.trim(),k:k.trim()};const c=await newCode();await saveCfg();await sendCode()}}}
+ else if(a==='icn'){await dlIcons();return}
  else if(a==='inst'){$('#ds').close();doInstall();return}
  else if(a==='nt'){if(!window.Notification)toast('اعلان پشتیبانی نمی‌شود');else Notification.requestPermission().then(p=>toast(p==='granted'?'اعلان فعال شد ✓':'اعلان مجاز نشد'));return}
  await load();settings()};
