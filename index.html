@@ -100,6 +100,7 @@ dialog::backdrop{background:#000a}.in{padding:18px;display:flex;flex-direction:c
 <dialog id="dg"><div class="in"><div class="row"><h2 style="margin:0;flex:1">📥 دریافت فایل</h2><button id="gx">✕</button></div><input id="gq" placeholder="🔎 نام مدرک یا عضو…"><p class="note">⬇️ ذخیره در گوشی · 📤 ارسال با برنامه‌ها</p><div id="gl" style="display:flex;flex-direction:column;gap:8px"></div></div></dialog>
 <dialog id="di"><div class="in" id="dib"></div></dialog>
 <dialog id="dp"><form class="in" id="dpf" method="dialog"><h2 style="margin:0">🔐 تأیید با رمز</h2><p class="note" id="dpn"></p><input id="dpi" type="password" inputmode="numeric" autocomplete="off" placeholder="رمز عددی"><p id="dpe" class="dg" style="margin:0"></p><div class="acts"><button class="pri" type="submit">تأیید</button><button type="button" id="dpx">انصراف</button></div></form></dialog>
+<dialog id="dd"></dialog><dialog id="dw"></dialog>
 <dialog id="dv"><div class="in" id="vb"></div></dialog><dialog id="ds"><div class="in" id="sb"></div></dialog>
 <input id="rfile" type="file" accept=".json,.madarek" hidden><input id="pfile" type="file" accept="image/*" hidden><input id="pcam" type="file" accept="image/*" capture="user" hidden><div id="toast"></div>
 
@@ -107,7 +108,7 @@ dialog::backdrop{background:#000a}.in{padding:18px;display:flex;flex-direction:c
 const $=s=>document.querySelector(s),esc=s=>String(s).replace(/[&<>"']/g,c=>({'&':'&amp;','<':'&lt;','>':'&gt;','"':'&quot;',"'":'&#39;'}[c]));
 const BASE={passport:['🛂','پاسپورت',['شماره پاسپورت','تاریخ انقضا']],id:['🪪','کارت شناسایی',['شماره کارت','تاریخ انقضا']],ins:['🏥','بیمه',['کد بیمه','شماره عضویت']],fida:['🔢','کد فیدا / اختصاصی',['کد فیدا']],cv:['📄','رزومه (CV)',[]],other:['🗂️','سایر',[]]};
 const te=new TextEncoder(),td=new TextDecoder(),rnd=n=>crypto.getRandomValues(new Uint8Array(n));
-let lastbk=0,db,M=null,cfg,adm=null,ej=null,bio=null,prof={members:[{id:'me',name:'من'}],cats:[]},items=[],notes=[],cat='',mem='all',tab='home',urls=[],vu=[],edit=null,keep=[],started=0,ned=null;
+let gd=null,gtok=null,gexp=0,pend=0,lastbk=0,db,M=null,cfg,adm=null,ej=null,bio=null,prof={members:[{id:'me',name:'من'}],cats:[]},items=[],notes=[],cat='',mem='all',tab='home',urls=[],vu=[],edit=null,keep=[],started=0,ned=null;
 const CATS=()=>({...BASE,...Object.fromEntries(prof.cats.map(c=>[c.id,[c.icon,c.name,[]]]))});
 const mname=id=>(prof.members.find(m=>m.id===id)||prof.members[0]).name;
 const fmt=d=>new Date(d).toLocaleString('fa-IR-u-ca-persian',{dateStyle:'medium',timeStyle:'short'});
@@ -130,7 +131,7 @@ async function setManifest(){let l=document.querySelector('link[rel=manifest]');
  l.href=href}
 async function dlIcons(){if(!adm)return toast('اول برای عضو «من» عکس پروفایل بگذار');for(const[n,s,c]of[['icon-192.png',192,1],['icon-512.png',512,1],['maskable-512.png',512,0]]){dl(new File([await(await fetch(await mkIcon(adm,s,c))).blob()],n,{type:'image/png'}));await new Promise(r=>setTimeout(r,500))}toast('سه فایل ساخته شد؛ در GitHub جایگزین فایل‌های هم‌نام کن')}
 async function syncAdm(){const p=prof.members.find(m=>m.id==='me')?.photo;if(p){adm=p;await mput(p,'adm')}else{adm=null;await P(st('meta','readwrite').delete('adm'))}setManifest()}
-const saveProf=async()=>{await mput(await enc(te.encode(JSON.stringify(prof))),'prof');await syncAdm()},saveNotes=async()=>mput(await enc(te.encode(JSON.stringify(notes))),'notes');
+const saveProf=async()=>{await mput(await enc(te.encode(JSON.stringify(prof))),'prof');await syncAdm();autoBk()},saveNotes=async()=>{await mput(await enc(te.encode(JSON.stringify(notes))),'notes');autoBk()};
 async function migrate(oldK){for(const r of await P(st('items').getAll())){const d=async o=>o.iv?decK(oldK,o):o.ct;r.m=await enc(await d(r.m));for(const f of r.files)Object.assign(f,await enc(await d(f)));if(r.th)r.th=await enc(await d(r.th));r.mem=r.mem||'me';await P(st('items','readwrite').put(r))}}
 /* email recovery (EmailJS) */
 async function sendCode(){if(!ej)return toast('ارسال خودکار راه‌اندازی نشده؛ کد را از ایمیلی که هنگام ساخت رمز فرستادی بردار');
@@ -167,13 +168,13 @@ function lock(mode,oldK,auto){
    else{M=await impM(await decK(await kdf($('#rc').value.replace(/\s/g,'').toUpperCase(),cfg.rsalt),cfg.rwrap));await wrapPin(pin);await saveCfg();d.hidden=true;start();toast('رمز جدید ثبت شد ✓')}
   }catch(e){M=null;err(mode==='recover'?'کد بازیابی اشتباه است':'رمز اشتباه است')}};
  if(auto&&mode==='unlock'&&bio&&window.PublicKeyCredential)setTimeout(()=>$('#lbio').click(),500)}
-async function boot(){db=await open();cfg=await mget('cfg');ej=await mget('ej')||null;bio=await mget('bio')||null;adm=await mget('adm')||null;setManifest();
+async function boot(){db=await open();cfg=await mget('cfg');ej=await mget('ej')||null;bio=await mget('bio')||null;adm=await mget('adm')||null;gd=await mget('gd')||null;{const m=location.hash.match(/gcid=([^&]+)/);if(m){const v=decodeURIComponent(m[1]);if(/^[\w-]+\.apps\.googleusercontent\.com$/.test(v)){gd={...(gd||{}),cid:v};delete gd.ok;await mput(gd,'gd');setTimeout(()=>toast('✓ Client ID دریافت شد؛ بعد از ورود، Drive آماده است'),600)}history.replaceState(null,'',location.pathname+location.search)}}setManifest();
  if(!cfg)return lock('setup');if(cfg.ver===2)return lock('unlock',undefined,1);if(cfg.nolock)return lock('setup',null);
  $('#lt').textContent='ورود';$('#ln').textContent='رمز فعلی را وارد کن؛ برنامه به نسخهٔ جدید ارتقا می‌یابد.';['#rc','#em','#fg','#lbk','#lbio','#lsend'].forEach(i=>$(i).hidden=1);
  $('#lgo').onclick=async()=>{try{const k=await kdf($('#pin').value,cfg.salt);await decK(k,cfg.check);lock('setup',k)}catch(e){$('#le').textContent='رمز اشتباه است'}}}
 /* data */
 async function start(){const p=await mget('prof');if(p)try{prof=JSON.parse(td.decode(await dec(p)))}catch(e){}
- lastbk=await mget('lastbk')||0;const n=await mget('notes');if(n)try{notes=JSON.parse(td.decode(await dec(n)))}catch(e){}
+ lastbk=await mget('lastbk')||0;if(gd?.cid)loadGsi().catch(()=>{});{const ph=prof.members.find(m=>m.id==='me')?.photo;if(ph&&ph!==adm)syncAdm()}const n=await mget('notes');if(n)try{notes=JSON.parse(td.decode(await dec(n)))}catch(e){}
  $('#app').hidden=false;await load();tick();
  if(!started++){setInterval(tick,30000);document.addEventListener('visibilitychange',()=>{if(document.hidden)sessionStorage.h=Date.now();else{if(Date.now()-(+sessionStorage.h||Date.now())>120000)location.reload();else tick()}})}}
 async function load(){const rows=await P(st('items').getAll());urls.forEach(URL.revokeObjectURL);urls=[];items=[];
@@ -188,7 +189,7 @@ function hdr(){const me=prof.members.find(m=>m.id==='me')||prof.members[0];$('#h
 function render(){hdr();['home','docs','notes'].forEach(v=>$('#v-'+v).hidden=tab!==v);document.querySelectorAll('#nav [data-v]').forEach(b=>b.classList.toggle('on',b.dataset.v===tab));({home:rHome,docs:rDocs,notes:rNotes})[tab]()}
 function rHome(){const cnt=f=>items.filter(f).length,soon=notes.filter(n=>n.due&&!n.done&&new Date(n.due)<=new Date(Date.now()+864e5)).sort((a,b)=>a.due>b.due?1:-1).slice(0,3);
  $('#v-home').innerHTML=`<h2 style="margin:6px 0 0">سلام 👋</h2><p class="sum">${new Date().toLocaleDateString('fa-IR-u-ca-persian',{weekday:'long',day:'numeric',month:'long',year:'numeric'})}</p>
- ${soon.map(n=>`<div class="banner" data-note="${n.id}">⏰ <b>${esc(n.title)}</b> — ${fmt(n.due)}</div>`).join('')}${items.length&&Date.now()-lastbk>6048e5?`<div class="banner" data-q="bk">💾 ${lastbk?'آخرین پشتیبان '+Math.floor((Date.now()-lastbk)/864e5)+' روز پیش بود':'هنوز پشتیبان نگرفته‌ای'}؛ برای امنیت مدارکت یکی بگیر (بزن)</div>`:''}
+ ${soon.map(n=>`<div class="banner" data-note="${n.id}">⏰ <b>${esc(n.title)}</b> — ${fmt(n.due)}</div>`).join('')}${pend?'<div class="banner" data-q="bk">☁️ تغییرات جدید هنوز به Google Drive نرفته؛ بزن تا همین حالا ارسال شود</div>':''}${items.length&&Date.now()-lastbk>6048e5?`<div class="banner" data-q="bk">💾 ${lastbk?'آخرین پشتیبان '+Math.floor((Date.now()-lastbk)/864e5)+' روز پیش بود':'هنوز پشتیبان نگرفته‌ای'}؛ برای امنیت مدارکت یکی بگیر (بزن)</div>`:''}
  <h3>👨‍👩‍👧 اعضای خانواده</h3><p class="note" style="margin-bottom:10px">روی هر عضو بزن تا مدارکش را ببینی یا مدرک جدید برایش اضافه کنی.</p>
  <div class="grid">${prof.members.map(m=>`<button class="tile" data-tm="${m.id}">${avH(m,64)}<b>${esc(m.name)}</b><small>${cnt(i=>i.mem===m.id)} مدرک</small></button>`).join('')}<button class="tile dash" data-q="am"><div class="av" style="background:var(--bd);color:var(--mu);width:64px;height:64px">＋</div>عضو جدید</button></div>`}
 function rDocs(){const C=CATS(),q=$('#q').value.trim(),mo=prof.members.find(m=>m.id===mem);
@@ -206,7 +207,7 @@ document.addEventListener('click',e=>{const t=e.target.closest('[data-id],[data-
  if(D.id)openDoc(D.id);else if(D.tm){mem=D.tm;cat='';go('docs')}else if(D.tc){cat=D.tc;mem='all';go('docs')}
  else if(D.note)openNote(notes.find(n=>n.id===D.note));
  else if(D.nd){const n=notes.find(x=>x.id===D.nd);n.done=n.done?0:1;saveNotes().then(render)}
- else if(D.q==='home')go('home');else if(D.q==='add')openForm();else if(D.q==='recv')recv();else if(D.q==='note')openNote();else if(D.q==='bk')backup(1);else if(D.q==='am')addMember()});
+ else if(D.q==='home')go('home');else if(D.q==='add')openForm();else if(D.q==='recv')recv();else if(D.q==='note')openNote();else if(D.q==='bk')(gd?.cid?driveBackup():backup(1));else if(D.q==='am')addMember()});
 $('#add').onclick=()=>tab==='notes'?openNote():openForm();$('#lockb').onclick=()=>location.reload();$('#hdav').onclick=()=>settings();
 /* doc form */
 const frow=(k='',v='')=>{const r=document.createElement('div');r.className='kv';r.innerHTML=`<input placeholder="نام (مثلاً کد بیمه)" value="${esc(k)}"><input dir="ltr" placeholder="مقدار" value="${esc(v)}"><button type="button" class="dg">✕</button>`;r.lastChild.onclick=()=>r.remove();$('#fr').append(r)};
@@ -229,7 +230,7 @@ $('#fm').onsubmit=async e=>{e.preventDefault();$('#fs').disabled=true;
   const all=[...keep.map(rec=>({rec})),...add];let th=edit?.th||null;
   if(!edit||add.length||keep.length!==edit.files.length){const im=all.find(a=>a.rec.type.startsWith('image/'));th=null;if(im){try{th=await enc(await thumb(im.g||new File([await dec(im.rec)],'x',{type:im.rec.type})))}catch(x){}}}
   await P(st('items','readwrite').put({id:edit?.id||crypto.randomUUID(),cat:$('#fc').value,mem:$('#fmem').value,ts:edit?.ts||Date.now(),m:await enc(te.encode(JSON.stringify({title:$('#ft').value.trim(),fields}))),files:all.map(a=>a.rec),th}));
-  $('#df').close();await load();toast(add.length?'ذخیره شد ✓ — نسخهٔ گالری مستقل است؛ خودت حذفش کن':'ذخیره شد ✓')
+  $('#df').close();await load();autoBk();toast(add.length?'ذخیره شد ✓ — نسخهٔ گالری مستقل است؛ خودت حذفش کن':'ذخیره شد ✓')
  }catch(err){toast('خطا در ذخیره')}finally{$('#fs').disabled=false}};
 function askPin(why){return new Promise(res=>{const d=$('#dp');$('#dpn').textContent=why||'';$('#dpi').value='';$('#dpe').textContent='';let done=0;const fin=v=>{if(done)return;done=1;if(d.open)d.close();res(v)};
  $('#dpx').onclick=()=>fin(false);d.oncancel=()=>fin(false);
@@ -251,7 +252,7 @@ async function openDoc(id){const i=items.find(x=>x.id===id),C=CATS(),c=C[i.cat]|
  $('#vb').onclick=async e=>{const cp=e.target.closest('[data-cp]');if(cp){await navigator.clipboard.writeText(i.m.fields[cp.dataset.cp].v);toast('کپی شد ✓')}const t=e.target.closest('[data-n]');if(t)dl(fs[t.dataset.n])};
  $('#vt').onclick=async()=>{await navigator.clipboard.writeText(textOf(i));toast('کپی شد ✓')};$('#vo').onclick=()=>fs.forEach(dl);$('#ve').onclick=()=>{$('#dv').close();openForm(i)};
  $('#vm').onclick=()=>{location.href=`mailto:?subject=${encodeURIComponent(i.m.title)}&body=${encodeURIComponent(textOf(i))}`};$('#vs').onclick=()=>shareF(fs,i.m.title,textOf(i));
- $('#vd').onclick=async()=>{if(confirm('این مدرک از برنامه حذف شود؟ (فایل گالری دست‌نخورده می‌ماند)')&&await askPin('برای حذف مدرک، رمز را وارد کن')){await P(st('items','readwrite').delete(id));$('#dv').close();load()}};$('#dv').showModal()}
+ $('#vd').onclick=async()=>{if(confirm('این مدرک از برنامه حذف شود؟ (فایل گالری دست‌نخورده می‌ماند)')&&await askPin('برای حذف مدرک، رمز را وارد کن')){await P(st('items','readwrite').delete(id));$('#dv').close();load();autoBk()}};$('#dv').showModal()}
 $('#dv').onclose=()=>{vu.forEach(URL.revokeObjectURL);vu=[]};
 function rRecv(){const q=$('#gq').value.trim();$('#gl').innerHTML=items.filter(i=>i.files.length&&(!q||(i.m.title+mname(i.mem)).includes(q))).map(i=>`<div class="fld" style="flex-direction:column;align-items:stretch"><b style="direction:rtl">${esc(i.m.title)} <small class="note">· ${esc(mname(i.mem))}</small></b>${i.files.map((f,n)=>`<div class="row"><span style="flex:1;font-size:14px">📎 ${esc(f.name)}</span><button data-d="${i.id}:${n}">⬇️</button><button data-s="${i.id}:${n}">📤</button></div>`).join('')}</div>`).join('')||'<p class="note">فایلی پیدا نشد.</p>'}
 function recv(){$('#gq').value='';rRecv();$('#dg').showModal()}$('#gq').oninput=rRecv;$('#gx').onclick=()=>$('#dg').close();
@@ -285,15 +286,51 @@ function tick(){if(!M)return;let ch=0;for(const n of notes){if(!n.due||n.done||n
 /* backup */
 const b64=b=>{const u=new Uint8Array(b);let s='';for(let i=0;i<u.length;i+=32768)s+=String.fromCharCode.apply(null,u.subarray(i,i+32768));return btoa(s)};
 const ub=s=>Uint8Array.from(atob(s),c=>c.charCodeAt(0)).buffer;
-async function backup(share){const data={app:'madarek',v:3,cfg,prof:await mget('prof'),notes:await mget('notes'),items:await P(st('items').getAll())};
- const f=new File([JSON.stringify(data,(k,v)=>v instanceof ArrayBuffer||v instanceof Uint8Array?{$b:b64(v)}:v)],`madarek-backup-${new Date().toISOString().slice(0,10)}.madarek.json`,{type:'application/json'});
+async function buildBackup(){const data={app:'madarek',v:3,cfg,prof:await mget('prof'),notes:await mget('notes'),items:await P(st('items').getAll())};
+ return new File([JSON.stringify(data,(k,v)=>v instanceof ArrayBuffer||v instanceof Uint8Array?{$b:b64(v)}:v)],`madarek-backup-${new Date().toISOString().slice(0,16).replace(/[:T]/g,'-')}.madarek.json`,{type:'application/json'})}
+async function backup(share){const f=await buildBackup();
  if(share&&navigator.canShare?.({files:[f]}))try{await navigator.share({files:[f],title:'پشتیبان مدارک'});lastbk=Date.now();await mput(lastbk,'lastbk')}catch(e){}else{dl(f);lastbk=Date.now();await mput(lastbk,'lastbk');toast('پشتیبان ذخیره شد ✓')}}
-$('#rfile').onchange=async e=>{const f=e.target.files[0];e.target.value='';if(!f)return;
- try{const d=JSON.parse(await f.text(),(k,v)=>v&&v.$b!==undefined?ub(v.$b):v);if(d.app!=='madarek'||!d.cfg)throw 0;
+async function restoreText(txt){
+ try{const d=JSON.parse(txt,(k,v)=>v&&v.$b!==undefined?ub(v.$b):v);if(d.app!=='madarek'||!d.cfg)throw 0;
   if(!confirm('همهٔ اطلاعات فعلی برنامه با این پشتیبان جایگزین می‌شود. ادامه؟')||!await askPin('برای بازیابی پشتیبان، رمز را وارد کن'))return;
-  await P(st('items','readwrite').clear());await P(st('meta','readwrite').clear());
+  const keep=await mget('gd');await P(st('items','readwrite').clear());await P(st('meta','readwrite').clear());if(keep)await mput(keep,'gd');
   for(const r of d.items)await P(st('items','readwrite').put(r));await mput(d.cfg,'cfg');if(d.prof)await mput(d.prof,'prof');if(d.notes)await mput(d.notes,'notes');
-  toast('بازیابی شد. با رمز همان پشتیبان وارد شو');setTimeout(()=>location.reload(),1200)}catch(x){toast('فایل پشتیبان معتبر نیست')}};
+  toast('بازیابی شد. با رمز همان پشتیبان وارد شو');setTimeout(()=>location.reload(),1200)}catch(x){toast('فایل پشتیبان معتبر نیست')}}
+$('#rfile').onchange=async e=>{const f=e.target.files[0];e.target.value='';if(f)restoreText(await f.text())};
+/* Google Drive */
+function gdWizard(){const o=location.origin,L=(u)=>`<a class="btn" target="_blank" rel="noopener" href="${u}">باز کردن صفحهٔ گوگل ↗</a>`,S=(t,d,u,x='')=>`<div class="fld" style="display:block"><b style="direction:rtl;display:block">${t}</b><span class="note" style="display:block;margin:4px 0 8px">${d}</span>${x}${u?L(u):''}</div>`;
+ $('#dw').innerHTML=`<div class="in"><div class="row"><h2 style="margin:0;flex:1">🧭 ساخت Client ID گوگل</h2><button id="dwx">✕</button></div>
+<p class="note">بعد از هر مرحله به همین صفحه برگرد. بالای صفحهٔ گوگل مطمئن شو پروژهٔ خودت انتخاب شده است.</p>
+${S('۱) ساخت پروژه','یک اسم دلخواه بده (مثلاً Madarek) و Create بزن.','https://console.cloud.google.com/projectcreate')}
+${S('۲) فعال‌سازی Drive API','دکمهٔ Enable را بزن.','https://console.cloud.google.com/apis/library/drive.googleapis.com')}
+${S('۳) صفحهٔ رضایت (Google Auth Platform)','Get started ← اسم برنامه (مدارک من) و ایمیلت ← Audience را External انتخاب کن ← ایمیل تماس ← قبول شرایط ← Create.','https://console.cloud.google.com/auth/overview/create')}
+${S('۴) ساخت Client ID','Application type را Web application بگذار. در Authorized JavaScript origins روی Add URI بزن و دقیقاً همین آدرس را بگذار (بدون / آخر و بدون مسیر)، بعد Create. سپس Client ID را کپی کن.','https://console.cloud.google.com/auth/clients/create',`<div class="code" style="font-size:14px;margin-bottom:6px">${o}</div><button id="dwc" style="width:100%;margin-bottom:6px">📋 کپی آدرس</button>`)}
+${S('۵) اجازهٔ ورود حساب‌ها','در بخش Audience، ایمیل حساب‌هایی که قرار است وارد شوند را با Add users اضافه کن. بهتر است Publish app را هم بزنی تا اجازه‌ها بعد از چند روز منقضی نشود (برای این دسترسی معمولاً نیازی به تأیید گوگل نیست).','https://console.cloud.google.com/auth/audience')}
+<div class="fld" style="display:block"><b style="direction:rtl;display:block">۶) چسباندن Client ID</b><input id="dwi" dir="ltr" placeholder="123456-abc.apps.googleusercontent.com" style="margin:6px 0"><button class="pri" id="dws" style="width:100%">ذخیره و اتصال</button></div></div>`;
+ $('#dwx').onclick=()=>$('#dw').close();$('#dwc').onclick=()=>navigator.clipboard.writeText(o).then(()=>toast('آدرس کپی شد ✓'));
+ $('#dws').onclick=async()=>{const v=$('#dwi').value.trim();if(!/^[\w-]+\.apps\.googleusercontent\.com$/.test(v))return toast('Client ID باید به .apps.googleusercontent.com ختم شود');gd={...(gd||{}),cid:v};delete gd.ok;await mput(gd,'gd');gtok=null;loadGsi().catch(()=>{});$('#dw').close();toast('✓ ذخیره شد؛ حالا پشتیبان‌گیری را بزن');settings()};
+ $('#dw').showModal()}
+const GD='https://www.googleapis.com/drive/v3/files',GF='مدارک من - پشتیبان';
+function loadGsi(){return window.google?.accounts?.oauth2?Promise.resolve():new Promise((ok,no)=>{const s=document.createElement('script');s.src='https://accounts.google.com/gsi/client';s.onload=ok;s.onerror=()=>no(new Error('اتصال به گوگل برقرار نشد'));document.head.append(s)})}
+function getToken(){return new Promise(async(ok,no)=>{if(gtok&&Date.now()<gexp-60000)return ok(gtok);if(!gd?.cid)return no(new Error('Client ID وارد نشده'));
+ try{await loadGsi();google.accounts.oauth2.initTokenClient({client_id:gd.cid,scope:'https://www.googleapis.com/auth/drive.file',callback:async r=>{if(r.error)return no(new Error(r.error));gtok=r.access_token;gexp=Date.now()+r.expires_in*1000;if(!gd.ok){gd.ok=1;await mput(gd,'gd')}ok(gtok)},error_callback:e=>no(new Error(e.type||'popup'))}).requestAccessToken({prompt:gd.ok?'':'consent'})}catch(e){no(e)}})}
+async function dfetch(url,o={}){const t=await getToken(),r=await fetch(url,{...o,headers:{...(o.headers||{}),Authorization:'Bearer '+t}});if(r.status===401)gtok=null;if(!r.ok)throw new Error('Drive '+r.status);return r}
+async function driveFolder(){const q=encodeURIComponent(`mimeType='application/vnd.google-apps.folder' and name='${GF}' and trashed=false`),r=await(await dfetch(`${GD}?q=${q}&fields=files(id)`)).json();if(r.files[0])return r.files[0].id;
+ return(await(await dfetch(GD+'?fields=id',{method:'POST',headers:{'Content-Type':'application/json'},body:JSON.stringify({name:GF,mimeType:'application/vnd.google-apps.folder'})})).json()).id}
+async function driveUpload(f,fo){let loc=null;
+ try{loc=(await dfetch('https://www.googleapis.com/upload/drive/v3/files?uploadType=resumable&fields=id',{method:'POST',headers:{'Content-Type':'application/json; charset=UTF-8','X-Upload-Content-Type':'application/json'},body:JSON.stringify({name:f.name,parents:[fo]})})).headers.get('Location')}catch(e){}
+ if(loc){const u=await fetch(loc,{method:'PUT',headers:{'Content-Type':'application/json'},body:f});if(!u.ok)throw new Error('Drive upload '+u.status);return}
+ const fd=new FormData();fd.append('metadata',new Blob([JSON.stringify({name:f.name,parents:[fo]})],{type:'application/json'}));fd.append('file',f);await dfetch('https://www.googleapis.com/upload/drive/v3/files?uploadType=multipart&fields=id',{method:'POST',body:fd})}
+const driveList=async fo=>(await(await dfetch(`${GD}?q=${encodeURIComponent(`'${fo}' in parents and trashed=false`)}&orderBy=createdTime%20desc&pageSize=50&fields=files(id,name,createdTime,size)`)).json()).files;
+async function driveBackup(silent){try{if(!silent)toast('در حال ارسال به Google Drive…');const f=await buildBackup(),fo=await driveFolder();await driveUpload(f,fo);
+  try{for(const x of(await driveList(fo)).slice(7))await dfetch(`${GD}/${x.id}`,{method:'DELETE'})}catch(e){}
+  gd.last=lastbk=Date.now();await mput(gd,'gd');await mput(lastbk,'lastbk');pend=0;toast('✓ پشتیبان در Google Drive ذخیره شد');if(started)render()}
+ catch(e){toast('ارسال به Drive ناموفق: '+e.message)}}
+let abT=0;function autoBk(){if(!gd?.auto||!gd.cid)return;clearTimeout(abT);abT=setTimeout(()=>{if(gtok&&Date.now()<gexp-60000)driveBackup(true);else{pend=1;render()}},4000)}
+async function driveRestore(){try{const fs=await driveList(await driveFolder());
+  $('#dd').innerHTML=`<div class="in"><div class="row"><h2 style="margin:0;flex:1">📥 بازیابی از Drive</h2><button id="ddx">✕</button></div>${fs.length?fs.map(x=>`<button data-gid="${x.id}" style="text-align:start">${fmt(x.createdTime)} <small class="note">· ${Math.round(x.size/1024)} KB</small></button>`).join(''):'<p class="note">پشتیبانی در Drive پیدا نشد.</p>'}</div>`;
+  $('#ddx').onclick=()=>$('#dd').close();$('#dd').onclick=async e=>{const b=e.target.closest('[data-gid]');if(!b)return;try{const t=await(await dfetch(`${GD}/${b.dataset.gid}?alt=media`)).text();$('#dd').close();restoreText(t)}catch(x){toast('دریافت ناموفق: '+x.message)}};$('#dd').showModal()}
+ catch(e){toast('خطا: '+e.message)}}
 let pm=null;
 $('#pfile').onchange=$('#pcam').onchange=async e=>{const f=e.target.files[0];e.target.value='';if(!f||!pm)return;try{const b=await createImageBitmap(f),s=Math.min(b.width,b.height),c=document.createElement('canvas');c.width=c.height=384;c.getContext('2d').drawImage(b,(b.width-s)/2,(b.height-s)/2,s,s,0,0,384,384);prof.members.find(x=>x.id===pm).photo=c.toDataURL('image/jpeg',.88);await saveProf();render();settings();toast('عکس ثبت شد ✓')}catch(x){toast('عکس خوانده نشد')}};
 /* settings */
@@ -303,6 +340,7 @@ $('#sb').innerHTML=`<div class="row"><h2 style="margin:0;flex:1">⚙️ تنظی
 +sec('m',`👨‍👩‍👧 اعضای خانواده (${prof.members.length})`,prof.members.map(m=>`<div class="mr">${avH(m,36)}<b>${esc(m.name)}</b><button class="ib" data-ph="${m.id}" title="گالری">🖼️</button><button class="ib" data-pc="${m.id}" title="دوربین">📷</button>${m.photo?`<button class="ib dg" data-rp="${m.id}" title="حذف عکس">🚫</button>`:''}<button class="ib" data-ren="${m.id}" title="تغییر نام">✎</button>${m.id!=='me'?`<button class="ib dg" data-dm="${m.id}" title="حذف عضو">🗑</button>`:''}</div>`).join('')+'<button data-a="am">＋ عضو جدید</button>')
 +sec('c',`🗂️ دسته‌بندی‌های من (${prof.cats.length})`,prof.cats.map(c=>`<div class="mr"><b>${c.icon} ${esc(c.name)}</b><button class="ib dg" data-dc="${c.id}">🗑</button></div>`).join('')+'<button data-a="ac">＋ دستهٔ جدید</button>')
 +sec('b','💾 پشتیبان‌گیری و بازیابی','<div class="acts"><button class="pri" data-a="bd">⬇️ ذخیره در گوشی</button><button data-a="bs">📤 ارسال / ابر</button></div><button data-a="rs">📥 بازیابی از فایل پشتیبان</button><p class="note">پشتیبان رمزنگاری‌شده است و مدارک، اعضا، دسته‌ها و یادداشت‌ها را شامل می‌شود.</p>')
++sec('g','☁️ Google Drive'+(gd?.cid?' ✓':''),gd?.cid?`<div class="fld"><span>آخرین ارسال</span><b style="direction:rtl">${gd.last?fmt(gd.last):'—'}</b></div><div class="acts"><button class="pri" data-a="gbk">☁️ پشتیبان‌گیری الان</button><button data-a="grs">📥 بازیابی از Drive</button></div><button data-a="gauto">پشتیبان‌گیری خودکار پس از هر تغییر: ${gd.auto?'روشن ✓':'خاموش'}</button><p class="note">فایل‌ها در پوشهٔ «مدارک من - پشتیبان» داخل Drive خودت ذخیره می‌شوند (۷ نسخهٔ آخر نگه داشته می‌شود) و رمزنگاری‌شده‌اند. اجازهٔ گوگل حدود یک ساعت معتبر است؛ بعد از آن ارسال خودکار می‌ایستد و روی داشبورد یک هشدار می‌آید که با یک بار زدن دوباره ارسال می‌شود.</p><button data-a="glink">🔗 لینک اتصال برای گوشی‌های دیگر</button><div class="acts"><button data-a="gcid">تغییر Client ID</button><button class="dg" data-a="gdis">قطع اتصال</button></div>`:`<p class="note">برای اتصال، یک بار Client ID گوگل لازم است (رایگان و فقط با یک حساب گوگل). راهنما قدم‌به‌قدم است و هر مرحله دکمه‌ای دارد که صفحهٔ درست گوگل را باز می‌کند. اگر قبلاً ساخته‌ای، گزینهٔ دوم را بزن یا لینک اتصال را از گوشی دیگرت بازکن.</p><button class="pri" data-a="gwiz">🧭 راهنمای ساخت Client ID</button><button data-a="gcid">Client ID را از قبل دارم</button>`)
 +sec('s','🔐 امنیت و بازیابی رمز',`<div class="acts"><button data-a="cp">تغییر رمز</button><button data-a="nc">کد بازیابی جدید</button></div>${hasBio?`<button data-a="bio">👆 ${bio?'غیرفعال‌سازی':'فعال‌سازی'} ورود با اثر انگشت</button>`:''}<button data-a="ce">ایمیل بازیابی: ${esc(cfg.email||'—')} ✎</button><button data-a="ej">📧 ارسال خودکار کد هنگام «فراموشی رمز»: ${ej?'روشن ✓ (خاموش کن)':'خاموش (راه‌اندازی)'}</button><p class="note">راه‌اندازی: در emailjs.com ثبت‌نام کن، یک Email Service و یک Template بساز که گیرنده‌اش {{to_email}} و متنش شامل {{code}} باشد، سپس Service ID، Template ID و Public Key را وارد کن. با روشن بودن این گزینه، کد بازیابی روی همین گوشی هم نگه‌داری می‌شود (در فایل پشتیبان نیست).</p>`)
 +sec('i','📲 نصب و آیکن برنامه',(standalone?'<p class="note">✅ برنامه روی گوشی نصب شده است.</p>':`<button class="pri" data-a="inst">نصب برنامه روی گوشی</button><p class="note">${window.__ip?'مرورگر آمادهٔ نصب مستقیم است. در پنجرهٔ Chrome گزینهٔ «Install» را بزن (نه Create shortcut) تا برنامه در لیست برنامه‌های گوشی بیاید.':'اگر پنجرهٔ نصب نیامد، راهنمای مرحله‌به‌مرحله باز می‌شود.'}</p>`)+`<p class="note">آیکن برنامه از عکس پروفایل عضو «من» ساخته می‌شود${adm?' ✓':' (اول عکس بگذار)'}. اگر بعد از نصب هنوز آیکن قدیمی بود، برنامه را حذف و دوباره نصب کن.</p><button data-a="icn">🖼️ دریافت فایل‌های آیکن (برای آپلود روی GitHub)</button><p class="note">⚠️ اگر repo عمومی باشد، با آپلود این فایل‌ها عکسِ تو برای همه قابل دیدن می‌شود. روش خودکار بالا عکس را فقط روی گوشی نگه می‌دارد.</p>`)
 +sec('n','🔔 اعلان یادآوری','<button data-a="nt">فعال‌سازی اعلان‌ها</button>')
@@ -326,6 +364,13 @@ $('#sb').onclick=async e=>{const b=e.target.closest('button');if(!b)return;if(b.
  else if(a==='ce'){const m=prompt('ایمیل بازیابی:',cfg.email||'');if(m&&/^\S+@\S+\.\S+$/.test(m.trim())){cfg.email=m.trim();await saveCfg()}}
  else if(a==='bio'){if(bio){bio=null;await P(st('meta','readwrite').delete('bio'))}else await bioOn()}
  else if(a==='ej'){if(ej){ej=null;await P(st('meta','readwrite').delete('ej'))}else{const s=prompt('Service ID:'),t=s&&prompt('Template ID:'),k=t&&prompt('Public Key:');if(k){ej={s:s.trim(),t:t.trim(),k:k.trim()};const c=await newCode();await saveCfg();await sendCode()}}}
+ else if(a==='gwiz'){$('#ds').close();gdWizard();return}
+ else if(a==='glink'){const u=location.origin+location.pathname+'#gcid='+encodeURIComponent(gd.cid);try{await navigator.clipboard.writeText(u)}catch(e){}toast('لینک کپی شد ✓ — آن را برای گوشی دیگر بفرست');try{await navigator.share?.({title:'اتصال Drive مدارک من',text:u})}catch(e){}return}
+ else if(a==='gcid'){const v=prompt('Client ID گوگل:',gd?.cid||'');if(v?.trim()){gd={...(gd||{}),cid:v.trim().replace(/\s/g,'')};delete gd.ok;await mput(gd,'gd');gtok=null;loadGsi().catch(()=>{})}}
+ else if(a==='gbk'){$('#ds').close();driveBackup();return}
+ else if(a==='grs'){$('#ds').close();driveRestore();return}
+ else if(a==='gauto'){gd.auto=!gd.auto;await mput(gd,'gd')}
+ else if(a==='gdis'){if(confirm('اتصال Drive قطع شود؟ فایل‌های داخل Drive حذف نمی‌شوند.')){try{gtok&&google.accounts.oauth2.revoke(gtok)}catch(e){}gtok=null;gd=null;pend=0;await P(st('meta','readwrite').delete('gd'))}}
  else if(a==='icn'){await dlIcons();return}
  else if(a==='inst'){$('#ds').close();doInstall();return}
  else if(a==='nt'){if(!window.Notification)toast('اعلان پشتیبانی نمی‌شود');else Notification.requestPermission().then(p=>toast(p==='granted'?'اعلان فعال شد ✓':'اعلان مجاز نشد'));return}
