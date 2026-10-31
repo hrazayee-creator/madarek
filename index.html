@@ -44,6 +44,10 @@ dialog::backdrop{background:#000a}.in{padding:18px;display:flex;flex-direction:c
 .fld{flex-wrap:wrap}.fld button{padding:6px 10px}.fld span{color:var(--mu);font-size:13px;min-width:84px}.fld b{flex:1;direction:ltr;text-align:start;word-break:break-all;font-weight:600}
 .thumbs{display:grid;grid-template-columns:repeat(auto-fill,minmax(110px,1fr));gap:8px}
 .thumbs img{width:100%;aspect-ratio:1;object-fit:cover;border-radius:12px;border:1px solid var(--bd)}
+.pend{display:flex;align-items:center;gap:8px;background:var(--cd);border:1px solid var(--bd);border-radius:12px;padding:6px 8px}.pend img{width:46px;height:46px;border-radius:9px;object-fit:cover}.pend b{flex:1;font-size:13px;word-break:break-all}
+#ced{padding:0}#ced .cwrap{position:relative;width:100%;aspect-ratio:1;background:#000;overflow:hidden;touch-action:none}#ced canvas{position:absolute;inset:0;width:100%;height:100%}#ced .in{padding:16px}
+.ratios{display:flex;gap:6px}.ratios button{flex:1;padding:8px 4px;font-size:13px}.ratios button.on{background:var(--ac2);color:#fff;border-color:transparent}
+#cardimg{width:100%;border-radius:16px;box-shadow:var(--sh)}
 .file{display:flex;align-items:center;justify-content:center;aspect-ratio:1;border-radius:12px;border:1px solid var(--bd);background:var(--cd);font-size:13px;text-align:center;padding:6px;word-break:break-all}
 .acts{display:grid;grid-template-columns:1fr 1fr;gap:8px}.kv{display:grid;grid-template-columns:1fr 1.4fr auto;gap:6px}
 .note{color:var(--mu);font-size:13px;margin:0}.code{font:700 22px/1.4 monospace;direction:ltr;text-align:center;background:var(--cd);border:2px dashed var(--ac);border-radius:14px;padding:14px}
@@ -62,6 +66,7 @@ dialog::backdrop{background:#000a}.in{padding:18px;display:flex;flex-direction:c
 .lk img.pf{border-radius:50%;object-fit:cover;width:100px;height:100px;border:3px solid #ffffff99}.lk p:empty{display:none}.lk h2{font-weight:600}.lk .bio{width:60px;height:60px;border-radius:50%;margin:0 auto;font-size:28px;padding:0;background:#ffffff2e}.lnks{display:flex;justify-content:center;gap:4px 14px;flex-wrap:wrap;margin-top:2px}.lk .lnk{background:none;border:0;color:#ffffffbb;font-size:13px;padding:6px;text-decoration:underline}
 </style></head><body>
 
+<div id="lc" class="lk" style="position:fixed;inset:0;z-index:110;margin:auto;height:fit-content;display:flex;background:linear-gradient(160deg,#04262b,#0a5c5a 55%,#0e9f8e)" hidden></div>
 <div id="ls"><div class="lk"><img id="lkimg" src="icon-192.png" alt=""><h2 id="lt"></h2><p class="note" id="ln"></p>
 <input id="em" type="email" dir="ltr" placeholder="ایمیل (برای کد بازیابی)">
 <input id="rc" dir="ltr" placeholder="کد بازیابی" autocomplete="off">
@@ -101,12 +106,22 @@ dialog::backdrop{background:#000a}.in{padding:18px;display:flex;flex-direction:c
 <dialog id="di"><div class="in" id="dib"></div></dialog>
 <dialog id="dp"><form class="in" id="dpf" method="dialog"><h2 style="margin:0">🔐 تأیید با رمز</h2><p class="note" id="dpn"></p><input id="dpi" type="password" inputmode="numeric" autocomplete="off" placeholder="رمز عددی"><p id="dpe" class="dg" style="margin:0"></p><div class="acts"><button class="pri" type="submit">تأیید</button><button type="button" id="dpx">انصراف</button></div></form></dialog>
 <dialog id="dd"></dialog><dialog id="dw"></dialog>
+<dialog id="dce"><div id="ced"><div class="cwrap"><canvas id="ccv"></canvas></div><div class="in">
+<div class="ratios"><button data-r="free">آزاد</button><button data-r="1">مربع</button><button data-r="1.586" class="on">کارت</button><button data-r="0.707">عمودی</button></div>
+<label class="note">بزرگ‌نمایی</label><input id="czoom" type="range" min="1" max="4" step="0.01" value="1">
+<div class="acts"><button class="pri" id="cok">✓ اعمال</button><button id="cno">انصراف</button></div></div></div></dialog>
+<dialog id="dcard"><div class="in"><div class="row"><h2 style="margin:0;flex:1">🪪 نمایش به‌صورت کارت</h2><button id="cdx">✕</button></div><img id="cardimg" alt=""><div class="acts"><button class="pri" id="cds">📤 ارسال کارت</button><button id="cdd">⬇️ دریافت تصویر</button></div></div></dialog>
 <dialog id="dv"><div class="in" id="vb"></div></dialog><dialog id="ds"><div class="in" id="sb"></div></dialog>
 <input id="rfile" type="file" accept=".json,.madarek" hidden><input id="pfile" type="file" accept="image/*" hidden><input id="pcam" type="file" accept="image/*" capture="user" hidden><div id="toast"></div>
 
 <script>
 const $=s=>document.querySelector(s),esc=s=>String(s).replace(/[&<>"']/g,c=>({'&':'&amp;','<':'&lt;','>':'&gt;','"':'&quot;',"'":'&#39;'}[c]));
 const BASE={passport:['🛂','پاسپورت',['شماره پاسپورت','تاریخ انقضا']],id:['🪪','کارت شناسایی',['شماره کارت','تاریخ انقضا']],ins:['🏥','بیمه',['کد بیمه','شماره عضویت']],fida:['🔢','کد فیدا / اختصاصی',['کد فیدا']],cv:['📄','رزومه (CV)',[]],other:['🗂️','سایر',[]]};
+/* مجوز فعال‌سازی — اختیاری، پیش‌فرض خاموش.
+   برای فعال‌سازی فروش: آدرس Web App گوگل‌اسکریپت را اینجا بگذار. با خالی ماندن، برنامه بدون کد فعال‌سازی کار می‌کند. */
+const LICENSE_URL='';
+async function getDid(){let d=await mget('did').catch(()=>null);if(!d){d=crypto.randomUUID();await mput(d,'did')}return d}
+async function checkLicense(code){const did=await getDid(),r=await fetch(LICENSE_URL,{method:'POST',headers:{'Content-Type':'text/plain'},body:JSON.stringify({code:code.trim(),did})});if(!r.ok)throw new Error('ارتباط با سرور برقرار نشد');const j=await r.json();if(!j.ok)throw new Error(j.reason==='used'?'این کد قبلاً روی دستگاه دیگری استفاده شده':'کد فعال‌سازی نامعتبر است');return true}
 const te=new TextEncoder(),td=new TextDecoder(),rnd=n=>crypto.getRandomValues(new Uint8Array(n));
 let gd=null,gtok=null,gexp=0,pend=0,lastbk=0,db,M=null,cfg,adm=null,ej=null,bio=null,prof={members:[{id:'me',name:'من'}],cats:[]},items=[],notes=[],cat='',mem='all',tab='home',urls=[],vu=[],edit=null,keep=[],started=0,ned=null;
 const CATS=()=>({...BASE,...Object.fromEntries(prof.cats.map(c=>[c.id,[c.icon,c.name,[]]]))});
@@ -168,10 +183,17 @@ function lock(mode,oldK,auto){
    else{M=await impM(await decK(await kdf($('#rc').value.replace(/\s/g,'').toUpperCase(),cfg.rsalt),cfg.rwrap));await wrapPin(pin);await saveCfg();d.hidden=true;start();toast('رمز جدید ثبت شد ✓')}
   }catch(e){M=null;err(mode==='recover'?'کد بازیابی اشتباه است':'رمز اشتباه است')}};
  if(auto&&mode==='unlock'&&bio&&window.PublicKeyCredential)setTimeout(()=>$('#lbio').click(),500)}
-async function boot(){db=await open();cfg=await mget('cfg');ej=await mget('ej')||null;bio=await mget('bio')||null;adm=await mget('adm')||null;gd=await mget('gd')||null;{const m=location.hash.match(/gcid=([^&]+)/);if(m){const v=decodeURIComponent(m[1]);if(/^[\w-]+\.apps\.googleusercontent\.com$/.test(v)){gd={...(gd||{}),cid:v};delete gd.ok;await mput(gd,'gd');setTimeout(()=>toast('✓ Client ID دریافت شد؛ بعد از ورود، Drive آماده است'),600)}history.replaceState(null,'',location.pathname+location.search)}}setManifest();
+async function boot(){db=await open();
+ if(LICENSE_URL){const lic=await mget('lic').catch(()=>null);if(!lic?.ok){await gate();}}
+ cfg=await mget('cfg');ej=await mget('ej')||null;bio=await mget('bio')||null;adm=await mget('adm')||null;gd=await mget('gd')||null;{const m=location.hash.match(/gcid=([^&]+)/);if(m){const v=decodeURIComponent(m[1]);if(/^[\w-]+\.apps\.googleusercontent\.com$/.test(v)){gd={...(gd||{}),cid:v};delete gd.ok;await mput(gd,'gd');setTimeout(()=>toast('✓ Client ID دریافت شد؛ بعد از ورود، Drive آماده است'),600)}history.replaceState(null,'',location.pathname+location.search)}}setManifest();
  if(!cfg)return lock('setup');if(cfg.ver===2)return lock('unlock',undefined,1);if(cfg.nolock)return lock('setup',null);
  $('#lt').textContent='ورود';$('#ln').textContent='رمز فعلی را وارد کن؛ برنامه به نسخهٔ جدید ارتقا می‌یابد.';['#rc','#em','#fg','#lbk','#lbio','#lsend'].forEach(i=>$(i).hidden=1);
  $('#lgo').onclick=async()=>{try{const k=await kdf($('#pin').value,cfg.salt);await decK(k,cfg.check);lock('setup',k)}catch(e){$('#le').textContent='رمز اشتباه است'}}}
+function gate(){return new Promise(res=>{const d=$('#lc');d.innerHTML=`<img src="icon-192.png" style="width:72px;height:72px;border-radius:18px;margin:0 auto 4px"><h2 style="margin:0">فعال‌سازی برنامه</h2><p class="note">برای استفاده، کد فعال‌سازی را از پشتیبانی (09372301428) بگیر و اینجا وارد کن.</p><input id="lcc" dir="ltr" placeholder="کد فعال‌سازی" autocomplete="off"><p id="lce"></p><button class="pri" id="lcg">فعال‌سازی</button><div class="acts" style="grid-template-columns:1fr 1fr"><a class="btn" style="color:#fff;border-color:#ffffff44" href="tel:09372301428">📞 تماس</a><a class="btn" style="color:#fff;border-color:#ffffff44" href="https://wa.me/989372301428" target="_blank" rel="noopener">واتساپ</a></div>`;
+ $('#lc').hidden=false;
+ $('#lcg').onclick=async()=>{const c=$('#lcc').value.trim();if(!c)return;$('#lcg').disabled=true;$('#lce').textContent='';
+  try{await checkLicense(c);await mput({ok:true,code:c,ts:Date.now()},'lic');$('#lc').hidden=true;res()}catch(e){$('#lce').textContent=e.message}finally{$('#lcg').disabled=false}};
+ $('#lcc').onkeydown=e=>{if(e.key==='Enter')$('#lcg').click()}})}
 /* data */
 async function start(){const p=await mget('prof');if(p)try{prof=JSON.parse(td.decode(await dec(p)))}catch(e){}
  lastbk=await mget('lastbk')||0;if(gd?.cid)loadGsi().catch(()=>{});{const ph=prof.members.find(m=>m.id==='me')?.photo;if(ph&&ph!==adm)syncAdm()}const n=await mget('notes');if(n)try{notes=JSON.parse(td.decode(await dec(n)))}catch(e){}
@@ -211,9 +233,40 @@ document.addEventListener('click',e=>{const t=e.target.closest('[data-id],[data-
 $('#add').onclick=()=>tab==='notes'?openNote():openForm();$('#lockb').onclick=()=>location.reload();$('#hdav').onclick=()=>settings();
 /* doc form */
 const frow=(k='',v='')=>{const r=document.createElement('div');r.className='kv';r.innerHTML=`<input placeholder="نام (مثلاً کد بیمه)" value="${esc(k)}"><input dir="ltr" placeholder="مقدار" value="${esc(v)}"><button type="button" class="dg">✕</button>`;r.lastChild.onclick=()=>r.remove();$('#fr').append(r)};
-const showKeep=()=>{$('#fe').innerHTML=keep.map((f,n)=>`<div class="fld"><span>📎</span><b style="direction:rtl">${esc(f.name)}</b><button type="button" class="dg" data-k="${n}">✕</button></div>`).join('')};
-$('#fe').onclick=e=>{const b=e.target.closest('[data-k]');if(b){keep.splice(+b.dataset.k,1);showKeep()}};
-function openForm(i){edit=i||null;keep=i?[...i.files]:[];const C=CATS();
+let newFiles=[],newTh={};
+function showKeep(){const pend=newFiles.map((f,n)=>`<div class="pend">${newTh[n]?`<img src="${newTh[n]}">`:'<span>📎</span>'}<b>${esc(f.name)}</b>${f.type.startsWith('image/')?`<button type="button" data-ei="${n}" title="ویرایش عکس">✂️</button>`:''}<button type="button" class="dg" data-rn="${n}">✕</button></div>`).join('');
+ const old=keep.map((f,n)=>`<div class="pend"><span>📎</span><b>${esc(f.name)}</b><button type="button" class="dg" data-k="${n}">✕</button></div>`).join('');
+ $('#fe').innerHTML=old+pend}
+async function mkThumb(f){try{const b=await createImageBitmap(f),s=Math.min(1,160/Math.max(b.width,b.height)),c=document.createElement('canvas');c.width=b.width*s;c.height=b.height*s;c.getContext('2d').drawImage(b,0,0,c.width,c.height);return c.toDataURL('image/jpeg',.7)}catch(e){return null}}
+$('#fe').onclick=async e=>{const k=e.target.closest('[data-k]'),rn=e.target.closest('[data-rn]'),ei=e.target.closest('[data-ei]');
+ if(k){keep.splice(+k.dataset.k,1);showKeep()}
+ else if(rn){newFiles.splice(+rn.dataset.rn,1);delete newTh[+rn.dataset.rn];showKeep()}
+ else if(ei){const n=+ei.dataset.ei,r=await openEditor(newFiles[n]);if(r){newFiles[n]=r;newTh[n]=await mkThumb(r);showKeep()}}};
+async function addPicked(list){for(const f0 of list){let f=f0;if(f.type.startsWith('image/')){const r=await openEditor(f);if(!r)continue;f=r}newFiles.push(f);newTh[newFiles.length-1]=await mkThumb(f);showKeep()}}
+$('#ff').onchange=e=>{addPicked([...e.target.files]);e.target.value=''};
+$('#fcam').onchange=e=>{addPicked([...e.target.files]);e.target.value=''};
+/* image editor: pan + zoom + ratio crop */
+function openEditor(file){return new Promise(async res=>{
+ const d=$('#dce'),cv=$('#ccv'),x=cv.getContext('2d'),url=URL.createObjectURL(file),img=new Image();
+ await new Promise(ok=>{img.onload=ok;img.src=url});
+ let ratio=1.586,zoom=1,minZ=1,ox=0,oy=0,W=0,H=0;
+ $('#czoom').value=1;document.querySelectorAll('.ratios button').forEach(b=>b.classList.toggle('on',b.dataset.r==='1.586'));
+ function layout(){const box=cv.parentElement.getBoundingClientRect();W=box.width;H=ratio==='free'?box.height:Math.min(box.height,W/ (ratio||1));if(ratio!=='free'){cv.parentElement.style.aspectRatio=ratio;H=cv.parentElement.getBoundingClientRect().height}
+  cv.width=W*2;cv.height=H*2;cv.style.height=H+'px';minZ=Math.max(W*2/img.width,H*2/img.height);zoom=Math.max(zoom,minZ);$('#czoom').min=minZ.toFixed(3);if(+$('#czoom').value<minZ)$('#czoom').value=minZ;clamp();draw()}
+ function clamp(){const iw=img.width*zoom,ih=img.height*zoom;ox=Math.min(0,Math.max(ox,cv.width-iw));oy=Math.min(0,Math.max(oy,cv.height-ih))}
+ function draw(){x.fillStyle='#000';x.fillRect(0,0,cv.width,cv.height);x.drawImage(img,ox,oy,img.width*zoom,img.height*zoom)}
+ document.querySelectorAll('.ratios button').forEach(b=>b.onclick=()=>{document.querySelectorAll('.ratios button').forEach(y=>y.classList.remove('on'));b.classList.add('on');ratio=b.dataset.r==='free'?'free':+b.dataset.r;if(ratio!=='free')cv.parentElement.style.aspectRatio=ratio;else cv.parentElement.style.aspectRatio='';layout()});
+ $('#czoom').oninput=e=>{zoom=+e.target.value;clamp();draw()};
+ let drag=null;
+ const pos=e=>{const t=e.touches?e.touches[0]:e,r=cv.getBoundingClientRect();return{x:(t.clientX-r.left)*cv.width/r.width,y:(t.clientY-r.top)*cv.height/r.height}};
+ const down=e=>{drag={s:pos(e),ox,oy}};const move=e=>{if(!drag)return;e.preventDefault();const p=pos(e);ox=drag.ox+(p.x-drag.s.x);oy=drag.oy+(p.y-drag.s.y);clamp();draw()};const up=()=>drag=null;
+ cv.onpointerdown=down;cv.onpointermove=move;addEventListener('pointerup',up);
+ requestAnimationFrame(layout);
+ $('#cok').onclick=()=>{const oc=document.createElement('canvas'),ow=Math.min(1600,cv.width),oh=ow*cv.height/cv.width;oc.width=ow;oc.height=oh;const ocx=oc.getContext('2d');ocx.drawImage(cv,0,0,oc.width,oc.height);
+  oc.toBlob(b=>{URL.revokeObjectURL(url);d.close();res(new File([b],file.name.replace(/\.\w+$/,'')+'.jpg',{type:'image/jpeg'}))},'image/jpeg',.9)};
+ $('#cno').onclick=()=>{URL.revokeObjectURL(url);d.close();res(null)};
+ d.oncancel=e=>{e.preventDefault();$('#cno').click()};d.showModal()})}
+function openForm(i){edit=i||null;keep=i?[...i.files]:[];newFiles=[];newTh={};const C=CATS();
  $('#fmem').innerHTML=prof.members.map(m=>`<option value="${m.id}">👤 ${esc(m.name)}</option>`).join('');
  $('#fc').innerHTML=Object.entries(C).map(([k,v])=>`<option value="${k}">${v[0]} ${esc(v[1])}</option>`).join('');
  $('#fm').reset();$('#fh').textContent=i?'ویرایش مدرک':'مدرک جدید';
@@ -222,15 +275,14 @@ function openForm(i){edit=i||null;keep=i?[...i.files]:[];const C=CATS();
 function autoTitle(){const m=$('#fmem').value;$('#ft').value=CATS()[$('#fc').value][1]+(m==='me'?'':' '+mname(m))}
 $('#fc').onchange=()=>{if(!edit){$('#fr').innerHTML='';CATS()[$('#fc').value][2].forEach(k=>frow(k));autoTitle()}};$('#fmem').onchange=()=>{if(!edit)autoTitle()};
 $('#fa').onclick=()=>frow();$('#fx').onclick=()=>$('#df').close();
-async function shrink(f){if(!f.type.startsWith('image/')||f.type==='image/gif')return f;try{const b=await createImageBitmap(f),s=Math.min(1,2000/Math.max(b.width,b.height)),c=document.createElement('canvas');c.width=b.width*s;c.height=b.height*s;c.getContext('2d').drawImage(b,0,0,c.width,c.height);return new File([await new Promise(r=>c.toBlob(r,'image/jpeg',.88))],f.name.replace(/\.\w+$/,'')+'.jpg',{type:'image/jpeg'})}catch(e){return f}}
 async function thumb(f){const b=await createImageBitmap(f),s=Math.min(1,360/Math.max(b.width,b.height)),c=document.createElement('canvas');c.width=b.width*s;c.height=b.height*s;c.getContext('2d').drawImage(b,0,0,c.width,c.height);return(await new Promise(r=>c.toBlob(r,'image/jpeg',.8))).arrayBuffer()}
 $('#fm').onsubmit=async e=>{e.preventDefault();$('#fs').disabled=true;
  try{const fields=[...$('#fr').children].map(r=>({k:r.children[0].value.trim(),v:r.children[1].value.trim()})).filter(f=>f.v);
-  const add=[];for(const f of[...$('#ff').files,...$('#fcam').files]){const g=await shrink(f);add.push({g,rec:{name:g.name,type:g.type||'application/octet-stream',...await enc(await g.arrayBuffer())}})}
+  const add=[];for(const g of newFiles){add.push({g,rec:{name:g.name,type:g.type||'application/octet-stream',...await enc(await g.arrayBuffer())}})}
   const all=[...keep.map(rec=>({rec})),...add];let th=edit?.th||null;
   if(!edit||add.length||keep.length!==edit.files.length){const im=all.find(a=>a.rec.type.startsWith('image/'));th=null;if(im){try{th=await enc(await thumb(im.g||new File([await dec(im.rec)],'x',{type:im.rec.type})))}catch(x){}}}
   await P(st('items','readwrite').put({id:edit?.id||crypto.randomUUID(),cat:$('#fc').value,mem:$('#fmem').value,ts:edit?.ts||Date.now(),m:await enc(te.encode(JSON.stringify({title:$('#ft').value.trim(),fields}))),files:all.map(a=>a.rec),th}));
-  $('#df').close();await load();autoBk();toast(add.length?'ذخیره شد ✓ — نسخهٔ گالری مستقل است؛ خودت حذفش کن':'ذخیره شد ✓')
+  newFiles=[];newTh={};$('#df').close();await load();autoBk();toast(add.length?'ذخیره شد ✓ — نسخهٔ گالری مستقل است؛ خودت حذفش کن':'ذخیره شد ✓')
  }catch(err){toast('خطا در ذخیره')}finally{$('#fs').disabled=false}};
 function askPin(why){return new Promise(res=>{const d=$('#dp');$('#dpn').textContent=why||'';$('#dpi').value='';$('#dpe').textContent='';let done=0;const fin=v=>{if(done)return;done=1;if(d.open)d.close();res(v)};
  $('#dpx').onclick=()=>fin(false);d.oncancel=()=>fin(false);
@@ -242,15 +294,35 @@ const fileOf=async(i,n)=>new File([await dec(i.files[n])],i.files[n].name,{type:
 const filesOf=i=>Promise.all(i.files.map((_,n)=>fileOf(i,n)));
 const dl=f=>{const a=document.createElement('a');a.href=URL.createObjectURL(f);a.download=f.name;a.click()};
 const shareF=async(fs,title,text)=>{try{if(fs.length&&navigator.canShare?.({files:fs}))await navigator.share({title,text,files:fs});else if(navigator.share)await navigator.share({title,text});else{if(text)await navigator.clipboard.writeText(text);toast('اشتراک‌گذاری پشتیبانی نمی‌شود')}}catch(e){}};
+async function buildCard(i){const C=CATS(),c=C[i.cat]||C.other,W=1000,H=630,R=28,cv=document.createElement('canvas');cv.width=W;cv.height=H;const x=cv.getContext('2d');
+ const g=x.createLinearGradient(0,0,W,H);g.addColorStop(0,'#0a4a44');g.addColorStop(1,'#0e9f8e');
+ const rr=(a,b,w,h,r)=>{x.beginPath();x.moveTo(a+r,b);x.arcTo(a+w,b,a+w,b+h,r);x.arcTo(a+w,b+h,a,b+h,r);x.arcTo(a,b+h,a,b,r);x.arcTo(a,b,a+w,b,r);x.closePath()};
+ rr(0,0,W,H,R);x.save();x.clip();x.fillStyle=g;x.fillRect(0,0,W,H);
+ x.globalAlpha=.12;x.fillStyle='#fff';x.beginPath();x.arc(W-60,-40,220,0,7);x.fill();x.beginPath();x.arc(60,H+40,180,0,7);x.fill();x.globalAlpha=1;
+ x.fillStyle='#fff';x.font='700 30px Vazirmatn,Tahoma,sans-serif';x.textAlign='left';x.textBaseline='middle';
+ x.font='46px Vazirmatn,Tahoma,sans-serif';x.fillText(c[0],44,70);
+ x.font='700 32px Vazirmatn,Tahoma,sans-serif';x.textAlign='right';x.fillText(c[1],W-44,70);
+ x.strokeStyle='rgba(255,255,255,.35)';x.lineWidth=2;x.beginPath();x.moveTo(44,112);x.lineTo(W-44,112);x.stroke();
+ x.textAlign='right';x.font='700 40px Vazirmatn,Tahoma,sans-serif';x.fillText(i.m.title,W-44,165);
+ x.font='26px Vazirmatn,Tahoma,sans-serif';x.fillStyle='rgba(255,255,255,.85)';x.fillText('👤 '+mname(i.mem),W-44,205);
+ let yy=270;x.font='24px Vazirmatn,Tahoma,sans-serif';
+ for(const f of i.m.fields.slice(0,8)){x.fillStyle='rgba(255,255,255,.7)';x.textAlign='right';x.fillText(f.k,W-44,yy);
+  x.fillStyle='#fff';x.font='700 28px Vazirmatn,Tahoma,sans-serif';x.textAlign='left';x.direction='ltr';x.fillText(f.v,44,yy+36);x.direction='rtl';
+  x.font='24px Vazirmatn,Tahoma,sans-serif';yy+=74}
+ x.textAlign='right';x.font='22px Vazirmatn,Tahoma,sans-serif';x.fillStyle='rgba(255,255,255,.6)';x.fillText('🗂️ مدارک من',W-44,H-34);
+ x.restore();rr(0,0,W,H,R);x.lineWidth=2;x.strokeStyle='rgba(255,255,255,.25)';x.stroke();
+ return new Promise(ok=>cv.toBlob(b=>ok(new File([b],(i.m.title||'card')+'.png',{type:'image/png'})),'image/png',.95))}
+async function showCard(i){const f=await buildCard(i),u=URL.createObjectURL(f);$('#cardimg').src=u;$('#cdx').onclick=()=>{$('#dcard').close();URL.revokeObjectURL(u)};
+ $('#cds').onclick=()=>shareF([f],i.m.title,'');$('#cdd').onclick=()=>dl(f);$('#dcard').showModal()}
 async function openDoc(id){const i=items.find(x=>x.id===id),C=CATS(),c=C[i.cat]||C.other;vu.forEach(URL.revokeObjectURL);vu=[];const fs=await filesOf(i);
  const th=fs.map((f,n)=>{if(f.type.startsWith('image/')){const u=URL.createObjectURL(f);vu.push(u);return`<img src="${u}" data-n="${n}" alt="">`}return`<div class="file" data-n="${n}">📎 ${esc(f.name)}</div>`}).join('');
  $('#vb').innerHTML=`<div class="row"><h2 style="margin:0;flex:1">${c[0]} ${esc(i.m.title)}</h2><button id="vx">✕</button></div><p class="note">👤 ${esc(mname(i.mem))} · ${esc(c[1])}</p>
  ${i.m.fields.map((f,n)=>`<div class="fld"><span>${esc(f.k)}</span><b>${esc(f.v)}</b><button data-cp="${n}">کپی</button></div>`).join('')}
  ${th?`<div class="thumbs">${th}</div><p class="note">برای ذخیرهٔ هر فایل رویش بزن.</p>`:''}
- <div class="acts"><button class="pri" id="vs">📤 ارسال</button><button id="vm">✉️ ایمیل (متن)</button><button id="vt">📋 کپی کدها</button><button id="vo">⬇️ دریافت فایل‌ها</button><button id="ve">✏️ ویرایش</button><button id="vd" class="dg">🗑 حذف</button></div>`;
+ <div class="acts"><button class="pri" id="vs">📤 ارسال</button><button id="vm">✉️ ایمیل (متن)</button><button id="vt">📋 کپی کدها</button><button id="vo">⬇️ دریافت فایل‌ها</button><button id="vk">🪪 نمایش کارت</button><button id="ve">✏️ ویرایش</button><button id="vd" class="dg">🗑 حذف</button></div>`;
  $('#vx').onclick=()=>$('#dv').close();
  $('#vb').onclick=async e=>{const cp=e.target.closest('[data-cp]');if(cp){await navigator.clipboard.writeText(i.m.fields[cp.dataset.cp].v);toast('کپی شد ✓')}const t=e.target.closest('[data-n]');if(t)dl(fs[t.dataset.n])};
- $('#vt').onclick=async()=>{await navigator.clipboard.writeText(textOf(i));toast('کپی شد ✓')};$('#vo').onclick=()=>fs.forEach(dl);$('#ve').onclick=()=>{$('#dv').close();openForm(i)};
+ $('#vt').onclick=async()=>{await navigator.clipboard.writeText(textOf(i));toast('کپی شد ✓')};$('#vo').onclick=()=>fs.forEach(dl);$('#ve').onclick=()=>{$('#dv').close();openForm(i)};$('#vk').onclick=()=>showCard(i);
  $('#vm').onclick=()=>{location.href=`mailto:?subject=${encodeURIComponent(i.m.title)}&body=${encodeURIComponent(textOf(i))}`};$('#vs').onclick=()=>shareF(fs,i.m.title,textOf(i));
  $('#vd').onclick=async()=>{if(confirm('این مدرک از برنامه حذف شود؟ (فایل گالری دست‌نخورده می‌ماند)')&&await askPin('برای حذف مدرک، رمز را وارد کن')){await P(st('items','readwrite').delete(id));$('#dv').close();load();autoBk()}};$('#dv').showModal()}
 $('#dv').onclose=()=>{vu.forEach(URL.revokeObjectURL);vu=[]};
