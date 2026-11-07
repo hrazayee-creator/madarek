@@ -46,7 +46,7 @@ dialog::backdrop{background:#000a}.in{padding:18px;display:flex;flex-direction:c
 .thumbs img{width:100%;aspect-ratio:1;object-fit:cover;border-radius:12px;border:1px solid var(--bd)}
 .pend{display:flex;align-items:center;gap:8px;background:var(--cd);border:1px solid var(--bd);border-radius:12px;padding:6px 8px}.pend img{width:46px;height:46px;border-radius:9px;object-fit:cover}.pend b{flex:1;font-size:13px;word-break:break-all}
 #ced{padding:0}#ced .cwrap{position:relative;width:100%;aspect-ratio:1;background:#000;overflow:hidden;touch-action:none}#ced canvas{position:absolute;inset:0;width:100%;height:100%}#ced .in{padding:16px}
-.ratios{display:flex;gap:6px}.ratios button{flex:1;padding:8px 4px;font-size:13px}.ratios button.on{background:var(--ac2);color:#fff;border-color:transparent}
+.ratios{display:flex;gap:6px}.ratios{overflow-x:auto}.ratios button{flex:1;padding:8px 6px;font-size:13px;white-space:nowrap}.ratios button.on{background:var(--ac2);color:#fff;border-color:transparent}
 #cardimg{width:100%;border-radius:16px;box-shadow:var(--sh)}
 .file{display:flex;align-items:center;justify-content:center;aspect-ratio:1;border-radius:12px;border:1px solid var(--bd);background:var(--cd);font-size:13px;text-align:center;padding:6px;word-break:break-all}
 .acts{display:grid;grid-template-columns:1fr 1fr;gap:8px}.kv{display:grid;grid-template-columns:1fr 1.4fr auto;gap:6px}
@@ -64,6 +64,45 @@ dialog::backdrop{background:#000a}.in{padding:18px;display:flex;flex-direction:c
 #pin{font-size:24px;letter-spacing:8px}.lk button{background:#ffffff22;border-color:#ffffff44;color:#fff;padding:12px}
 .lk .pri{background:#fff;color:#075e54;font-weight:700;font-size:17px}.lk #le{color:#ffc2c2;margin:0;min-height:1em}
 .lk img.pf{border-radius:50%;object-fit:cover;width:100px;height:100px;border:3px solid #ffffff99}.lk p:empty{display:none}.lk h2{font-weight:600}.lk .bio{width:60px;height:60px;border-radius:50%;margin:0 auto;font-size:28px;padding:0;background:#ffffff2e}.lnks{display:flex;justify-content:center;gap:4px 14px;flex-wrap:wrap;margin-top:2px}.lk .lnk{background:none;border:0;color:#ffffffbb;font-size:13px;padding:6px;text-decoration:underline}
+/* ===== v14 modern theme ===== */
+:root{--bg:#eef4f4;--cd:#fff;--tx:#0f2328;--mu:#5d7479;--ac:#0e9f8e;--ac2:#087a6c;--bd:#e0eaeb;--sh:0 6px 20px #0a3a3a14,0 1px 3px #0a3a3a0d;--r:20px}
+@media(prefers-color-scheme:dark){:root{--bg:#081a1f;--cd:#102a33;--tx:#e8f3f3;--mu:#8fb0b5;--bd:#1c424d;--ac:#2ad0bb;--ac2:#14a392;--sh:0 6px 20px #0006}}
+body{background:radial-gradient(900px 380px at 100% -80px,#0e9f8e26,transparent 70%),radial-gradient(700px 320px at 0 -60px,#2477c91f,transparent 70%),var(--bg);background-attachment:fixed;padding-bottom:110px}
+header{position:sticky;top:0;z-index:15;background:color-mix(in srgb,var(--bg) 78%,transparent);backdrop-filter:blur(14px);-webkit-backdrop-filter:blur(14px);padding-bottom:10px}
+h1{font-weight:800;letter-spacing:-.2px}
+button{transition:transform .12s,box-shadow .2s,background .2s}button:active{transform:scale(.96)}
+.pri{box-shadow:0 8px 20px #0e9f8e55;font-weight:700}
+.card{background:var(--cd);border:1px solid var(--bd);border-radius:var(--r);box-shadow:var(--sh)}
+.cv,.ph{height:104px;border-radius:14px}
+.ph{background:linear-gradient(135deg,#0e9f8e22,#2477c922)}
+.tile{background:var(--cd);border:1px solid var(--bd);border-radius:var(--r)}
+details{border-radius:var(--r);box-shadow:var(--sh)}
+dialog{border-radius:26px}dialog[open]{animation:pop .22s ease-out}@keyframes pop{from{opacity:0;transform:translateY(18px) scale(.97)}}
+nav{inset-inline:10px;bottom:max(10px,env(safe-area-inset-bottom));border:1px solid var(--bd);border-radius:26px;padding:6px;box-shadow:0 12px 34px #0a3a3a30;background:color-mix(in srgb,var(--cd) 88%,transparent);backdrop-filter:blur(16px);-webkit-backdrop-filter:blur(16px)}
+nav button{border-radius:18px;font-size:11px;padding:7px 2px;position:relative}
+nav button.on{background:linear-gradient(135deg,#0e9f8e22,#0e9f8e11);font-weight:700}
+.fab{bottom:calc(92px + env(safe-area-inset-bottom));box-shadow:0 10px 26px #0e9f8e66}
+#toast{bottom:112px;background:#0b1f24ee;backdrop-filter:blur(8px)}
+.hero{background:linear-gradient(135deg,#075e54,#0e9f8e 60%,#22c1ae);color:#fff;border-radius:26px;padding:18px 20px;box-shadow:0 14px 34px #0e9f8e44;position:relative;overflow:hidden}
+.hero::after{content:"";position:absolute;width:180px;height:180px;border-radius:50%;background:#ffffff1c;top:-70px;left:-50px}
+.hero h2{margin:0;font-size:20px}.hero p{margin:4px 0 0;opacity:.9;font-size:14px}.hero .big{font-size:34px;font-weight:800;line-height:1.2;margin-top:6px}
+.stats{display:grid;grid-template-columns:repeat(3,1fr);gap:10px;margin-top:12px}
+.stat{background:var(--cd);border:1px solid var(--bd);border-radius:18px;padding:12px 6px;text-align:center;box-shadow:var(--sh)}.stat b{display:block;font-size:22px;color:var(--ac)}.stat small{color:var(--mu);font-size:12px}
+.panel{background:var(--cd);border:1px solid var(--bd);border-radius:var(--r);box-shadow:var(--sh);padding:14px;margin-top:12px}
+.panel h3{margin:0 0 10px;display:flex;align-items:center;justify-content:space-between}
+.cal{display:grid;grid-template-columns:repeat(7,1fr);gap:4px;text-align:center}
+.cal .wd{font-size:11px;color:var(--mu);padding:2px 0}.cal .dy{aspect-ratio:1;display:flex;align-items:center;justify-content:center;border-radius:12px;font-size:14px;position:relative;padding:0;border:0;background:none}
+.cal .dy.fri{color:var(--dg)}.cal .dy.today{background:linear-gradient(135deg,var(--ac),var(--ac2));color:#fff;font-weight:700}.cal .dy.sel{outline:2px solid var(--ac)}
+.cal .dy.has::after{content:"";position:absolute;bottom:4px;width:5px;height:5px;border-radius:50%;background:var(--dg)}.cal .dy.today.has::after{background:#fff}
+.calh{display:flex;align-items:center;gap:8px;margin-bottom:10px}.calh b{flex:1;text-align:center}.calh button{padding:6px 12px}
+.cv2{display:grid;grid-template-columns:1fr 1fr;gap:8px}.res{margin-top:10px;background:var(--bg);border:1px dashed var(--ac);border-radius:14px;padding:10px 12px;font-size:15px;line-height:1.9}
+.tabs2{display:flex;gap:6px;margin-bottom:10px}.tabs2 button{flex:1;padding:8px}.tabs2 button.on{background:var(--ac);color:#fff;border-color:transparent}
+.mstrip{display:flex;gap:10px;overflow-x:auto;padding:4px 2px 10px;scrollbar-width:none}.mstrip::-webkit-scrollbar{display:none}
+.mchip{flex:0 0 auto;display:flex;flex-direction:column;align-items:center;gap:3px;min-width:74px;padding:10px 8px;border-radius:18px;background:var(--cd);border:1px solid var(--bd);box-shadow:var(--sh);font-size:13px}
+.mchip.on{border-color:var(--ac);outline:2px solid var(--ac)}.mchip small{color:var(--mu);font-size:11px}
+.dvh{display:flex;align-items:center;gap:8px}.dvh h2{flex:1;margin:0;font-size:18px}
+.acts4{display:grid;grid-template-columns:1fr 1fr;gap:8px}.acts4 button{padding:13px 8px;font-weight:600}
+.cropr{display:flex;gap:6px}.fbadge{display:inline-block;background:#0e9f8e22;color:var(--ac);border-radius:99px;padding:2px 10px;font-size:12px}
 </style></head><body>
 
 <div id="lc" class="lk" style="position:fixed;inset:0;z-index:110;margin:auto;height:fit-content;display:flex;background:linear-gradient(160deg,#04262b,#0a5c5a 55%,#0e9f8e)" hidden></div>
@@ -72,15 +111,15 @@ dialog::backdrop{background:#000a}.in{padding:18px;display:flex;flex-direction:c
 <input id="rc" dir="ltr" placeholder="کد بازیابی" autocomplete="off">
 <input id="pin" type="password" inputmode="numeric" autocomplete="off" placeholder="رمز عددی">
 <p id="le"></p><button class="pri" id="lgo">ورود</button><button id="lbio" class="bio" aria-label="اثر انگشت">👆</button>
-<div class="lnks"><button class="lnk" id="fg">فراموشی رمز</button><button class="lnk" id="lsend">ارسال کد به ایمیل</button><button class="lnk" id="lbk">بازگشت</button></div></div></div>
+<div class="lnks"><button class="lnk" id="fg">فراموشی رمز</button><button class="lnk" id="lsend">ارسال کد به ایمیل</button><button class="lnk" id="lbk">بازگشت</button><button class="lnk" id="lrs">بازیابی از فایل پشتیبان</button></div></div></div>
 
 <div id="app" hidden>
-<header><div id="hdav"></div><h1 id="hdn"></h1><button id="lockb">🔒</button></header>
+<header><div id="hdav"></div><h1 id="hdn"></h1></header>
 <section id="v-home" class="pad"></section>
 <section id="v-docs" class="pad" hidden><div id="mh"></div><div class="flt"><select id="sm"></select><select id="sc"></select></div><input id="q" type="search" placeholder="🔎 جستجو در مدارک…"><div id="list"></div></section>
 <section id="v-notes" class="pad" hidden><p class="note" style="margin:8px 0 12px">برای یادآوری مطمئن، در هر یادداشت دکمهٔ «افزودن به تقویم گوشی» را بزن.</p><div id="nl"></div></section>
 <button class="fab pri" id="add" aria-label="افزودن">＋</button>
-<nav id="nav"><button data-v="home"><span>🏠</span>خانه</button><button data-v="docs"><span>🗂️</span>مدارک</button><button data-v="notes"><span>📝</span>یادداشت</button><button id="gear"><span>⚙️</span>تنظیمات</button></nav>
+<nav id="nav"><button data-v="home"><span>🏠</span>خانه</button><button data-v="docs"><span>🗂️</span>مدارک</button><button data-v="notes"><span>📝</span>یادداشت</button><button id="gear"><span>⚙️</span>تنظیمات</button><button id="lockb"><span>🔒</span>قفل</button></nav>
 </div>
 
 <dialog id="dr"><div class="in"><h2 style="margin:0">🔑 کد بازیابی تو</h2><p class="note">این کد در صورت فراموشی رمز، تنها راه ورود است. آن را به ایمیل خودت بفرست و نگه دار.</p><div class="code" id="rcode"></div>
@@ -102,16 +141,16 @@ dialog::backdrop{background:#000a}.in{padding:18px;display:flex;flex-direction:c
 <button id="nics">📅 افزودن به تقویم گوشی (یادآوری مطمئن)</button>
 <div class="acts"><button class="pri" id="nsv">ذخیره</button><button id="nx2">انصراف</button></div><button class="dg" id="ndel">🗑 حذف یادداشت</button></div></dialog>
 
-<dialog id="dg"><div class="in"><div class="row"><h2 style="margin:0;flex:1">📥 دریافت فایل</h2><button id="gx">✕</button></div><input id="gq" placeholder="🔎 نام مدرک یا عضو…"><p class="note">⬇️ ذخیره در گوشی · 📤 ارسال با برنامه‌ها</p><div id="gl" style="display:flex;flex-direction:column;gap:8px"></div></div></dialog>
+
 <dialog id="di"><div class="in" id="dib"></div></dialog>
 <dialog id="dp"><form class="in" id="dpf" method="dialog"><h2 style="margin:0">🔐 تأیید با رمز</h2><p class="note" id="dpn"></p><input id="dpi" type="password" inputmode="numeric" autocomplete="off" placeholder="رمز عددی"><p id="dpe" class="dg" style="margin:0"></p><div class="acts"><button class="pri" type="submit">تأیید</button><button type="button" id="dpx">انصراف</button></div></form></dialog>
 <dialog id="dd"></dialog><dialog id="dw"></dialog>
 <dialog id="dce"><div id="ced"><div class="cwrap"><canvas id="ccv"></canvas></div><div class="in">
-<div class="ratios"><button data-r="free">آزاد</button><button data-r="1">مربع</button><button data-r="1.586" class="on">کارت</button><button data-r="0.707">عمودی</button></div>
-<label class="note">بزرگ‌نمایی</label><input id="czoom" type="range" min="1" max="4" step="0.01" value="1">
+<div class="ratios"><button data-r="free" class="on">اصلی</button><button data-r="1">۱:۱</button><button data-r="1.586">کارت</button><button data-r="1.333">۴:۳</button><button data-r="0.75">۳:۴</button><button data-r="0.707">A4</button></div>
+<label class="note">✂️ با انگشت جابه‌جا کن و با دو انگشت (یا نوار) بزرگ‌نمایی کن تا برش دلخواه بگیری</label><input id="czoom" type="range" min="1" max="4" step="0.01" value="1">
 <div class="acts"><button class="pri" id="cok">✓ اعمال</button><button id="cno">انصراف</button></div></div></div></dialog>
 <dialog id="dprev"><div class="in" id="pvb"></div></dialog>
-<dialog id="dcard"><div class="in"><div class="row"><h2 style="margin:0;flex:1">🪪 نمایش به‌صورت کارت</h2><button id="cdx">✕</button></div><img id="cardimg" alt=""><div class="acts"><button class="pri" id="cds">📤 ارسال کارت</button><button id="cdd">⬇️ دریافت تصویر</button></div></div></dialog>
+<dialog id="dcard"><div class="in"><div class="row"><h2 style="margin:0;flex:1">🪪 کارت مدرک</h2><button id="cdx">✕</button></div><img id="cardimg" alt=""><div class="acts"><button class="pri" id="cds">📤 ارسال کارت</button><button id="cdd">⬇️ دریافت تصویر</button></div></div></dialog>
 <dialog id="dv"><div class="in" id="vb"></div></dialog><dialog id="ds"><div class="in" id="sb"></div></dialog>
 <input id="rfile" type="file" accept=".json,.madarek" hidden><input id="pfile" type="file" accept="image/*" hidden><input id="pcam" type="file" accept="image/*" capture="user" hidden><div id="toast"></div>
 
@@ -124,7 +163,7 @@ const LICENSE_URL='';
 async function getDid(){let d=await mget('did').catch(()=>null);if(!d){d=crypto.randomUUID();await mput(d,'did')}return d}
 async function checkLicense(code){const did=await getDid(),r=await fetch(LICENSE_URL,{method:'POST',headers:{'Content-Type':'text/plain'},body:JSON.stringify({code:code.trim(),did})});if(!r.ok)throw new Error('ارتباط با سرور برقرار نشد');const j=await r.json();if(!j.ok)throw new Error(j.reason==='used'?'این کد قبلاً روی دستگاه دیگری استفاده شده':'کد فعال‌سازی نامعتبر است');return true}
 const te=new TextEncoder(),td=new TextDecoder(),rnd=n=>crypto.getRandomValues(new Uint8Array(n));
-let gd=null,gtok=null,gexp=0,pend=0,lastbk=0,db,M=null,cfg,adm=null,ej=null,bio=null,prof={members:[{id:'me',name:'من'}],cats:[]},items=[],notes=[],cat='',mem='all',tab='home',urls=[],vu=[],edit=null,keep=[],started=0,ned=null;
+let lastbk=0,db,M=null,cfg,adm=null,ej=null,bio=null,prof={members:[{id:'me',name:'من'}],cats:[]},items=[],notes=[],cat='',mem='all',tab='home',urls=[],vu=[],edit=null,keep=[],started=0,ned=null;
 const CATS=()=>({...BASE,...Object.fromEntries(prof.cats.map(c=>[c.id,[c.icon,c.name,[]]]))});
 const mname=id=>(prof.members.find(m=>m.id===id)||prof.members[0]).name;
 const fmt=d=>new Date(d).toLocaleString('fa-IR-u-ca-persian',{dateStyle:'medium',timeStyle:'short'});
@@ -161,7 +200,7 @@ async function bioOn(){if(!window.PublicKeyCredential)return toast('این مر�
   const id=c.rawId,out=await bioAssert(id),bk=out?null:rnd(32),raw=await crypto.subtle.exportKey('raw',M);
   bio={id,prf:!!out,bk,wrap:await encK(await aes(out||bk),raw)};await mput(bio,'bio');toast('✓ اثر انگشت فعال شد')}catch(e){toast('فعال‌سازی انجام نشد')}}
 /* lock screen */
-function firstWarn(){return new Promise(res=>{const d=$('#dr');d.innerHTML=`<h2 style="margin:0">⚠️ یک نکتهٔ مهم</h2><p class="note">مدارک تو فقط روی همین گوشی ذخیره می‌شوند. اگر در تنظیمات Chrome گزینهٔ «Clear browsing data» را با تیک «Cookies and other site data» بزنی، همهٔ اطلاعات این برنامه برای همیشه پاک می‌شود — حتی خود گوگل هم این را تأیید می‌کند و هیچ برنامه‌ای نمی‌تواند جلویش را بگیرد.</p><p class="note">برای حفظ مدارکت:<br>• از Google Drive برای پشتیبان‌گیری خودکار استفاده کن (تنظیمات ← Google Drive)<br>• یا هر چند وقت یک‌بار از تنظیمات، پشتیبان بگیر و جایی امن نگه دار</p><button class="pri" id="fwok">متوجه شدم</button>`;d.showModal();$('#fwok').onclick=()=>{d.close();res()}})}
+function firstWarn(){return new Promise(res=>{const d=$('#dr');d.innerHTML=`<h2 style="margin:0">⚠️ یک نکتهٔ مهم</h2><p class="note">مدارک تو فقط روی همین گوشی ذخیره می‌شوند. اگر در تنظیمات Chrome گزینهٔ «Clear browsing data» را با تیک «Cookies and other site data» بزنی، همهٔ اطلاعات این برنامه برای همیشه پاک می‌شود — حتی خود گوگل هم این را تأیید می‌کند و هیچ برنامه‌ای نمی‌تواند جلویش را بگیرد.</p><p class="note">برای حفظ مدارکت:<br>• در تنظیمات ← پشتیبان‌گیری، یک پوشه برای پشتیبان تعریف کن؛ با هر ورود، بعد از هر تغییر و قبل از خروج خودکار پشتیبان گرفته می‌شود<br>• فقط «Cached images and files» را پاک کن، نه «Cookies and other site data»</p><button class="pri" id="fwok">متوجه شدم</button>`;d.showModal();$('#fwok').onclick=()=>{d.close();res()}})}
 function showCode(code,cb){$('#rcode').textContent=code;
  $('#rmail').onclick=()=>{location.href=`mailto:${encodeURIComponent(cfg.email||'')}?subject=${encodeURIComponent('کد بازیابی مدارک من')}&body=${encodeURIComponent('کد بازیابی برنامهٔ مدارک من:\n'+code)}`};
  $('#rcp').onclick=()=>navigator.clipboard.writeText(code).then(()=>toast('کپی شد ✓'));
@@ -169,7 +208,7 @@ function showCode(code,cb){$('#rcode').textContent=code;
 function lock(mode,oldK,auto){
  const d=$('#ls'),S=(i,v)=>$(i).hidden=!v,err=m=>$('#le').textContent=m;d.hidden=false;$('#app').hidden=true;{const im=$('#lkimg');im.onerror=()=>{im.onerror=null;im.src='data:image/svg+xml,'+encodeURIComponent('<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 96 96"><rect width="96" height="96" rx="22" fill="#0e9f8e"/><rect x="16" y="28" width="64" height="42" rx="7" fill="#fff"/><circle cx="34" cy="43" r="7" fill="#0e786e"/><path d="M22 62a12 10 0 0 1 24 0z" fill="#0e786e"/><rect x="52" y="40" width="20" height="4" rx="2" fill="#96c8c3"/><rect x="52" y="50" width="16" height="4" rx="2" fill="#96c8c3"/></svg>')};im.src=adm||'icon-192.png';im.classList.toggle('pf',!!adm)}
  $('#pin').value=$('#rc').value=$('#em').value='';err('');
- S('#rc',mode==='recover');S('#em',mode==='setup');S('#fg',mode==='unlock');S('#lbk',mode==='recover');S('#lsend',mode==='recover'&&ej);S('#lbio',mode==='unlock'&&bio&&window.PublicKeyCredential);
+ S('#rc',mode==='recover');S('#em',mode==='setup');S('#fg',mode==='unlock');S('#lbk',mode==='recover');S('#lrs',mode==='setup'&&oldK===undefined);$('#lrs').onclick=()=>$('#rfile').click();S('#lsend',mode==='recover'&&ej);S('#lbio',mode==='unlock'&&bio&&window.PublicKeyCredential);
  $('#lt').textContent={setup:'خوش آمدی 👋',unlock:'مدارک من',recover:'بازیابی رمز'}[mode];$('#lgo').textContent={setup:'ساخت رمز',unlock:'ورود',recover:'ثبت رمز جدید'}[mode];
  $('#ln').textContent={setup:(oldK!==undefined?'به‌روزرسانی: رمز و ایمیل را وارد کن؛ اطلاعاتت حفظ می‌شود. ':'')+'رمز و ایمیلت را وارد کن؛ کد بازیابی برایت ساخته می‌شود.',unlock:'',recover:`کد بازیابی که به ${cfg?.email||'ایمیلت'} فرستاده شده را وارد کن و رمز تازه بساز.`}[mode];
  $('#pin').placeholder=mode==='recover'?'رمز جدید (حداقل ۴ رقم)':'رمز عددی (حداقل ۴ رقم)';
@@ -187,7 +226,7 @@ function lock(mode,oldK,auto){
  if(auto&&mode==='unlock'&&bio&&window.PublicKeyCredential)setTimeout(()=>$('#lbio').click(),500)}
 async function boot(){db=await open();
  if(LICENSE_URL){const lic=await mget('lic').catch(()=>null);if(!lic?.ok){await gate();}}
- cfg=await mget('cfg');ej=await mget('ej')||null;bio=await mget('bio')||null;adm=await mget('adm')||null;gd=await mget('gd')||null;{const m=location.hash.match(/gcid=([^&]+)/);if(m){const v=decodeURIComponent(m[1]);if(/^[\w-]+\.apps\.googleusercontent\.com$/.test(v)){gd={...(gd||{}),cid:v};delete gd.ok;await mput(gd,'gd');setTimeout(()=>toast('✓ Client ID دریافت شد؛ بعد از ورود، Drive آماده است'),600)}history.replaceState(null,'',location.pathname+location.search)}}setManifest();
+ cfg=await mget('cfg');ej=await mget('ej')||null;bio=await mget('bio')||null;adm=await mget('adm')||null;dirH=await mget('dir').catch(()=>null);setManifest();
  if(!cfg)return lock('setup');if(cfg.ver===2)return lock('unlock',undefined,1);if(cfg.nolock)return lock('setup',null);
  $('#lt').textContent='ورود';$('#ln').textContent='رمز فعلی را وارد کن؛ برنامه به نسخهٔ جدید ارتقا می‌یابد.';['#rc','#em','#fg','#lbk','#lbio','#lsend'].forEach(i=>$(i).hidden=1);
  $('#lgo').onclick=async()=>{try{const k=await kdf($('#pin').value,cfg.salt);await decK(k,cfg.check);lock('setup',k)}catch(e){$('#le').textContent='رمز اشتباه است'}}}
@@ -198,8 +237,8 @@ function gate(){return new Promise(res=>{const d=$('#lc');d.innerHTML=`<img src=
  $('#lcc').onkeydown=e=>{if(e.key==='Enter')$('#lcg').click()}})}
 /* data */
 async function start(){const p=await mget('prof');if(p)try{prof=JSON.parse(td.decode(await dec(p)))}catch(e){}
- lastbk=await mget('lastbk')||0;if(gd?.cid)loadGsi().catch(()=>{});{const ph=prof.members.find(m=>m.id==='me')?.photo;if(ph&&ph!==adm)syncAdm()}const n=await mget('notes');if(n)try{notes=JSON.parse(td.decode(await dec(n)))}catch(e){}
- $('#app').hidden=false;await load();tick();
+ lastbk=await mget('lastbk')||0;{const ph=prof.members.find(m=>m.id==='me')?.photo;if(ph&&ph!==adm)syncAdm()}const n=await mget('notes');if(n)try{notes=JSON.parse(td.decode(await dec(n)))}catch(e){}
+ $('#app').hidden=false;await load();tick();navigator.storage?.persist?.();loginBackup();
  if(!started++){setInterval(tick,30000);document.addEventListener('visibilitychange',()=>{if(document.hidden){sessionStorage.h=Date.now();bgBackup()}else{if(Date.now()-(+sessionStorage.h||Date.now())>120000)location.reload();else tick()}});addEventListener('pagehide',bgBackup)}}
 async function load(){const rows=await P(st('items').getAll());urls.forEach(URL.revokeObjectURL);urls=[];items=[];
  for(const r of rows){try{const i={...r,mem:r.mem||'me',m:JSON.parse(td.decode(await dec(r.m)))};if(r.th){i.tu=URL.createObjectURL(new Blob([await dec(r.th)],{type:'image/jpeg'}));urls.push(i.tu)}items.push(i)}catch(e){}}
@@ -211,13 +250,40 @@ const cardH=i=>{const C=CATS(),c=C[i.cat]||C.other;return`<button class="card" d
 function go(v){tab=v;render();scrollTo(0,0)}
 function hdr(){const me=prof.members.find(m=>m.id==='me')||prof.members[0];$('#hdav').innerHTML=avH(me,42);$('#hdn').textContent=me.name}
 function render(){hdr();['home','docs','notes'].forEach(v=>$('#v-'+v).hidden=tab!==v);document.querySelectorAll('#nav [data-v]').forEach(b=>b.classList.toggle('on',b.dataset.v===tab));({home:rHome,docs:rDocs,notes:rNotes})[tab]()}
-function rHome(){const cnt=f=>items.filter(f).length,soon=notes.filter(n=>n.due&&!n.done&&new Date(n.due)<=new Date(Date.now()+864e5)).sort((a,b)=>a.due>b.due?1:-1).slice(0,3);
- $('#v-home').innerHTML=`<h2 style="margin:6px 0 0">سلام 👋</h2><p class="sum">${new Date().toLocaleDateString('fa-IR-u-ca-persian',{weekday:'long',day:'numeric',month:'long',year:'numeric'})}</p>
- ${soon.map(n=>`<div class="banner" data-note="${n.id}">⏰ <b>${esc(n.title)}</b> — ${fmt(n.due)}</div>`).join('')}${pend?'<div class="banner" data-q="bk">☁️ تغییرات جدید هنوز به Google Drive نرفته؛ بزن تا همین حالا ارسال شود</div>':''}${items.length&&Date.now()-lastbk>2592e5?`<div class="banner" data-q="bk">💾 ${lastbk?'آخرین پشتیبان '+Math.floor((Date.now()-lastbk)/864e5)+' روز پیش بود':'هنوز پشتیبان نگرفته‌ای'}؛ برای امنیت مدارکت یکی بگیر (بزن)</div>`:''}
- <h3>👨‍👩‍👧 اعضای خانواده</h3><p class="note" style="margin-bottom:10px">روی هر عضو بزن تا مدارکش را ببینی یا مدرک جدید برایش اضافه کنی.</p>
- <div class="grid">${prof.members.map(m=>`<button class="tile" data-tm="${m.id}">${avH(m,64)}<b>${esc(m.name)}</b><small>${cnt(i=>i.mem===m.id)} مدرک</small></button>`).join('')}<button class="tile dash" data-q="am"><div class="av" style="background:var(--bd);color:var(--mu);width:64px;height:64px">＋</div>عضو جدید</button></div>`}
-function rDocs(){const C=CATS(),q=$('#q').value.trim(),mo=prof.members.find(m=>m.id===mem);
- $('#mh').innerHTML=mo?`<div class="mhd"><button data-q="home">→</button>${avH(mo,54)}<div style="flex:1"><b>${esc(mo.name)}</b><div class="note">${items.filter(i=>i.mem===mo.id).length} مدرک</div></div></div><div class="acts"><button class="pri" data-q="add">＋ مدرک جدید</button><button data-q="recv">📥 دریافت فایل</button></div>`:`<div class="acts"><button data-q="recv">📥 دریافت فایل</button><button data-q="bk">💾 پشتیبان‌گیری</button></div>`;
+let calY=0,calM=0,calSel='',cvMode='j';
+const WD=['ش','ی','د','س','چ','پ','ج'],pd=n=>String(n).replace(/\d/g,d=>'۰۱۲۳۴۵۶۷۸۹'[d]);
+const isoOf=(y,m,d)=>{const g=j2g(y,m,d);return g?g.toISOString().slice(0,10):''};
+const gdate=(iso)=>new Date(iso+'T12:00:00Z');
+const fullG=iso=>gdate(iso).toLocaleDateString('fa-IR-u-ca-gregory-nu-latn',{timeZone:'UTC',weekday:'long',day:'numeric',month:'long',year:'numeric'}).replace(/(\d+)/,'$1');
+function todayJ(){const d=new Date();return g2j(new Date(Date.UTC(d.getFullYear(),d.getMonth(),d.getDate(),12)))}
+function rHome(){const soon=notes.filter(n=>n.due&&!n.done&&new Date(n.due)<=new Date(Date.now()+864e5)).sort((a,b)=>a.due>b.due?1:-1).slice(0,3),t=todayJ(),now=new Date(),
+ open=notes.filter(n=>!n.done).length;if(!calY){calY=t[0];calM=t[1]}
+ $('#v-home').innerHTML=`<div class="hero"><h2>سلام 👋</h2><p>${now.toLocaleDateString('fa-IR-u-ca-persian',{weekday:'long'})}</p><div class="big">${pd(t[2])} ${JM[t[1]-1]} ${pd(t[0])}</div><p>${now.toLocaleDateString('en-GB',{day:'numeric',month:'long',year:'numeric'})} · ${now.toLocaleDateString('ar-SA-u-ca-islamic-umalqura',{day:'numeric',month:'long',year:'numeric'})}</p></div>
+ <div class="stats"><button class="stat" data-v2="docs"><b>${pd(items.length)}</b><small>مدرک</small></button><button class="stat" data-v2="docs"><b>${pd(prof.members.length)}</b><small>عضو</small></button><button class="stat" data-v2="notes"><b>${pd(open)}</b><small>یادداشت باز</small></button></div>
+ ${soon.map(n=>`<div class="banner" data-note="${n.id}">⏰ <b>${esc(n.title)}</b> — ${fmt(n.due)}</div>`).join('')}
+ <div class="panel"><h3>📅 تقویم شمسی</h3><div id="calbox"></div><div id="calday"></div></div>
+ <div class="panel"><h3>🔁 تبدیل تاریخ</h3><div class="tabs2"><button data-ct="j">شمسی ← میلادی</button><button data-ct="g">میلادی ← شمسی</button></div><div id="cvbox"></div><div class="res" id="cvres"></div></div>`;rCal();rConv()}
+function rCal(){const t=todayJ(),first=j2g(calY,calM,1),off=(first.getUTCDay()+1)%7,n=jdim(calY,calM),ev={};
+ for(const x of notes)if(x.due&&!x.done){const j=g2j(gdate(x.due.slice(0,10)));if(j[0]===calY&&j[1]===calM)ev[j[2]]=1}
+ let h=`<div class="calh"><button data-cal="p">‹</button><b>${JM[calM-1]} ${pd(calY)}</b><button data-cal="n">›</button><button data-cal="t">امروز</button></div><div class="cal">${WD.map(w=>`<div class="wd">${w}</div>`).join('')}${'<span></span>'.repeat(off)}`;
+ for(let d=1;d<=n;d++){const col=(off+d-1)%7,iso=isoOf(calY,calM,d);h+=`<button class="dy${col===6?' fri':''}${calY===t[0]&&calM===t[1]&&d===t[2]?' today':''}${ev[d]?' has':''}${calSel===iso?' sel':''}" data-day="${iso}">${pd(d)}</button>`}
+ $('#calbox').innerHTML=h+'</div>';rDay()}
+function rDay(){if(!calSel){$('#calday').innerHTML='';return}const j=g2j(gdate(calSel)),l=notes.filter(n=>n.due&&n.due.slice(0,10)===calSel);
+ $('#calday').innerHTML=`<div class="res"><b>${pd(j[2])} ${JM[j[1]-1]} ${pd(j[0])}</b> = ${calSel.replaceAll('-','/')}${l.length?'<br>'+l.map(n=>`<a href="#" data-note="${n.id}">⏰ ${esc(n.title)} (${n.due.slice(11,16)})</a>`).join('<br>'):'<br><small class="note">یادداشتی برای این روز نیست</small>'}</div>`}
+function rConv(){document.querySelectorAll('[data-ct]').forEach(b=>b.classList.toggle('on',b.dataset.ct===cvMode));const t=todayJ(),b=$('#cvbox');
+ b.innerHTML=cvMode==='j'?`<div class="d3" style="grid-template-columns:1fr 1.4fr 1.2fr"><input data-cv type="number" inputmode="numeric" id="cvd" placeholder="روز" min="1" max="31" value="${t[2]}"><select data-cv id="cvm">${JM.map((m,i)=>`<option value="${i+1}"${i+1===t[1]?' selected':''}>${m}</option>`).join('')}</select><input data-cv type="number" inputmode="numeric" id="cvy" placeholder="سال" value="${t[0]}"></div>`
+ :`<input data-cv type="date" id="cvg" value="${new Date().toISOString().slice(0,10)}" dir="ltr">`;calcConv()}
+function calcConv(){const r=$('#cvres');if(!r)return;let iso='';
+ if(cvMode==='j'){const y=+$('#cvy').value,m=+$('#cvm').value,d=+$('#cvd').value;if(!y||!d||d>jdim(y,m)||d<1){r.textContent='تاریخ نامعتبر است';return}iso=isoOf(y,m,d)}else{iso=$('#cvg').value;if(!iso){r.textContent='تاریخی انتخاب کن';return}}
+ const D=gdate(iso),j=g2j(D);r.innerHTML=`🗓️ شمسی: <b>${pd(j[2])} ${JM[j[1]-1]} ${pd(j[0])}</b> (${pd(j[0])}/${pd(pad2(j[1]))}/${pd(pad2(j[2]))})<br>🌍 میلادی: <b dir="ltr">${iso.replaceAll('-','/')}</b> — ${D.toLocaleDateString('en-GB',{timeZone:'UTC',weekday:'long',day:'numeric',month:'long',year:'numeric'})}<br>🌙 قمری: <b>${D.toLocaleDateString('fa-IR-u-ca-islamic-umalqura',{timeZone:'UTC',day:'numeric',month:'long',year:'numeric'})}</b><br>📆 روز هفته: <b>${D.toLocaleDateString('fa-IR',{timeZone:'UTC',weekday:'long'})}</b>`}
+$('#v-home').addEventListener('click',e=>{const c=e.target.closest('[data-cal],[data-day],[data-ct],[data-v2]');if(!c)return;e.preventDefault();
+ if(c.dataset.v2)return go(c.dataset.v2);
+ if(c.dataset.ct){cvMode=c.dataset.ct;return rConv()}
+ if(c.dataset.day){calSel=calSel===c.dataset.day?'':c.dataset.day;return rCal()}
+ const a=c.dataset.cal;if(a==='p'){calM--;if(calM<1){calM=12;calY--}}else if(a==='n'){calM++;if(calM>12){calM=1;calY++}}else{const t=todayJ();calY=t[0];calM=t[1]}rCal()});
+$('#v-home').addEventListener('input',e=>{if(e.target.matches('[data-cv]'))calcConv()});
+function rDocs(){const C=CATS(),q=$('#q').value.trim(),mo=prof.members.find(m=>m.id===mem),cnt=id=>items.filter(i=>i.mem===id).length;
+ $('#mh').innerHTML=`<h3 style="margin:10px 0 4px">👨‍👩‍👧 اعضای خانواده</h3><div class="mstrip"><button class="mchip${mem==='all'?' on':''}" data-tm="all"><div class="av" style="width:48px;height:48px;font-size:22px;background:linear-gradient(135deg,#0e9f8e,#2477c9)">👨‍👩‍👧</div><b>همه</b><small>${items.length} مدرک</small></button>${prof.members.map(m=>`<button class="mchip${mem===m.id?' on':''}" data-tm="${m.id}">${avH(m,48)}<b>${esc(m.name)}</b><small>${cnt(m.id)} مدرک</small></button>`).join('')}<button class="mchip" data-q="am" style="border-style:dashed"><div class="av" style="background:var(--bd);color:var(--mu);width:48px;height:48px">＋</div><b>عضو جدید</b><small>&nbsp;</small></button></div>${mo?'<button class="pri" data-q="add" style="width:100%;margin-bottom:8px">＋ مدرک جدید برای '+esc(mo.name)+'</button>':''}`;
  $('#sm').innerHTML='<option value="all">👨‍👩‍👧 همهٔ اعضا</option>'+prof.members.map(m=>`<option value="${m.id}">👤 ${esc(m.name)}</option>`).join('');$('#sm').value=mem;
  $('#sc').innerHTML='<option value="">🗂️ همهٔ دسته‌ها</option>'+Object.entries(C).map(([k,v])=>`<option value="${k}">${v[0]} ${esc(v[1])}</option>`).join('');$('#sc').value=cat;
  const rows=items.filter(i=>(mem==='all'||i.mem===mem)&&(!cat||i.cat===cat)&&(!q||(i.m.title+i.m.fields.map(f=>f.k+f.v).join(' ')).includes(q)));
@@ -231,8 +297,8 @@ document.addEventListener('click',e=>{const t=e.target.closest('[data-id],[data-
  if(D.id)openDoc(D.id);else if(D.tm){mem=D.tm;cat='';go('docs')}else if(D.tc){cat=D.tc;mem='all';go('docs')}
  else if(D.note)openNote(notes.find(n=>n.id===D.note));
  else if(D.nd){const n=notes.find(x=>x.id===D.nd);n.done=n.done?0:1;saveNotes().then(render)}
- else if(D.q==='home')go('home');else if(D.q==='add')openForm();else if(D.q==='recv')recv();else if(D.q==='note')openNote();else if(D.q==='bk')(gd?.cid?driveBackup():backup(1));else if(D.q==='am')addMember()});
-$('#add').onclick=()=>tab==='notes'?openNote():openForm();$('#lockb').onclick=()=>location.reload();$('#hdav').onclick=()=>settings();
+ else if(D.q==='home')go('home');else if(D.q==='add')openForm();else if(D.q==='note')openNote();else if(D.q==='am')addMember()});
+$('#add').onclick=()=>tab==='notes'?openNote():openForm();$('#lockb').onclick=exitApp;$('#hdav').onclick=()=>settings();
 /* doc form */
 const frow=(k='',v='')=>{const r=document.createElement('div');r.className='kv';r.innerHTML=`<input placeholder="نام (مثلاً کد بیمه)" value="${esc(k)}"><input dir="ltr" placeholder="مقدار" value="${esc(v)}"><button type="button" class="dg">✕</button>`;r.lastChild.onclick=()=>r.remove();$('#fr').append(r)};
 let newFiles=[],newTh={};
@@ -247,27 +313,34 @@ $('#fe').onclick=async e=>{const k=e.target.closest('[data-k]'),rn=e.target.clos
 async function addPicked(list){for(const f0 of list){let f=f0;if(f.type.startsWith('image/')){const r=await openEditor(f);if(!r)continue;f=r}newFiles.push(f);newTh[newFiles.length-1]=await mkThumb(f);showKeep()}}
 $('#ff').onchange=e=>{addPicked([...e.target.files]);e.target.value=''};
 $('#fcam').onchange=e=>{addPicked([...e.target.files]);e.target.value=''};
-/* image editor: pan + zoom + ratio crop */
-function openEditor(file){return new Promise(async res=>{
- const d=$('#dce'),cv=$('#ccv'),x=cv.getContext('2d'),url=URL.createObjectURL(file),img=new Image();
- await new Promise(ok=>{img.onload=ok;img.src=url});
- let ratio=1.586,zoom=1,minZ=1,ox=0,oy=0,W=0,H=0;
- $('#czoom').value=1;document.querySelectorAll('.ratios button').forEach(b=>b.classList.toggle('on',b.dataset.r==='1.586'));
- function layout(){const box=cv.parentElement.getBoundingClientRect();W=box.width;H=ratio==='free'?box.height:Math.min(box.height,W/ (ratio||1));if(ratio!=='free'){cv.parentElement.style.aspectRatio=ratio;H=cv.parentElement.getBoundingClientRect().height}
-  cv.width=W*2;cv.height=H*2;cv.style.height=H+'px';minZ=Math.max(W*2/img.width,H*2/img.height);zoom=Math.max(zoom,minZ);$('#czoom').min=minZ.toFixed(3);if(+$('#czoom').value<minZ)$('#czoom').value=minZ;clamp();draw()}
+/* image editor: pan + pinch/zoom + ratio crop */
+function openEditor(file,r0='free'){return new Promise(async res=>{
+ const d=$('#dce'),cv=$('#ccv'),wrap=cv.parentElement,x=cv.getContext('2d'),url=URL.createObjectURL(file),img=new Image();
+ await new Promise(ok=>{img.onload=ok;img.onerror=ok;img.src=url});
+ if(!img.width){URL.revokeObjectURL(url);toast('تصویر خوانده نشد');return res(file)}
+ const free=img.width/img.height;let ratio=r0,zoom=1,minZ=1,maxZ=4,ox=0,oy=0;
+ const rv=()=>ratio==='free'?Math.min(2,Math.max(.5,free)):+ratio,mark=()=>document.querySelectorAll('.ratios button').forEach(b=>b.classList.toggle('on',String(b.dataset.r)===String(ratio)));
+ function layout(keep){wrap.style.aspectRatio=rv();const b=wrap.getBoundingClientRect();cv.width=Math.round(b.width*2);cv.height=Math.round(b.height*2);
+  minZ=Math.max(cv.width/img.width,cv.height/img.height);maxZ=minZ*5;const z=$('#czoom');z.min=minZ;z.max=maxZ;z.step=minZ/200;if(!keep){zoom=minZ;ox=(cv.width-img.width*zoom)/2;oy=(cv.height-img.height*zoom)/2}z.value=zoom=Math.min(maxZ,Math.max(minZ,zoom));clamp();draw()}
  function clamp(){const iw=img.width*zoom,ih=img.height*zoom;ox=Math.min(0,Math.max(ox,cv.width-iw));oy=Math.min(0,Math.max(oy,cv.height-ih))}
- function draw(){x.fillStyle='#000';x.fillRect(0,0,cv.width,cv.height);x.drawImage(img,ox,oy,img.width*zoom,img.height*zoom)}
- document.querySelectorAll('.ratios button').forEach(b=>b.onclick=()=>{document.querySelectorAll('.ratios button').forEach(y=>y.classList.remove('on'));b.classList.add('on');ratio=b.dataset.r==='free'?'free':+b.dataset.r;if(ratio!=='free')cv.parentElement.style.aspectRatio=ratio;else cv.parentElement.style.aspectRatio='';layout()});
- $('#czoom').oninput=e=>{zoom=+e.target.value;clamp();draw()};
- let drag=null;
- const pos=e=>{const t=e.touches?e.touches[0]:e,r=cv.getBoundingClientRect();return{x:(t.clientX-r.left)*cv.width/r.width,y:(t.clientY-r.top)*cv.height/r.height}};
- const down=e=>{drag={s:pos(e),ox,oy}};const move=e=>{if(!drag)return;e.preventDefault();const p=pos(e);ox=drag.ox+(p.x-drag.s.x);oy=drag.oy+(p.y-drag.s.y);clamp();draw()};const up=()=>drag=null;
- cv.onpointerdown=down;cv.onpointermove=move;addEventListener('pointerup',up);
- requestAnimationFrame(layout);
- $('#cok').onclick=()=>{const oc=document.createElement('canvas'),ow=Math.min(1600,cv.width),oh=ow*cv.height/cv.width;oc.width=ow;oc.height=oh;const ocx=oc.getContext('2d');ocx.drawImage(cv,0,0,oc.width,oc.height);
-  oc.toBlob(b=>{URL.revokeObjectURL(url);d.close();res(new File([b],file.name.replace(/\.\w+$/,'')+'.jpg',{type:'image/jpeg'}))},'image/jpeg',.9)};
- $('#cno').onclick=()=>{URL.revokeObjectURL(url);d.close();res(null)};
- d.oncancel=e=>{e.preventDefault();$('#cno').click()};d.showModal()})}
+ function draw(){x.fillStyle='#000';x.fillRect(0,0,cv.width,cv.height);x.drawImage(img,ox,oy,img.width*zoom,img.height*zoom);x.strokeStyle='#ffffff55';x.lineWidth=1;for(let k=1;k<3;k++){x.beginPath();x.moveTo(cv.width*k/3,0);x.lineTo(cv.width*k/3,cv.height);x.moveTo(0,cv.height*k/3);x.lineTo(cv.width,cv.height*k/3);x.stroke()}}
+ function zoomAt(nz,cx,cy){nz=Math.min(maxZ,Math.max(minZ,nz));ox=cx-(cx-ox)*nz/zoom;oy=cy-(cy-oy)*nz/zoom;zoom=nz;$('#czoom').value=nz;clamp();draw()}
+ document.querySelectorAll('.ratios button').forEach(b=>b.onclick=()=>{ratio=b.dataset.r==='free'?'free':+b.dataset.r;mark();layout()});
+ $('#czoom').oninput=e=>zoomAt(+e.target.value,cv.width/2,cv.height/2);
+ const ps=new Map();let drag=null,pinch=null;
+ const pos=e=>{const r=cv.getBoundingClientRect();return{x:(e.clientX-r.left)*cv.width/r.width,y:(e.clientY-r.top)*cv.height/r.height}};
+ cv.onpointerdown=e=>{try{cv.setPointerCapture(e.pointerId)}catch(_){}ps.set(e.pointerId,pos(e));if(ps.size===1)drag={s:pos(e),ox,oy};else if(ps.size===2){const[a,b]=[...ps.values()];pinch={d:Math.hypot(a.x-b.x,a.y-b.y)||1,z:zoom};drag=null}};
+ cv.onpointermove=e=>{if(!ps.has(e.pointerId))return;e.preventDefault();ps.set(e.pointerId,pos(e));
+  if(ps.size===2&&pinch){const[a,b]=[...ps.values()];zoomAt(pinch.z*Math.hypot(a.x-b.x,a.y-b.y)/pinch.d,(a.x+b.x)/2,(a.y+b.y)/2)}
+  else if(drag&&ps.size===1){const p=pos(e);ox=drag.ox+(p.x-drag.s.x);oy=drag.oy+(p.y-drag.s.y);clamp();draw()}};
+ cv.onpointerup=cv.onpointercancel=e=>{ps.delete(e.pointerId);pinch=null;drag=null;if(ps.size===1){const p=[...ps.values()][0];drag={s:p,ox,oy}}};
+ cv.onwheel=e=>{e.preventDefault();const p=pos(e);zoomAt(zoom*(e.deltaY<0?1.1:.9),p.x,p.y)};
+ mark();requestAnimationFrame(()=>layout());
+ const fin=v=>{URL.revokeObjectURL(url);d.close();res(v)};
+ $('#cok').onclick=()=>{const oc=document.createElement('canvas'),k=Math.min(1,1800/cv.width);oc.width=Math.round(cv.width*k);oc.height=Math.round(cv.height*k);oc.getContext('2d').drawImage(cv,0,0,oc.width,oc.height);
+  oc.toBlob(b=>fin(new File([b],file.name.replace(/\.\w+$/,'')+'.jpg',{type:'image/jpeg'})),'image/jpeg',.92)};
+ $('#cno').onclick=()=>fin(null);
+ d.oncancel=e=>{e.preventDefault();fin(null)};d.showModal()})}
 function openForm(i){edit=i||null;keep=i?[...i.files]:[];newFiles=[];newTh={};const C=CATS();
  $('#fmem').innerHTML=prof.members.map(m=>`<option value="${m.id}">👤 ${esc(m.name)}</option>`).join('');
  $('#fc').innerHTML=Object.entries(C).map(([k,v])=>`<option value="${k}">${v[0]} ${esc(v[1])}</option>`).join('');
@@ -296,23 +369,16 @@ const fileOf=async(i,n)=>new File([await dec(i.files[n])],i.files[n].name,{type:
 const filesOf=i=>Promise.all(i.files.map((_,n)=>fileOf(i,n)));
 const dl=f=>{const u=URL.createObjectURL(f),a=document.createElement('a');a.href=u;a.download=f.name;a.rel='noopener';document.body.append(a);a.click();a.remove();setTimeout(()=>URL.revokeObjectURL(u),4000)};
 const shareF=async(fs,title,text)=>{try{if(fs.length&&navigator.canShare?.({files:fs}))await navigator.share({title,text,files:fs});else if(navigator.share)await navigator.share({title,text});else{if(text)await navigator.clipboard.writeText(text);toast('اشتراک‌گذاری پشتیبانی نمی‌شود')}}catch(e){}};
-async function buildCard(i){const C=CATS(),c=C[i.cat]||C.other,W=1000,H=630,R=28,cv=document.createElement('canvas');cv.width=W;cv.height=H;const x=cv.getContext('2d');
- const g=x.createLinearGradient(0,0,W,H);g.addColorStop(0,'#0a4a44');g.addColorStop(1,'#0e9f8e');
+async function buildCard(i){const F='Vazirmatn,Tahoma,sans-serif',W=1000,pad=48,fl=i.m.fields,rowH=92,top=150,H=Math.max(380,top+Math.max(1,fl.length)*rowH+40),cv=document.createElement('canvas');cv.width=W;cv.height=H;const x=cv.getContext('2d');
  const rr=(a,b,w,h,r)=>{x.beginPath();x.moveTo(a+r,b);x.arcTo(a+w,b,a+w,b+h,r);x.arcTo(a+w,b+h,a,b+h,r);x.arcTo(a,b+h,a,b,r);x.arcTo(a,b,a+w,b,r);x.closePath()};
- rr(0,0,W,H,R);x.save();x.clip();x.fillStyle=g;x.fillRect(0,0,W,H);
- x.globalAlpha=.12;x.fillStyle='#fff';x.beginPath();x.arc(W-60,-40,220,0,7);x.fill();x.beginPath();x.arc(60,H+40,180,0,7);x.fill();x.globalAlpha=1;
- x.fillStyle='#fff';x.font='700 30px Vazirmatn,Tahoma,sans-serif';x.textAlign='left';x.textBaseline='middle';
- x.font='46px Vazirmatn,Tahoma,sans-serif';x.fillText(c[0],44,70);
- x.font='700 32px Vazirmatn,Tahoma,sans-serif';x.textAlign='right';x.fillText(c[1],W-44,70);
- x.strokeStyle='rgba(255,255,255,.35)';x.lineWidth=2;x.beginPath();x.moveTo(44,112);x.lineTo(W-44,112);x.stroke();
- x.textAlign='right';x.font='700 40px Vazirmatn,Tahoma,sans-serif';x.fillText(i.m.title,W-44,165);
- x.font='26px Vazirmatn,Tahoma,sans-serif';x.fillStyle='rgba(255,255,255,.85)';x.fillText('👤 '+mname(i.mem),W-44,205);
- let yy=270;x.font='24px Vazirmatn,Tahoma,sans-serif';
- for(const f of i.m.fields.slice(0,8)){x.fillStyle='rgba(255,255,255,.7)';x.textAlign='right';x.fillText(f.k,W-44,yy);
-  x.fillStyle='#fff';x.font='700 28px Vazirmatn,Tahoma,sans-serif';x.textAlign='left';x.direction='ltr';x.fillText(f.v,44,yy+36);x.direction='rtl';
-  x.font='24px Vazirmatn,Tahoma,sans-serif';yy+=74}
- x.textAlign='right';x.font='22px Vazirmatn,Tahoma,sans-serif';x.fillStyle='rgba(255,255,255,.6)';x.fillText('🗂️ مدارک من',W-44,H-34);
- x.restore();rr(0,0,W,H,R);x.lineWidth=2;x.strokeStyle='rgba(255,255,255,.25)';x.stroke();
+ const fit=(t,font,max)=>{let z=+font.match(/(\d+)px/)[1];x.font=font.replace(/\d+px/,z+'px');while(x.measureText(t).width>max&&z>14){z-=2;x.font=font.replace(/\d+px/,z+'px')}};
+ rr(0,0,W,H,30);x.save();x.clip();const g=x.createLinearGradient(0,0,W,H);g.addColorStop(0,'#064e46');g.addColorStop(.6,'#0a8a7c');g.addColorStop(1,'#22c1ae');x.fillStyle=g;x.fillRect(0,0,W,H);
+ x.globalAlpha=.1;x.fillStyle='#fff';x.beginPath();x.arc(W-40,-20,230,0,7);x.fill();x.beginPath();x.arc(30,H+30,190,0,7);x.fill();x.globalAlpha=1;
+ x.textBaseline='middle';x.direction='rtl';x.textAlign='right';x.fillStyle='#fff';fit(i.m.title,'800 46px '+F,W-pad*2);x.fillText(i.m.title,W-pad,76);
+ x.strokeStyle='rgba(255,255,255,.4)';x.lineWidth=2;x.beginPath();x.moveTo(pad,125);x.lineTo(W-pad,125);x.stroke();
+ let y=top+30;for(const f of fl){const lab=f.k||'';x.direction='rtl';x.textAlign='right';x.fillStyle='rgba(255,255,255,.75)';x.font='24px '+F;x.fillText(lab,W-pad,y);
+  x.fillStyle='#fff';x.textAlign='left';x.direction='ltr';fit(f.v,'700 32px '+F,W-pad*2);x.fillText(f.v,pad,y+40);y+=rowH}
+ x.restore();rr(1,1,W-2,H-2,30);x.lineWidth=2;x.strokeStyle='rgba(255,255,255,.3)';x.stroke();
  return new Promise(ok=>cv.toBlob(b=>ok(new File([b],(i.m.title||'card')+'.png',{type:'image/png'})),'image/png',.95))}
 async function showCard(i){const f=await buildCard(i),u=URL.createObjectURL(f);$('#cardimg').src=u;$('#cdx').onclick=()=>{$('#dcard').close();URL.revokeObjectURL(u)};
  $('#cds').onclick=()=>shareF([f],i.m.title,'');$('#cdd').onclick=()=>dl(f);$('#dcard').showModal()}
@@ -322,19 +388,17 @@ function previewFile(f){const u=URL.createObjectURL(f),img=f.type.startsWith('im
  $('#dprev').onclose=()=>URL.revokeObjectURL(u);$('#dprev').showModal()}
 async function openDoc(id){const i=items.find(x=>x.id===id),C=CATS(),c=C[i.cat]||C.other;vu.forEach(URL.revokeObjectURL);vu=[];const fs=await filesOf(i);
  const th=fs.map((f,n)=>{if(f.type.startsWith('image/')){const u=URL.createObjectURL(f);vu.push(u);return`<img src="${u}" data-n="${n}" alt="">`}return`<div class="file" data-n="${n}">📎 ${esc(f.name)}</div>`}).join('');
- $('#vb').innerHTML=`<div class="row"><h2 style="margin:0;flex:1">${c[0]} ${esc(i.m.title)}</h2><button id="vx">✕</button></div><p class="note">👤 ${esc(mname(i.mem))} · ${esc(c[1])}</p>
- ${i.m.fields.map((f,n)=>`<div class="fld"><span>${esc(f.k)}</span><b>${esc(f.v)}</b><button data-cp="${n}">کپی</button></div>`).join('')}
- ${th?`<div class="thumbs">${th}</div><p class="note">برای پیش‌نمایش رویش بزن.</p>`:''}
- <div class="acts"><button class="pri" id="vs">📤 ارسال</button><button id="vm">✉️ ایمیل (متن)</button><button id="vt">📋 کپی کدها</button><button id="vo">⬇️ دریافت فایل‌ها</button><button id="vk">🪪 نمایش کارت</button><button id="ve">✏️ ویرایش</button><button id="vd" class="dg">🗑 حذف</button></div>`;
+ $('#vb').innerHTML=`<div class="dvh"><h2>${c[0]} ${esc(i.m.title)}</h2><button id="ve" title="ویرایش">✏️</button><button id="vx">✕</button></div>
+ <div class="row" style="flex-wrap:wrap"><span class="fbadge">👤 ${esc(mname(i.mem))}</span><span class="fbadge">${c[0]} ${esc(c[1])}</span><span class="fbadge">🗓️ ${fmt(i.ts)}</span></div>
+ ${i.m.fields.length?i.m.fields.map((f,n)=>`<div class="fld"><span>${esc(f.k||'—')}</span><b>${esc(f.v)}</b><button data-cp="${n}">کپی</button></div>`).join(''):'<p class="note">فیلدی ثبت نشده است.</p>'}
+ ${th?`<h3 style="margin:6px 0 0">🖼️ فایل‌ها (${fs.length})</h3><div class="thumbs">${th}</div><p class="note">برای بزرگ‌نمایی رویش بزن.</p>`:''}
+ <div class="acts4"><button class="pri" id="vk">🪪 نمایش</button><button id="vs">📤 ارسال</button><button id="vd" class="dg">🗑 حذف</button><button id="vo">📲 ذخیره در موبایل</button></div>`;
  $('#vx').onclick=()=>$('#dv').close();
  $('#vb').onclick=async e=>{const cp=e.target.closest('[data-cp]');if(cp){await navigator.clipboard.writeText(i.m.fields[cp.dataset.cp].v);toast('کپی شد ✓')}const t=e.target.closest('[data-n]');if(t)previewFile(fs[t.dataset.n])};
- $('#vt').onclick=async()=>{await navigator.clipboard.writeText(textOf(i));toast('کپی شد ✓')};$('#vo').onclick=()=>fs.forEach(dl);$('#ve').onclick=()=>{$('#dv').close();openForm(i)};$('#vk').onclick=()=>showCard(i);
- $('#vm').onclick=()=>{location.href=`mailto:?subject=${encodeURIComponent(i.m.title)}&body=${encodeURIComponent(textOf(i))}`};$('#vs').onclick=()=>shareF(fs,i.m.title,textOf(i));
+ $('#vo').onclick=async()=>{if(!fs.length){dl(new File([textOf(i)],(i.m.title||'madrak')+'.txt',{type:'text/plain'}));return toast('ذخیره شد ✓')}for(const f of fs){dl(f);await new Promise(r=>setTimeout(r,450))}toast('در موبایل ذخیره شد ✓')};
+ $('#ve').onclick=()=>{$('#dv').close();openForm(i)};$('#vk').onclick=()=>showCard(i);$('#vs').onclick=()=>shareF(fs,i.m.title,textOf(i));
  $('#vd').onclick=async()=>{if(confirm('این مدرک از برنامه حذف شود؟ (فایل گالری دست‌نخورده می‌ماند)')&&await askPin('برای حذف مدرک، رمز را وارد کن')){await P(st('items','readwrite').delete(id));$('#dv').close();load();autoBk()}};$('#dv').showModal()}
 $('#dv').onclose=()=>{vu.forEach(URL.revokeObjectURL);vu=[]};
-function rRecv(){const q=$('#gq').value.trim();$('#gl').innerHTML=items.filter(i=>i.files.length&&(!q||(i.m.title+mname(i.mem)).includes(q))).map(i=>`<div class="fld" style="flex-direction:column;align-items:stretch"><b style="direction:rtl">${esc(i.m.title)} <small class="note">· ${esc(mname(i.mem))}</small></b>${i.files.map((f,n)=>`<div class="row"><span style="flex:1;font-size:14px">📎 ${esc(f.name)}</span><button data-d="${i.id}:${n}">⬇️</button><button data-s="${i.id}:${n}">📤</button></div>`).join('')}</div>`).join('')||'<p class="note">فایلی پیدا نشد.</p>'}
-function recv(){$('#gq').value='';rRecv();$('#dg').showModal()}$('#gq').oninput=rRecv;$('#gx').onclick=()=>$('#dg').close();
-$('#gl').onclick=async e=>{const b=e.target.closest('[data-d],[data-s]');if(!b)return;const [id,n]=(b.dataset.d||b.dataset.s).split(':'),i=items.find(x=>x.id===id),f=await fileOf(i,+n);b.dataset.d?dl(f):shareF([f],f.name,'')};
 /* Jalali picker */
 const JM=['فروردین','اردیبهشت','خرداد','تیر','مرداد','شهریور','مهر','آبان','آذر','دی','بهمن','اسفند'];
 const jf=new Intl.DateTimeFormat('en-u-ca-persian-nu-latn',{year:'numeric',month:'numeric',day:'numeric',timeZone:'UTC'});
@@ -364,63 +428,47 @@ function tick(){if(!M)return;let ch=0;for(const n of notes){if(!n.due||n.done||n
 /* backup */
 const b64=b=>{const u=new Uint8Array(b);let s='';for(let i=0;i<u.length;i+=32768)s+=String.fromCharCode.apply(null,u.subarray(i,i+32768));return btoa(s)};
 const ub=s=>Uint8Array.from(atob(s),c=>c.charCodeAt(0)).buffer;
+const pad2=n=>String(n).padStart(2,'0');
+function stamp(){const d=new Date(),j=g2j(new Date(Date.UTC(d.getFullYear(),d.getMonth(),d.getDate(),12)));return `${j[0]}-${pad2(j[1])}-${pad2(j[2])}_${pad2(d.getHours())}-${pad2(d.getMinutes())}`}
 async function buildBackup(){const data={app:'madarek',v:3,cfg,prof:await mget('prof'),notes:await mget('notes'),items:await P(st('items').getAll())};
- return new File([JSON.stringify(data,(k,v)=>v instanceof ArrayBuffer||v instanceof Uint8Array?{$b:b64(v)}:v)],'مدارک-من-پشتیبان.madarek.json',{type:'application/json'})}
-async function backup(share){const f=await buildBackup();
- if(share&&navigator.canShare?.({files:[f]}))try{await navigator.share({files:[f],title:'پشتیبان مدارک'});lastbk=Date.now();await mput(lastbk,'lastbk')}catch(e){}else{dl(f);lastbk=Date.now();await mput(lastbk,'lastbk');toast('پشتیبان ذخیره شد ✓')}}
-async function backupAny(){if(gd?.cid)return driveBackup();return backup(1)}
+ return new File([JSON.stringify(data,(k,v)=>v instanceof ArrayBuffer||v instanceof Uint8Array?{$b:b64(v)}:v)],`madarek-backup_${stamp()}.madarek.json`,{type:'application/json'})}
+const hasDir=!!window.showDirectoryPicker;let dirH=null,bkBusy=0;
+async function dirPerm(ask){if(!dirH)return false;try{const o={mode:'readwrite'};if(await dirH.queryPermission(o)==='granted')return true;if(ask&&await dirH.requestPermission(o)==='granted')return true}catch(e){}return false}
+async function pickDir(){if(!hasDir){toast('این مرورگر انتخاب پوشه را پشتیبانی نمی‌کند؛ پشتیبان در «دانلودها» ذخیره می‌شود');return false}
+ try{const h=await showDirectoryPicker({id:'madarek',mode:'readwrite',startIn:'documents'});dirH=h;await mput(h,'dir');toast('✓ پوشهٔ پشتیبان: '+h.name);return true}catch(e){if(e&&e.name!=='AbortError')toast('انتخاب پوشه انجام نشد');return false}}
+async function pruneDir(){try{const n=[];for await(const[k,v]of dirH.entries())if(v.kind==='file'&&/^madarek-backup_.*\.madarek\.json$/.test(k))n.push(k);n.sort();for(const k of n.slice(0,Math.max(0,n.length-40)))await dirH.removeEntry(k)}catch(e){}}
+/* o.ask: اجازهٔ پوشه را (با لمس کاربر) بخواه · o.dl: اگر پوشه نبود در دانلودها ذخیره کن · o.share: منوی اشتراک */
+async function doBackup(o={}){if(!M||bkBusy)return null;bkBusy=1;let where=null;
+ try{const f=await buildBackup();
+  if(o.share&&navigator.canShare?.({files:[f]})){await navigator.share({files:[f],title:'پشتیبان مدارک'});where='share'}
+  else if(await dirPerm(o.ask)){const w=await(await dirH.getFileHandle(f.name,{create:true})).createWritable();await w.write(f);await w.close();where='folder';pruneDir()}
+  else if(o.dl||o.share){dl(f);where='dl'}
+  if(where){lastbk=Date.now();await mput(lastbk,'lastbk')}}
+ catch(e){if(!(e&&e.name==='AbortError'))toast('پشتیبان‌گیری ناموفق بود')}
+ finally{bkBusy=0}return where}
+const bkMsg=w=>w==='folder'?`✓ پشتیبان در پوشهٔ «${dirH.name}» ذخیره شد`:w==='dl'?'✓ پشتیبان در پوشهٔ دانلودها ذخیره شد':w==='share'?'✓ پشتیبان ارسال شد':'';
+async function loginBackup(){if(!items.length&&!notes.length&&prof.members.length<2)return;
+ const w=await doBackup({ask:true,dl:!dirH});if(w)toast(bkMsg(w));
+ else if(dirH){const f=async()=>{removeEventListener('pointerdown',f,true);const w=await doBackup({ask:true});if(w)toast(bkMsg(w))};addEventListener('pointerdown',f,true)}}
+function bgBackup(){if(M&&dirH&&Date.now()-lastbk>120000)doBackup({})}
+let abT=0;function autoBk(){if(!dirH)return;clearTimeout(abT);abT=setTimeout(()=>doBackup({}),4000)}
+async function exitApp(){toast('در حال پشتیبان‌گیری قبل از خروج…');const w=await doBackup({ask:true,dl:true});if(w)toast(bkMsg(w));setTimeout(()=>{try{window.close()}catch(e){}location.reload()},w?900:300)}
 async function restoreText(txt){
  try{const d=JSON.parse(txt,(k,v)=>v&&v.$b!==undefined?ub(v.$b):v);if(d.app!=='madarek'||!d.cfg)throw 0;
-  if(!confirm('همهٔ اطلاعات فعلی برنامه با این پشتیبان جایگزین می‌شود. ادامه؟')||!await askPin('برای بازیابی پشتیبان، رمز را وارد کن'))return;
-  const keep=await mget('gd');await P(st('items','readwrite').clear());await P(st('meta','readwrite').clear());if(keep)await mput(keep,'gd');
+  if(cfg){if(!confirm('همهٔ اطلاعات فعلی برنامه با این پشتیبان جایگزین می‌شود. ادامه؟')||!await askPin('برای بازیابی پشتیبان، رمز را وارد کن'))return}
+  const keepD=await mget('dir').catch(()=>null);await P(st('items','readwrite').clear());await P(st('meta','readwrite').clear());if(keepD)await mput(keepD,'dir');
   for(const r of d.items)await P(st('items','readwrite').put(r));await mput(d.cfg,'cfg');if(d.prof)await mput(d.prof,'prof');if(d.notes)await mput(d.notes,'notes');
   toast('بازیابی شد. با رمز همان پشتیبان وارد شو');setTimeout(()=>location.reload(),1200)}catch(x){toast('فایل پشتیبان معتبر نیست')}}
 $('#rfile').onchange=async e=>{const f=e.target.files[0];e.target.value='';if(f)restoreText(await f.text())};
-/* Google Drive */
-function gdWizard(){const o=location.origin,L=(u)=>`<a class="btn" target="_blank" rel="noopener" href="${u}">باز کردن صفحهٔ گوگل ↗</a>`,S=(t,d,u,x='')=>`<div class="fld" style="display:block"><b style="direction:rtl;display:block">${t}</b><span class="note" style="display:block;margin:4px 0 8px">${d}</span>${x}${u?L(u):''}</div>`;
- $('#dw').innerHTML=`<div class="in"><div class="row"><h2 style="margin:0;flex:1">🧭 ساخت Client ID گوگل</h2><button id="dwx">✕</button></div>
-<p class="note">بعد از هر مرحله به همین صفحه برگرد. بالای صفحهٔ گوگل مطمئن شو پروژهٔ خودت انتخاب شده است.</p>
-${S('۱) ساخت پروژه','یک اسم دلخواه بده (مثلاً Madarek) و Create بزن.','https://console.cloud.google.com/projectcreate')}
-${S('۲) فعال‌سازی Drive API','دکمهٔ Enable را بزن.','https://console.cloud.google.com/apis/library/drive.googleapis.com')}
-${S('۳) صفحهٔ رضایت (Google Auth Platform)','Get started ← اسم برنامه (مدارک من) و ایمیلت ← Audience را External انتخاب کن ← ایمیل تماس ← قبول شرایط ← Create.','https://console.cloud.google.com/auth/overview/create')}
-${S('۴) ساخت Client ID','Application type را Web application بگذار. در Authorized JavaScript origins روی Add URI بزن و دقیقاً همین آدرس را بگذار (بدون / آخر و بدون مسیر)، بعد Create. سپس Client ID را کپی کن.','https://console.cloud.google.com/auth/clients/create',`<div class="code" style="font-size:14px;margin-bottom:6px">${o}</div><button id="dwc" style="width:100%;margin-bottom:6px">📋 کپی آدرس</button>`)}
-${S('۵) اجازهٔ ورود حساب‌ها','در بخش Audience، ایمیل حساب‌هایی که قرار است وارد شوند را با Add users اضافه کن. بهتر است Publish app را هم بزنی تا اجازه‌ها بعد از چند روز منقضی نشود (برای این دسترسی معمولاً نیازی به تأیید گوگل نیست).','https://console.cloud.google.com/auth/audience')}
-<div class="fld" style="display:block"><b style="direction:rtl;display:block">۶) چسباندن Client ID</b><input id="dwi" dir="ltr" placeholder="123456-abc.apps.googleusercontent.com" style="margin:6px 0"><button class="pri" id="dws" style="width:100%">ذخیره و اتصال</button></div></div>`;
- $('#dwx').onclick=()=>$('#dw').close();$('#dwc').onclick=()=>navigator.clipboard.writeText(o).then(()=>toast('آدرس کپی شد ✓'));
- $('#dws').onclick=async()=>{const v=$('#dwi').value.trim();if(!/^[\w-]+\.apps\.googleusercontent\.com$/.test(v))return toast('Client ID باید به .apps.googleusercontent.com ختم شود');gd={...(gd||{}),cid:v};delete gd.ok;await mput(gd,'gd');gtok=null;loadGsi().catch(()=>{});$('#dw').close();toast('✓ ذخیره شد؛ حالا پشتیبان‌گیری را بزن');settings()};
- $('#dw').showModal()}
-const GD='https://www.googleapis.com/drive/v3/files',GF='مدارک من - پشتیبان';
-function loadGsi(){return window.google?.accounts?.oauth2?Promise.resolve():new Promise((ok,no)=>{const s=document.createElement('script');s.src='https://accounts.google.com/gsi/client';s.onload=ok;s.onerror=()=>no(new Error('اتصال به گوگل برقرار نشد'));document.head.append(s)})}
-function getToken(){return new Promise(async(ok,no)=>{if(gtok&&Date.now()<gexp-60000)return ok(gtok);if(!gd?.cid)return no(new Error('Client ID وارد نشده'));
- try{await loadGsi();google.accounts.oauth2.initTokenClient({client_id:gd.cid,scope:'https://www.googleapis.com/auth/drive.file',callback:async r=>{if(r.error)return no(new Error(r.error));gtok=r.access_token;gexp=Date.now()+r.expires_in*1000;if(!gd.ok){gd.ok=1;await mput(gd,'gd')}ok(gtok)},error_callback:e=>no(new Error(e.type||'popup'))}).requestAccessToken({prompt:gd.ok?'':'consent'})}catch(e){no(e)}})}
-async function dfetch(url,o={}){const t=await getToken(),r=await fetch(url,{...o,headers:{...(o.headers||{}),Authorization:'Bearer '+t}});if(r.status===401)gtok=null;if(!r.ok)throw new Error('Drive '+r.status);return r}
-async function driveFolder(){const q=encodeURIComponent(`mimeType='application/vnd.google-apps.folder' and name='${GF}' and trashed=false`),r=await(await dfetch(`${GD}?q=${q}&fields=files(id)`)).json();if(r.files[0])return r.files[0].id;
- return(await(await dfetch(GD+'?fields=id',{method:'POST',headers:{'Content-Type':'application/json'},body:JSON.stringify({name:GF,mimeType:'application/vnd.google-apps.folder'})})).json()).id}
-async function driveUpload(f,fo,name){f=new File([f],name||f.name,{type:f.type});let loc=null;
- try{loc=(await dfetch('https://www.googleapis.com/upload/drive/v3/files?uploadType=resumable&fields=id',{method:'POST',headers:{'Content-Type':'application/json; charset=UTF-8','X-Upload-Content-Type':'application/json'},body:JSON.stringify({name:f.name,parents:[fo]})})).headers.get('Location')}catch(e){}
- if(loc){const u=await fetch(loc,{method:'PUT',headers:{'Content-Type':'application/json'},body:f});if(!u.ok)throw new Error('Drive upload '+u.status);return}
- const fd=new FormData();fd.append('metadata',new Blob([JSON.stringify({name:f.name,parents:[fo]})],{type:'application/json'}));fd.append('file',f);await dfetch('https://www.googleapis.com/upload/drive/v3/files?uploadType=multipart&fields=id',{method:'POST',body:fd})}
-const driveList=async fo=>(await(await dfetch(`${GD}?q=${encodeURIComponent(`'${fo}' in parents and trashed=false`)}&orderBy=createdTime%20desc&pageSize=50&fields=files(id,name,createdTime,size)`)).json()).files;
-async function driveBackup(silent){try{if(!silent)toast('در حال ارسال به Google Drive…');const f=await buildBackup(),fo=await driveFolder(),nm=`مدارک-من-پشتیبان-${new Date().toISOString().slice(0,16).replace(/[:T]/g,'-')}.madarek.json`;await driveUpload(f,fo,nm);
-  try{for(const x of(await driveList(fo)).slice(7))await dfetch(`${GD}/${x.id}`,{method:'DELETE'})}catch(e){}
-  gd.last=lastbk=Date.now();await mput(gd,'gd');await mput(lastbk,'lastbk');pend=0;toast('✓ پشتیبان در Google Drive ذخیره شد');if(started)render()}
- catch(e){toast('ارسال به Drive ناموفق: '+e.message)}}
-function bgBackup(){if(gd?.cid&&gd.auto&&gtok&&Date.now()<gexp-60000&&Date.now()-lastbk>600000)driveBackup(true)}
-let abT=0;function autoBk(){if(!gd?.auto||!gd.cid)return;clearTimeout(abT);abT=setTimeout(()=>{if(gtok&&Date.now()<gexp-60000)driveBackup(true);else{pend=1;render()}},4000)}
-async function driveRestore(){try{const fs=await driveList(await driveFolder());
-  $('#dd').innerHTML=`<div class="in"><div class="row"><h2 style="margin:0;flex:1">📥 بازیابی از Drive</h2><button id="ddx">✕</button></div>${fs.length?fs.map(x=>`<button data-gid="${x.id}" style="text-align:start">${fmt(x.createdTime)} <small class="note">· ${Math.round(x.size/1024)} KB</small></button>`).join(''):'<p class="note">پشتیبانی در Drive پیدا نشد.</p>'}</div>`;
-  $('#ddx').onclick=()=>$('#dd').close();$('#dd').onclick=async e=>{const b=e.target.closest('[data-gid]');if(!b)return;try{const t=await(await dfetch(`${GD}/${b.dataset.gid}?alt=media`)).text();$('#dd').close();restoreText(t)}catch(x){toast('دریافت ناموفق: '+x.message)}};$('#dd').showModal()}
- catch(e){toast('خطا: '+e.message)}}
 let pm=null;
-$('#pfile').onchange=$('#pcam').onchange=async e=>{const f=e.target.files[0];e.target.value='';if(!f||!pm)return;try{const b=await createImageBitmap(f),s=Math.min(b.width,b.height),c=document.createElement('canvas');c.width=c.height=384;c.getContext('2d').drawImage(b,(b.width-s)/2,(b.height-s)/2,s,s,0,0,384,384);prof.members.find(x=>x.id===pm).photo=c.toDataURL('image/jpeg',.88);await saveProf();render();settings();toast('عکس ثبت شد ✓')}catch(x){toast('عکس خوانده نشد')}};
+$('#pfile').onchange=$('#pcam').onchange=async e=>{const f=e.target.files[0];e.target.value='';if(!f||!pm)return;try{const r=await openEditor(f,1);if(!r)return;const b=await createImageBitmap(r),c=document.createElement('canvas');c.width=c.height=384;c.getContext('2d').drawImage(b,0,0,384,384);prof.members.find(x=>x.id===pm).photo=c.toDataURL('image/jpeg',.88);await saveProf();render();settings();toast('عکس ثبت شد ✓')}catch(x){toast('عکس خوانده نشد')}};
 /* settings */
-let sopen=new Set();
+let sopen=new Set(['b']);
 function settings(){const hasBio=window.PublicKeyCredential,sec=(k,t,b)=>`<details data-s="${k}" ${sopen.has(k)?'open':''}><summary><span>${t}</span></summary><div class="dc">${b}</div></details>`;
 $('#sb').innerHTML=`<div class="row"><h2 style="margin:0;flex:1">⚙️ تنظیمات</h2><button id="sx">✕</button></div>`
 +sec('m',`👨‍👩‍👧 اعضای خانواده (${prof.members.length})`,prof.members.map(m=>`<div class="mr">${avH(m,36)}<b>${esc(m.name)}</b><button class="ib" data-ph="${m.id}" title="گالری">🖼️</button><button class="ib" data-pc="${m.id}" title="دوربین">📷</button>${m.photo?`<button class="ib dg" data-rp="${m.id}" title="حذف عکس">🚫</button>`:''}<button class="ib" data-ren="${m.id}" title="تغییر نام">✎</button>${m.id!=='me'?`<button class="ib dg" data-dm="${m.id}" title="حذف عضو">🗑</button>`:''}</div>`).join('')+'<button data-a="am">＋ عضو جدید</button>')
 +sec('c',`🗂️ دسته‌بندی‌های من (${prof.cats.length})`,prof.cats.map(c=>`<div class="mr"><b>${c.icon} ${esc(c.name)}</b><button class="ib dg" data-dc="${c.id}">🗑</button></div>`).join('')+'<button data-a="ac">＋ دستهٔ جدید</button>')
-+sec('b','💾 پشتیبان‌گیری و بازیابی',`<div class="banner" style="margin-top:0">⚠️ اطلاعات این برنامه روی خود گوشی است. اگر در Chrome گزینهٔ «Clear browsing data» را بزنی و تیک «Cookies and other site data» را هم بزنی، اطلاعات این برنامه هم پاک می‌شود — این محدودیت مرورگر است و هیچ برنامه‌ای نمی‌تواند جلویش را بگیرد.<br><br>✅ راه امن: فقط «Cached images and files» را تیک بزن، نه «Cookies and other site data». اگر حافظه خواستی آزاد کنی، همین یکی کافی است و اطلاعات برنامه دست‌نخورده می‌ماند.<br><br>برای اطمینان کامل، همیشه یک پشتیبان جدید (پایین همین صفحه یا Google Drive) داشته باش.</div><div class="acts"><button class="pri" data-a="bd">⬇️ ذخیره در گوشی</button><button data-a="bs">${gd?.cid?'☁️ ارسال به Google Drive':'📤 ارسال / ابر'}</button></div><p class="note">${gd?.cid?'فایل مستقیم و با همین اسم در پوشهٔ «مدارک من - پشتیبان» داخل Drive‌ات ذخیره می‌شود؛ از همین‌جا هم قابل بازیابی است.':'با اسم ثابت «مدارک-من-پشتیبان» فرستاده می‌شود تا هر جا (Drive، تلگرام، ایمیل) راحت پیدایش کنی. اگر Google Drive را وصل کنی (بالاتر)، ارسال مستقیم و خودکار می‌شود.'}</p><button data-a="rs">📥 بازیابی از فایل پشتیبان</button><p class="note">پشتیبان رمزنگاری‌شده است و مدارک، اعضا، دسته‌ها و یادداشت‌ها را شامل می‌شود.</p>`)
-+sec('g','☁️ Google Drive'+(gd?.cid?' ✓':''),gd?.cid?`<div class="fld"><span>آخرین ارسال</span><b style="direction:rtl">${gd.last?fmt(gd.last):'—'}</b></div><div class="acts"><button class="pri" data-a="gbk">☁️ پشتیبان‌گیری الان</button><button data-a="grs">📥 بازیابی از Drive</button></div><button data-a="gauto">پشتیبان‌گیری خودکار پس از هر تغییر: ${gd.auto?'روشن ✓':'خاموش'}</button><p class="note">فایل‌ها در پوشهٔ «مدارک من - پشتیبان» داخل Drive خودت ذخیره می‌شوند (۷ نسخهٔ آخر نگه داشته می‌شود) و رمزنگاری‌شده‌اند. اجازهٔ گوگل حدود یک ساعت معتبر است؛ بعد از آن ارسال خودکار می‌ایستد و روی داشبورد یک هشدار می‌آید که با یک بار زدن دوباره ارسال می‌شود.</p><button data-a="glink">🔗 لینک اتصال برای گوشی‌های دیگر</button><div class="acts"><button data-a="gcid">تغییر Client ID</button><button class="dg" data-a="gdis">قطع اتصال</button></div>`:`<p class="note">برای اتصال، یک بار Client ID گوگل لازم است (رایگان و فقط با یک حساب گوگل). راهنما قدم‌به‌قدم است و هر مرحله دکمه‌ای دارد که صفحهٔ درست گوگل را باز می‌کند. اگر قبلاً ساخته‌ای، گزینهٔ دوم را بزن یا لینک اتصال را از گوشی دیگرت بازکن.</p><button class="pri" data-a="gwiz">🧭 راهنمای ساخت Client ID</button><button data-a="gcid">Client ID را از قبل دارم</button>`)
++sec('b','💾 پشتیبان‌گیری و بازیابی',`<div class="fld"><span>پوشهٔ پشتیبان</span><b style="direction:rtl">${dirH?esc(dirH.name):'تعریف نشده (دانلودها)'}</b></div><div class="fld"><span>آخرین پشتیبان</span><b style="direction:rtl">${lastbk?fmt(lastbk):'—'}</b></div><button class="pri" data-a="bn">💾 پشتیبان‌گیری همین الان</button><button data-a="pd">📁 ${dirH?'تغییر پوشهٔ پشتیبان':'تعریف پوشهٔ پشتیبان'}</button><div class="acts"><button data-a="bs">📤 ارسال پشتیبان</button><button data-a="rs">📥 بازیابی از فایل</button></div><p class="note">✅ با هر بار ورود، یک پشتیبان با تاریخ و ساعت (مثل madarek-backup_1405-08-16_12-14) ساخته می‌شود؛ بعد از هر تغییر و پیش از خروج با دکمهٔ 🔒 هم دوباره پشتیبان گرفته می‌شود. ${hasDir?'۴۰ نسخهٔ آخر داخل پوشه نگه داشته می‌شود.':'این مرورگر انتخاب پوشه ندارد؛ فایل‌ها در «دانلودها» ذخیره می‌شوند.'}</p><div class="banner" style="margin-top:0">🧹 پاک کردن «Cached images and files» به اطلاعات برنامه آسیبی نمی‌زند. فقط گزینهٔ «Cookies and other site data» اطلاعات را پاک می‌کند؛ در این حالت از آخرین فایل پشتیبانِ داخل پوشه، در صفحهٔ اول برنامه «بازیابی از فایل پشتیبان» را بزن.</div>`)
 +sec('s','🔐 امنیت و بازیابی رمز',`<div class="acts"><button data-a="cp">تغییر رمز</button><button data-a="nc">کد بازیابی جدید</button></div>${hasBio?`<button data-a="bio">👆 ${bio?'غیرفعال‌سازی':'فعال‌سازی'} ورود با اثر انگشت</button>`:''}<button data-a="ce">ایمیل بازیابی: ${esc(cfg.email||'—')} ✎</button><button data-a="ej">📧 ارسال خودکار کد هنگام «فراموشی رمز»: ${ej?'روشن ✓ (خاموش کن)':'خاموش (راه‌اندازی)'}</button><p class="note">راه‌اندازی: در emailjs.com ثبت‌نام کن، یک Email Service و یک Template بساز که گیرنده‌اش {{to_email}} و متنش شامل {{code}} باشد، سپس Service ID، Template ID و Public Key را وارد کن. با روشن بودن این گزینه، کد بازیابی روی همین گوشی هم نگه‌داری می‌شود (در فایل پشتیبان نیست).</p>`)
 +sec('i','📲 نصب و آیکن برنامه',(standalone?'<p class="note">✅ برنامه روی گوشی نصب شده است.</p>':`<button class="pri" data-a="inst">نصب برنامه روی گوشی</button><p class="note">${window.__ip?'مرورگر آمادهٔ نصب مستقیم است. در پنجرهٔ Chrome گزینهٔ «Install» را بزن (نه Create shortcut) تا برنامه در لیست برنامه‌های گوشی بیاید.':'اگر پنجرهٔ نصب نیامد، راهنمای مرحله‌به‌مرحله باز می‌شود.'}</p>`)+`<p class="note">آیکن برنامه از عکس پروفایل عضو «من» ساخته می‌شود${adm?' ✓':' (اول عکس بگذار)'}. اگر بعد از نصب هنوز آیکن قدیمی بود، برنامه را حذف و دوباره نصب کن.</p><button data-a="icn">🖼️ دریافت فایل‌های آیکن (برای آپلود روی GitHub)</button><p class="note">⚠️ اگر repo عمومی باشد، با آپلود این فایل‌ها عکسِ تو برای همه قابل دیدن می‌شود. روش خودکار بالا عکس را فقط روی گوشی نگه می‌دارد.</p>`)
 +sec('n','🔔 اعلان یادآوری','<button data-a="nt">فعال‌سازی اعلان‌ها</button>')
@@ -438,19 +486,15 @@ $('#sb').onclick=async e=>{const b=e.target.closest('button');if(!b)return;if(b.
  else if(b.dataset.dm){if(confirm('این عضو حذف شود؟ مدارکش به «من» منتقل می‌شود.')&&await askPin('برای حذف عضو، رمز را وارد کن')){await retag('mem',b.dataset.dm,'me');prof.members=prof.members.filter(x=>x.id!==b.dataset.dm);await saveProf();if(mem===b.dataset.dm)mem='all'}}
  else if(a==='ac'){const ic=prompt('یک ایموجی برای آیکن (مثلاً 🚗):','📁'),n=ic&&prompt('نام دسته:');if(n?.trim()){prof.cats.push({id:'c'+crypto.randomUUID().slice(0,6),icon:ic.trim()||'📁',name:n.trim()});await saveProf()}}
  else if(b.dataset.dc){if(confirm('دسته حذف شود؟ مدارکش به «سایر» می‌روند.')){await retag('cat',b.dataset.dc,'other');prof.cats=prof.cats.filter(x=>x.id!==b.dataset.dc);await saveProf();if(cat===b.dataset.dc)cat=''}}
- else if(a==='bd')return backup(0);else if(a==='bs')return backupAny();else if(a==='rs')return $('#rfile').click();
+ else if(a==='bn'){const w=await doBackup({ask:true,dl:true});if(w)toast(bkMsg(w))}
+ else if(a==='pd'){if(await pickDir()){const w=await doBackup({ask:true});if(w)toast(bkMsg(w))}}
+ else if(a==='bs'){const w=await doBackup({share:true});if(w)toast(bkMsg(w))}
+ else if(a==='rs')return $('#rfile').click();
  else if(a==='cp'){if(!await askPin('رمز فعلی را وارد کن'))return;const p=prompt('رمز جدید (حداقل ۴ رقم):');if(p&&p.length>=4){await wrapPin(p);await saveCfg();toast('رمز تغییر کرد ✓')}return}
  else if(a==='nc'){if(!await askPin('رمز را وارد کن'))return;const c=await newCode();await saveCfg();showCode(c);return}
  else if(a==='ce'){const m=prompt('ایمیل بازیابی:',cfg.email||'');if(m&&/^\S+@\S+\.\S+$/.test(m.trim())){cfg.email=m.trim();await saveCfg()}}
  else if(a==='bio'){if(bio){bio=null;await P(st('meta','readwrite').delete('bio'))}else await bioOn()}
  else if(a==='ej'){if(ej){ej=null;await P(st('meta','readwrite').delete('ej'))}else{const s=prompt('Service ID:'),t=s&&prompt('Template ID:'),k=t&&prompt('Public Key:');if(k){ej={s:s.trim(),t:t.trim(),k:k.trim()};const c=await newCode();await saveCfg();await sendCode()}}}
- else if(a==='gwiz'){$('#ds').close();gdWizard();return}
- else if(a==='glink'){const u=location.origin+location.pathname+'#gcid='+encodeURIComponent(gd.cid);try{await navigator.clipboard.writeText(u)}catch(e){}toast('لینک کپی شد ✓ — آن را برای گوشی دیگر بفرست');try{await navigator.share?.({title:'اتصال Drive مدارک من',text:u})}catch(e){}return}
- else if(a==='gcid'){const v=prompt('Client ID گوگل:',gd?.cid||'');if(v?.trim()){gd={...(gd||{}),cid:v.trim().replace(/\s/g,'')};delete gd.ok;await mput(gd,'gd');gtok=null;loadGsi().catch(()=>{})}}
- else if(a==='gbk'){$('#ds').close();driveBackup();return}
- else if(a==='grs'){$('#ds').close();driveRestore();return}
- else if(a==='gauto'){gd.auto=!gd.auto;await mput(gd,'gd')}
- else if(a==='gdis'){if(confirm('اتصال Drive قطع شود؟ فایل‌های داخل Drive حذف نمی‌شوند.')){try{gtok&&google.accounts.oauth2.revoke(gtok)}catch(e){}gtok=null;gd=null;pend=0;await P(st('meta','readwrite').delete('gd'))}}
  else if(a==='icn'){await dlIcons();return}
  else if(a==='inst'){$('#ds').close();doInstall();return}
  else if(a==='nt'){if(!window.Notification)toast('اعلان پشتیبانی نمی‌شود');else Notification.requestPermission().then(p=>toast(p==='granted'?'اعلان فعال شد ✓':'اعلان مجاز نشد'));return}
