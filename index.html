@@ -102,7 +102,7 @@ nav button.on{background:linear-gradient(135deg,#0e9f8e22,#0e9f8e11);font-weight
 .mchip.on{border-color:var(--ac);outline:2px solid var(--ac)}.mchip small{color:var(--mu);font-size:11px}
 .dvh{display:flex;align-items:center;gap:8px}.dvh h2{flex:1;margin:0;font-size:18px}
 .acts4{display:grid;grid-template-columns:1fr 1fr;gap:8px}.acts4 button{padding:13px 8px;font-weight:600}
-.cropr{display:flex;gap:6px}.fbadge{display:inline-block;background:#0e9f8e22;color:var(--ac);border-radius:99px;padding:2px 10px;font-size:12px}
+.mchips{display:grid;grid-template-columns:repeat(6,1fr);gap:5px}.mc{padding:6px 2px;border-radius:10px;font-size:11px;text-align:center;background:var(--bg);border:1px solid var(--bd);color:var(--mu)}.mc.ok{background:#0e9f8e22;color:var(--ac);font-weight:700;border-color:var(--ac)}.mc.cur{outline:2px solid var(--ac2)}.cropr{display:flex;gap:6px}.fbadge{display:inline-block;background:#0e9f8e22;color:var(--ac);border-radius:99px;padding:2px 10px;font-size:12px}
 </style></head><body>
 
 <div id="lc" class="lk" style="position:fixed;inset:0;z-index:110;margin:auto;height:fit-content;display:flex;background:linear-gradient(160deg,#04262b,#0a5c5a 55%,#0e9f8e)" hidden></div>
@@ -144,7 +144,7 @@ nav button.on{background:linear-gradient(135deg,#0e9f8e22,#0e9f8e11);font-weight
 
 <dialog id="di"><div class="in" id="dib"></div></dialog>
 <dialog id="dp"><form class="in" id="dpf" method="dialog"><h2 style="margin:0">🔐 تأیید با رمز</h2><p class="note" id="dpn"></p><input id="dpi" type="password" inputmode="numeric" autocomplete="off" placeholder="رمز عددی"><p id="dpe" class="dg" style="margin:0"></p><div class="acts"><button class="pri" type="submit">تأیید</button><button type="button" id="dpx">انصراف</button></div></form></dialog>
-<dialog id="dd"></dialog><dialog id="dw"></dialog>
+<dialog id="dpay"></dialog>
 <dialog id="dce"><div id="ced"><div class="cwrap"><canvas id="ccv"></canvas></div><div class="in">
 <div class="ratios"><button data-r="free" class="on">اصلی</button><button data-r="1">۱:۱</button><button data-r="1.586">کارت</button><button data-r="1.333">۴:۳</button><button data-r="0.75">۳:۴</button><button data-r="0.707">A4</button></div>
 <label class="note">✂️ با انگشت جابه‌جا کن و با دو انگشت (یا نوار) بزرگ‌نمایی کن تا برش دلخواه بگیری</label><input id="czoom" type="range" min="1" max="4" step="0.01" value="1">
@@ -156,7 +156,7 @@ nav button.on{background:linear-gradient(135deg,#0e9f8e22,#0e9f8e11);font-weight
 
 <script>
 const $=s=>document.querySelector(s),esc=s=>String(s).replace(/[&<>"']/g,c=>({'&':'&amp;','<':'&lt;','>':'&gt;','"':'&quot;',"'":'&#39;'}[c]));
-const BASE={passport:['🛂','پاسپورت',['شماره پاسپورت','تاریخ انقضا']],id:['🪪','کارت شناسایی',['شماره کارت','تاریخ انقضا']],ins:['🏥','بیمه',['کد بیمه','شماره عضویت']],fida:['🔢','کد فیدا / اختصاصی',['کد فیدا']],cv:['📄','رزومه (CV)',[]],other:['🗂️','سایر',[]]};
+const BASE={passport:['🛂','پاسپورت',['شماره پاسپورت','تاریخ انقضا']],id:['🪪','کارت شناسایی',['شماره کارت','تاریخ انقضا']],ins:['🏥','بیمه',['کد بیمه','شماره عضویت']],fida:['🔢','کد فیدا / اختصاصی',['کد فیدا']],bank:['💳','کارت بانکی',['نام بانک','شماره کارت','شماره شبا','تاریخ انقضا','CVV2','نام صاحب کارت']],rent:['🏠','اجاره‌نامه و پرداخت‌ها',['مالک','مستاجر','آدرس ملک','مبلغ رهن','اجارهٔ ماهانه','تاریخ شروع','تاریخ پایان','روز پرداخت هر ماه']],cv:['📄','رزومه (CV)',[]],other:['🗂️','سایر',[]]};
 /* مجوز فعال‌سازی — اختیاری، پیش‌فرض خاموش.
    برای فعال‌سازی فروش: آدرس Web App گوگل‌اسکریپت را اینجا بگذار. با خالی ماندن، برنامه بدون کد فعال‌سازی کار می‌کند. */
 const LICENSE_URL='';
@@ -167,7 +167,7 @@ let lastbk=0,db,M=null,cfg,adm=null,ej=null,bio=null,prof={members:[{id:'me',nam
 const CATS=()=>({...BASE,...Object.fromEntries(prof.cats.map(c=>[c.id,[c.icon,c.name,[]]]))});
 const mname=id=>(prof.members.find(m=>m.id===id)||prof.members[0]).name;
 const fmt=d=>new Date(d).toLocaleString('fa-IR-u-ca-persian',{dateStyle:'medium',timeStyle:'short'});
-const toast=m=>{const t=$('#toast');t.textContent=m;t.classList.add('on');setTimeout(()=>t.classList.remove('on'),2600)};
+let toastT=0;const toast=(m,ms=2600)=>{const t=$('#toast');t.textContent=m;t.classList.add('on');clearTimeout(toastT);toastT=setTimeout(()=>t.classList.remove('on'),ms)};
 const P=r=>new Promise((ok,no)=>{r.onsuccess=()=>ok(r.result);r.onerror=()=>no(r.error)});
 const open=()=>P(Object.assign(indexedDB.open('madarek',1),{onupgradeneeded:e=>{e.target.result.createObjectStore('items',{keyPath:'id'});e.target.result.createObjectStore('meta')}}));
 const st=(s,m='readonly')=>db.transaction(s,m).objectStore(s),mput=(v,k)=>P(st('meta','readwrite').put(v,k)),mget=k=>P(st('meta').get(k));
@@ -299,6 +299,44 @@ document.addEventListener('click',e=>{const t=e.target.closest('[data-id],[data-
  else if(D.nd){const n=notes.find(x=>x.id===D.nd);n.done=n.done?0:1;saveNotes().then(render)}
  else if(D.q==='home')go('home');else if(D.q==='add')openForm();else if(D.q==='note')openNote();else if(D.q==='am')addMember()});
 $('#add').onclick=()=>tab==='notes'?openNote():openForm();$('#lockb').onclick=exitApp;$('#hdav').onclick=()=>settings();
+/* OCR: خواندن اطلاعات عکس کارت / رسید */
+const TJS='https://cdn.jsdelivr.net/npm/tesseract.js@5.1.1/dist/tesseract.min.js';let tjsP=null;
+const loadTjs=()=>window.Tesseract?Promise.resolve():(tjsP=tjsP||new Promise((ok,no)=>{const s=document.createElement('script');s.src=TJS;s.onload=ok;s.onerror=()=>{tjsP=null;no(new Error('net'))};document.head.append(s)}));
+const BIN={'603799':'ملی','589210':'سپه','627648':'توسعه صادرات','627961':'صنعت و معدن','603770':'کشاورزی','639217':'کشاورزی','628023':'مسکن','627760':'پست بانک','502908':'توسعه تعاون','627412':'اقتصاد نوین','622106':'پارسیان','639194':'پارسیان','502229':'پاسارگاد','639347':'پاسارگاد','627488':'کارآفرین','621986':'سامان','639346':'سینا','639607':'سرمایه','636214':'آینده','502806':'شهر','504706':'شهر','502938':'دی','603769':'صادرات','610433':'ملت','991975':'ملت','589463':'رفاه','627353':'تجارت','585983':'تجارت','639370':'مهر اقتصاد','606373':'قرض‌الحسنه مهر','505416':'گردشگری','636795':'مرکزی','505785':'ایران زمین','636949':'حکمت ایرانیان','507677':'نور','505801':'کوثر','628157':'اعتباری توسعه'};
+const nd=t=>String(t).replace(/[۰-۹]/g,c=>'۰۱۲۳۴۵۶۷۸۹'.indexOf(c)).replace(/[٠-٩]/g,c=>'٠١٢٣٤٥٦٧٨٩'.indexOf(c)).replace(/[‌‏‎‪-‮]/g,' ');
+const luhn=n=>{let s=0;for(let i=0;i<n.length;i++){let d=+n[n.length-1-i];if(i%2){d*=2;if(d>9)d-=9}s+=d}return s%10===0};
+const grp=n=>n.match(/.{4}/g).join(' ');
+function parseInfo(raw,mode){const t=nd(raw),out=[],add=(k,v)=>{if(v&&!out.some(o=>o.k===k))out.push({k,v:String(v).trim()})};
+ const cards=[...t.matchAll(/(?<!\d)(\d{4})[\s\-.]{0,2}(\d{4})[\s\-.]{0,2}(\d{4})[\s\-.]{0,2}(\d{4})(?!\d)/g)].map(m=>m[1]+m[2]+m[3]+m[4]),card=cards.find(luhn)||cards[0];
+ const sm=t.match(/IR[\s\-]?((?:\d[\s\-]?){24})/i),sheba=sm?'IR'+sm[1].replace(/\D/g,''):'';
+ if(mode==='card'){
+  if(card){const b=BIN[card.slice(0,6)];if(b)add('نام بانک',b);add('شماره کارت',grp(card))}
+  if(!out.some(o=>o.k==='نام بانک')){const m=t.match(/بانک\s+([؀-ۿ]+(?:\s[؀-ۿ]+)?)/);if(m)add('نام بانک',m[1])}
+  add('شماره شبا',sheba);
+  const ex=[...t.matchAll(/(?<![\d\/\-])(\d{2})\s*[\/\-]\s*(\d{2})(?![\d\/\-])/g)].find(m=>(+m[1]>=1&&+m[1]<=12)||(+m[2]>=1&&+m[2]<=12));if(ex)add('تاریخ انقضا',ex[1]+'/'+ex[2]);
+  const cv=t.match(/cvv2?\s*[:\-]?\s*(\d{3,4})/i);if(cv)add('CVV2',cv[1])}
+ else{
+  const unit=/تومان/.test(t)?' تومان':/ریال|rial/i.test(t)?' ریال':'';
+  const nums=[...t.matchAll(/(?<![\d\/])(\d{1,3}(?:[,٬.]\d{3})+|\d{5,9})(?![\d\/])/g)].map(m=>({s:m[1],n:+m[1].replace(/\D/g,''),i:m.index})).filter(x=>x.n>=1000&&!(String(x.n).length>=10));
+  const kw=[...t.matchAll(/مبلغ|amount|مقدار/gi)].map(m=>m.index);let am=nums.find(x=>kw.some(k=>x.i>k&&x.i-k<45))||nums.sort((a,b)=>b.n-a.n)[0];
+  if(am)add('مبلغ پرداخت',am.n.toLocaleString('en-US')+unit);
+  const d1=t.match(/(1[34]\d{2})[\/\-.](\d{1,2})[\/\-.](\d{1,2})/),d2=t.match(/(\d{1,2})[\/\-.](\d{1,2})[\/\-.](1[34]\d{2})/);
+  if(d1)add('تاریخ پرداخت',`${d1[1]}/${pad2(d1[2])}/${pad2(d1[3])}`);else if(d2)add('تاریخ پرداخت',`${d2[3]}/${pad2(d2[2])}/${pad2(d2[1])}`);
+  const tm=t.match(/(?<![\d:])([01]?\d|2[0-3]):([0-5]\d)(?::[0-5]\d)?(?![\d:])/);if(tm)add('ساعت',pad2(tm[1])+':'+tm[2]);
+  const rf=t.match(/(?:پیگیری|رهگیری|مرجع|تراکنش|ref(?:erence)?|trace|tracking)[^\d\n]{0,25}(\d{5,})/i);if(rf)add('شماره پیگیری',rf[1]);
+  const nm=t.match(/(?:به\s*نام|نام\s*(?:دریافت\s*کننده|گیرنده|صاحب\s*(?:کارت|حساب))|گیرنده|دریافت\s*کننده)\s*[:：\-]?\s*([؀-ۿ ]{3,40})/);if(nm)add('گیرنده',nm[1]);
+  if(card){add('کارت مقصد',grp(card))}add('شبا مقصد',sheba)}
+ return out}
+async function ocrRead(file,mode){
+ try{if(window.TextDetector){const b=await createImageBitmap(file),r=await new TextDetector().detect(b),p=parseInfo(r.map(x=>x.rawValue).join('\n'),mode);if(p.length>=2)return p}}catch(e){}
+ await loadTjs();const b=await createImageBitmap(file),k=Math.min(1,1800/Math.max(b.width,b.height)),c=document.createElement('canvas');c.width=Math.round(b.width*k);c.height=Math.round(b.height*k);c.getContext('2d').drawImage(b,0,0,c.width,c.height);
+ const r=await Tesseract.recognize(c,mode==='card'?'eng':'eng+fas');return parseInfo(r.data.text,mode)}
+async function ocrFill(f){const c=$('#fc').value;if(!['bank','rent'].includes(c)||!f.type.startsWith('image/'))return;
+ toast('🔍 در حال خواندن اطلاعات عکس…',60000);
+ try{const r=await ocrRead(f,c==='bank'?'card':'receipt');if(!r.length)return toast('اطلاعاتی از عکس خوانده نشد؛ دستی وارد کن');
+  for(const x of r){const row=[...$('#fr').children].find(w=>w.children[0].value.trim()===x.k);if(row){if(!row.children[1].value.trim())row.children[1].value=x.v}else frow(x.k,x.v)}
+  toast(`✓ ${r.length} فیلد از عکس پر شد؛ بررسی کن`,4000)}catch(e){toast('خواندن عکس نیاز به اینترنت دارد؛ فیلدها را دستی وارد کن',4000)}}
+
 /* doc form */
 const frow=(k='',v='')=>{const r=document.createElement('div');r.className='kv';r.innerHTML=`<input placeholder="نام (مثلاً کد بیمه)" value="${esc(k)}"><input dir="ltr" placeholder="مقدار" value="${esc(v)}"><button type="button" class="dg">✕</button>`;r.lastChild.onclick=()=>r.remove();$('#fr').append(r)};
 let newFiles=[],newTh={};
@@ -310,7 +348,7 @@ $('#fe').onclick=async e=>{const k=e.target.closest('[data-k]'),rn=e.target.clos
  if(k){keep.splice(+k.dataset.k,1);showKeep()}
  else if(rn){newFiles.splice(+rn.dataset.rn,1);delete newTh[+rn.dataset.rn];showKeep()}
  else if(ei){const n=+ei.dataset.ei,r=await openEditor(newFiles[n]);if(r){newFiles[n]=r;newTh[n]=await mkThumb(r);showKeep()}}};
-async function addPicked(list){for(const f0 of list){let f=f0;if(f.type.startsWith('image/')){const r=await openEditor(f);if(!r)continue;f=r}newFiles.push(f);newTh[newFiles.length-1]=await mkThumb(f);showKeep()}}
+async function addPicked(list){for(const f0 of list){let f=f0;if(f.type.startsWith('image/')){const r=await openEditor(f);if(!r)continue;f=r}newFiles.push(f);newTh[newFiles.length-1]=await mkThumb(f);showKeep();await ocrFill(f)}}
 $('#ff').onchange=e=>{addPicked([...e.target.files]);e.target.value=''};
 $('#fcam').onchange=e=>{addPicked([...e.target.files]);e.target.value=''};
 /* image editor: pan + pinch/zoom + ratio crop */
@@ -364,6 +402,41 @@ function askPin(why){return new Promise(res=>{const d=$('#dp');$('#dpn').textCon
  $('#dpf').onsubmit=async e=>{e.preventDefault();try{await decK(await kdf($('#dpi').value,cfg.salt),cfg.wrap);fin(true)}catch(x){$('#dpe').textContent='رمز اشتباه است';$('#dpi').value=''}};
  d.showModal();$('#dpi').focus()})}
 /* doc view / share / receive */
+/* rent payments */
+const numOf=v=>+nd(v||'').replace(/\D/g,'')||0,money=n=>n.toLocaleString('en-US');
+const rentOf=i=>numOf((i.m.fields.find(f=>/اجاره/.test(f.k)&&/ماه/.test(f.k))||{}).v);
+const rentUnit=i=>/ریال/.test((i.m.fields.find(f=>/اجاره/.test(f.k)&&/ماه/.test(f.k))||{}).v||'')?'ریال':'تومان';
+async function saveItem(i,addFiles=[]){const{tu,...rec}=i;rec.m=await enc(te.encode(JSON.stringify(i.m)));rec.files=[...i.files,...addFiles];await P(st('items','readwrite').put(rec));await load();autoBk()}
+function payHTML(i){const pays=[...(i.m.pays||[])].sort((a,b)=>(b.y*100+b.m)-(a.y*100+a.m)||(b.date||'').localeCompare(a.date||'')),cy=todayJ()[0],cm=todayJ()[1],tot={};pays.forEach(p=>tot[p.unit]=(tot[p.unit]||0)+p.amt);
+ return`<div class="panel" style="margin-top:4px"><h3>💰 پرداخت‌های اجاره <small class="note">${pd(cy)}</small></h3><div class="mchips">${JM.map((n,k)=>{const ok=pays.some(p=>p.y===cy&&p.m===k+1);return`<div class="mc${ok?' ok':''}${k+1===cm?' cur':''}">${ok?'✓ ':''}${n}</div>`}).join('')}</div>
+ <div class="acts" style="margin:10px 0"><button class="pri" id="pq">✓ پرداخت ماه جاری</button><button id="pa">＋ ثبت پرداخت / رسید</button></div>
+ ${pays.length?pays.map(p=>`<div class="fld"><span style="min-width:0;flex:1"><b style="direction:rtl;display:block;color:var(--tx)">${pd(money(p.amt))} ${p.unit}</b>${JM[p.m-1]} ${pd(p.y)}${p.date?' · '+pd(p.date):''}${p.ref?' · پیگیری '+esc(p.ref):''}${p.note?'<br>'+esc(p.note):''}${p.file?' 📎':''}</span><button class="dg" data-dpay="${p.id}">🗑</button></div>`).join('')+`<div class="res">جمع پرداختی‌ها: ${Object.entries(tot).map(([u,v])=>`<b>${pd(money(v))} ${u}</b>`).join(' + ')} · ${pd(pays.length)} پرداخت</div>`:'<p class="note">هنوز پرداختی ثبت نشده.</p>'}</div>`}
+async function quickPay(i){const a=rentOf(i);if(!a)return toast('اول در فیلد «اجارهٔ ماهانه» مبلغ را بنویس (✏️ ویرایش)');const t=todayJ();
+ if((i.m.pays||[]).some(p=>p.y===t[0]&&p.m===t[1])&&!confirm('برای این ماه قبلاً پرداخت ثبت شده. دوباره ثبت شود؟'))return;
+ (i.m.pays=i.m.pays||[]).push({id:crypto.randomUUID().slice(0,8),y:t[0],m:t[1],amt:a,unit:rentUnit(i),date:`${t[0]}/${pad2(t[1])}/${pad2(t[2])}`});await saveItem(i);toast('✓ پرداخت این ماه ثبت شد');openDoc(i.id)}
+async function delPay(i,id){if(!confirm('این پرداخت حذف شود؟'))return;i.m.pays=i.m.pays.filter(p=>p.id!==id);await saveItem(i);openDoc(i.id)}
+let payFile=null;
+function openPay(i){const d=$('#dpay'),t=todayJ();payFile=null;
+ d.innerHTML=`<form class="in" id="pyf" method="dialog"><h2 style="margin:0">💰 ثبت پرداخت</h2><label class="note">اجاره برای ماه</label><div style="display:grid;grid-template-columns:1.4fr 1fr;gap:8px"><select id="pym">${JM.map((n,k)=>`<option value="${k+1}"${k+1===t[1]?' selected':''}>${n}</option>`).join('')}</select><input id="pyy" type="number" inputmode="numeric" value="${t[0]}"></div>
+ <div style="display:grid;grid-template-columns:1.6fr 1fr;gap:8px"><input id="pya" inputmode="numeric" dir="ltr" placeholder="مبلغ" value="${rentOf(i)?money(rentOf(i)):''}"><select id="pyu"><option>تومان</option><option>ریال</option></select></div>
+ <input id="pyd" dir="ltr" placeholder="تاریخ پرداخت 1405/08/16" value="${t[0]}/${pad2(t[1])}/${pad2(t[2])}"><input id="pyr" dir="ltr" placeholder="شماره پیگیری (اختیاری)"><input id="pyn" placeholder="توضیح (اختیاری)">
+ <label class="note">📷 عکس رسید پرداخت — اطلاعاتش خوانده و فیلدها پر می‌شود</label><input id="pyg" type="file" accept="image/*"><input id="pyc" type="file" accept="image/*" capture="environment"><p class="note" id="pyi"></p>
+ <div class="acts"><button class="pri" type="submit">ذخیره</button><button type="button" id="pyx">انصراف</button></div></form>`;
+ $('#pyu').value=rentUnit(i);
+ const pick=async e=>{const f0=e.target.files[0];e.target.value='';if(!f0)return;const f=await openEditor(f0,'free');if(!f)return;payFile=f;$('#pyi').textContent='📎 '+f.name+' — در حال خواندن اطلاعات…';
+  try{const r=await ocrRead(f,'receipt'),g=k=>(r.find(x=>x.k===k)||{}).v;
+   const am=g('مبلغ پرداخت');if(am){$('#pya').value=am.replace(/[^\d,]/g,'');if(/ریال/.test(am))$('#pyu').value='ریال';else if(/تومان/.test(am))$('#pyu').value='تومان'}
+   const dt=g('تاریخ پرداخت');if(dt){$('#pyd').value=dt;const q=dt.split('/');if(+q[1]>=1&&+q[1]<=12){$('#pym').value=+q[1];$('#pyy').value=q[0]}}
+   if(g('شماره پیگیری'))$('#pyr').value=g('شماره پیگیری');if(g('گیرنده')&&!$('#pyn').value)$('#pyn').value='به '+g('گیرنده');
+   $('#pyi').textContent=r.length?`📎 ${f.name} — ✓ ${r.length} مورد از رسید خوانده شد؛ بررسی کن`:'📎 '+f.name+' — اطلاعاتی خوانده نشد؛ دستی وارد کن'}
+  catch(x){$('#pyi').textContent='📎 '+f.name+' — خواندن عکس نیاز به اینترنت دارد؛ دستی وارد کن'}};
+ $('#pyg').onchange=$('#pyc').onchange=pick;$('#pyx').onclick=()=>d.close();
+ $('#pyf').onsubmit=async e=>{e.preventDefault();const amt=numOf($('#pya').value);if(!amt)return toast('مبلغ را وارد کن');
+  const p={id:crypto.randomUUID().slice(0,8),y:+$('#pyy').value,m:+$('#pym').value,amt,unit:$('#pyu').value,date:nd($('#pyd').value.trim()),ref:nd($('#pyr').value.trim()),note:$('#pyn').value.trim()},add=[];
+  if(payFile){p.file=payFile.name;add.push({name:payFile.name,type:payFile.type||'image/jpeg',...await enc(await payFile.arrayBuffer())})}
+  (i.m.pays=i.m.pays||[]).push(p);await saveItem(i,add);d.close();toast('✓ پرداخت ثبت شد');openDoc(i.id)};
+ d.showModal()}
+
 const textOf=i=>i.m.title+' ('+mname(i.mem)+')\n'+i.m.fields.map(f=>`${f.k}: ${f.v}`).join('\n');
 const fileOf=async(i,n)=>new File([await dec(i.files[n])],i.files[n].name,{type:i.files[n].type});
 const filesOf=i=>Promise.all(i.files.map((_,n)=>fileOf(i,n)));
@@ -392,12 +465,14 @@ async function openDoc(id){const i=items.find(x=>x.id===id),C=CATS(),c=C[i.cat]|
  <div class="row" style="flex-wrap:wrap"><span class="fbadge">👤 ${esc(mname(i.mem))}</span><span class="fbadge">${c[0]} ${esc(c[1])}</span><span class="fbadge">🗓️ ${fmt(i.ts)}</span></div>
  ${i.m.fields.length?i.m.fields.map((f,n)=>`<div class="fld"><span>${esc(f.k||'—')}</span><b>${esc(f.v)}</b><button data-cp="${n}">کپی</button></div>`).join(''):'<p class="note">فیلدی ثبت نشده است.</p>'}
  ${th?`<h3 style="margin:6px 0 0">🖼️ فایل‌ها (${fs.length})</h3><div class="thumbs">${th}</div><p class="note">برای بزرگ‌نمایی رویش بزن.</p>`:''}
+ ${i.cat==='rent'?payHTML(i):''}
  <div class="acts4"><button class="pri" id="vk">🪪 نمایش</button><button id="vs">📤 ارسال</button><button id="vd" class="dg">🗑 حذف</button><button id="vo">📲 ذخیره در موبایل</button></div>`;
  $('#vx').onclick=()=>$('#dv').close();
+ if(i.cat==='rent'){$('#pa').onclick=()=>openPay(i);$('#pq').onclick=()=>quickPay(i);document.querySelectorAll('[data-dpay]').forEach(b=>b.onclick=()=>delPay(i,b.dataset.dpay))}
  $('#vb').onclick=async e=>{const cp=e.target.closest('[data-cp]');if(cp){await navigator.clipboard.writeText(i.m.fields[cp.dataset.cp].v);toast('کپی شد ✓')}const t=e.target.closest('[data-n]');if(t)previewFile(fs[t.dataset.n])};
  $('#vo').onclick=async()=>{if(!fs.length){dl(new File([textOf(i)],(i.m.title||'madrak')+'.txt',{type:'text/plain'}));return toast('ذخیره شد ✓')}for(const f of fs){dl(f);await new Promise(r=>setTimeout(r,450))}toast('در موبایل ذخیره شد ✓')};
  $('#ve').onclick=()=>{$('#dv').close();openForm(i)};$('#vk').onclick=()=>showCard(i);$('#vs').onclick=()=>shareF(fs,i.m.title,textOf(i));
- $('#vd').onclick=async()=>{if(confirm('این مدرک از برنامه حذف شود؟ (فایل گالری دست‌نخورده می‌ماند)')&&await askPin('برای حذف مدرک، رمز را وارد کن')){await P(st('items','readwrite').delete(id));$('#dv').close();load();autoBk()}};$('#dv').showModal()}
+ $('#vd').onclick=async()=>{if(confirm('این مدرک از برنامه حذف شود؟ (فایل گالری دست‌نخورده می‌ماند)')&&await askPin('برای حذف مدرک، رمز را وارد کن')){await P(st('items','readwrite').delete(id));$('#dv').close();load();autoBk()}};if(!$('#dv').open)$('#dv').showModal()}
 $('#dv').onclose=()=>{vu.forEach(URL.revokeObjectURL);vu=[]};
 /* Jalali picker */
 const JM=['فروردین','اردیبهشت','خرداد','تیر','مرداد','شهریور','مهر','آبان','آذر','دی','بهمن','اسفند'];
@@ -468,7 +543,7 @@ function settings(){const hasBio=window.PublicKeyCredential,sec=(k,t,b)=>`<detai
 $('#sb').innerHTML=`<div class="row"><h2 style="margin:0;flex:1">⚙️ تنظیمات</h2><button id="sx">✕</button></div>`
 +sec('m',`👨‍👩‍👧 اعضای خانواده (${prof.members.length})`,prof.members.map(m=>`<div class="mr">${avH(m,36)}<b>${esc(m.name)}</b><button class="ib" data-ph="${m.id}" title="گالری">🖼️</button><button class="ib" data-pc="${m.id}" title="دوربین">📷</button>${m.photo?`<button class="ib dg" data-rp="${m.id}" title="حذف عکس">🚫</button>`:''}<button class="ib" data-ren="${m.id}" title="تغییر نام">✎</button>${m.id!=='me'?`<button class="ib dg" data-dm="${m.id}" title="حذف عضو">🗑</button>`:''}</div>`).join('')+'<button data-a="am">＋ عضو جدید</button>')
 +sec('c',`🗂️ دسته‌بندی‌های من (${prof.cats.length})`,prof.cats.map(c=>`<div class="mr"><b>${c.icon} ${esc(c.name)}</b><button class="ib dg" data-dc="${c.id}">🗑</button></div>`).join('')+'<button data-a="ac">＋ دستهٔ جدید</button>')
-+sec('b','💾 پشتیبان‌گیری و بازیابی',`<div class="fld"><span>پوشهٔ پشتیبان</span><b style="direction:rtl">${dirH?esc(dirH.name):'تعریف نشده (دانلودها)'}</b></div><div class="fld"><span>آخرین پشتیبان</span><b style="direction:rtl">${lastbk?fmt(lastbk):'—'}</b></div><button class="pri" data-a="bn">💾 پشتیبان‌گیری همین الان</button><button data-a="pd">📁 ${dirH?'تغییر پوشهٔ پشتیبان':'تعریف پوشهٔ پشتیبان'}</button><div class="acts"><button data-a="bs">📤 ارسال پشتیبان</button><button data-a="rs">📥 بازیابی از فایل</button></div><p class="note">✅ با هر بار ورود، یک پشتیبان با تاریخ و ساعت (مثل madarek-backup_1405-08-16_12-14) ساخته می‌شود؛ بعد از هر تغییر و پیش از خروج با دکمهٔ 🔒 هم دوباره پشتیبان گرفته می‌شود. ${hasDir?'۴۰ نسخهٔ آخر داخل پوشه نگه داشته می‌شود.':'این مرورگر انتخاب پوشه ندارد؛ فایل‌ها در «دانلودها» ذخیره می‌شوند.'}</p><div class="banner" style="margin-top:0">🧹 پاک کردن «Cached images and files» به اطلاعات برنامه آسیبی نمی‌زند. فقط گزینهٔ «Cookies and other site data» اطلاعات را پاک می‌کند؛ در این حالت از آخرین فایل پشتیبانِ داخل پوشه، در صفحهٔ اول برنامه «بازیابی از فایل پشتیبان» را بزن.</div>`)
++sec('b','💾 پشتیبان‌گیری و بازیابی',`<div class="fld"><span>پوشهٔ پشتیبان</span><b style="direction:rtl">${dirH?esc(dirH.name):'تعریف نشده (دانلودها)'}</b></div><div class="fld"><span>آخرین پشتیبان</span><b style="direction:rtl">${lastbk?fmt(lastbk):'—'}</b></div><button class="pri" data-a="bn">💾 پشتیبان‌گیری همین الان</button><button data-a="pd">📁 ${dirH?'تغییر پوشهٔ پشتیبان':'تعریف پوشهٔ پشتیبان'}</button><button data-a="rs">📥 بازیابی از فایل پشتیبان</button><p class="note">✅ با هر بار ورود، یک پشتیبان با تاریخ و ساعت (مثل madarek-backup_1405-08-16_12-14) ساخته می‌شود؛ بعد از هر تغییر و پیش از خروج با دکمهٔ 🔒 هم دوباره پشتیبان گرفته می‌شود. ${hasDir?'۴۰ نسخهٔ آخر داخل پوشه نگه داشته می‌شود.':'این مرورگر انتخاب پوشه ندارد؛ فایل‌ها در «دانلودها» ذخیره می‌شوند.'}</p><div class="banner" style="margin-top:0">🧹 پاک کردن «Cached images and files» به اطلاعات برنامه آسیبی نمی‌زند. فقط گزینهٔ «Cookies and other site data» اطلاعات را پاک می‌کند؛ در این حالت از آخرین فایل پشتیبانِ داخل پوشه، در صفحهٔ اول برنامه «بازیابی از فایل پشتیبان» را بزن.</div>`)
 +sec('s','🔐 امنیت و بازیابی رمز',`<div class="acts"><button data-a="cp">تغییر رمز</button><button data-a="nc">کد بازیابی جدید</button></div>${hasBio?`<button data-a="bio">👆 ${bio?'غیرفعال‌سازی':'فعال‌سازی'} ورود با اثر انگشت</button>`:''}<button data-a="ce">ایمیل بازیابی: ${esc(cfg.email||'—')} ✎</button><button data-a="ej">📧 ارسال خودکار کد هنگام «فراموشی رمز»: ${ej?'روشن ✓ (خاموش کن)':'خاموش (راه‌اندازی)'}</button><p class="note">راه‌اندازی: در emailjs.com ثبت‌نام کن، یک Email Service و یک Template بساز که گیرنده‌اش {{to_email}} و متنش شامل {{code}} باشد، سپس Service ID، Template ID و Public Key را وارد کن. با روشن بودن این گزینه، کد بازیابی روی همین گوشی هم نگه‌داری می‌شود (در فایل پشتیبان نیست).</p>`)
 +sec('i','📲 نصب و آیکن برنامه',(standalone?'<p class="note">✅ برنامه روی گوشی نصب شده است.</p>':`<button class="pri" data-a="inst">نصب برنامه روی گوشی</button><p class="note">${window.__ip?'مرورگر آمادهٔ نصب مستقیم است. در پنجرهٔ Chrome گزینهٔ «Install» را بزن (نه Create shortcut) تا برنامه در لیست برنامه‌های گوشی بیاید.':'اگر پنجرهٔ نصب نیامد، راهنمای مرحله‌به‌مرحله باز می‌شود.'}</p>`)+`<p class="note">آیکن برنامه از عکس پروفایل عضو «من» ساخته می‌شود${adm?' ✓':' (اول عکس بگذار)'}. اگر بعد از نصب هنوز آیکن قدیمی بود، برنامه را حذف و دوباره نصب کن.</p><button data-a="icn">🖼️ دریافت فایل‌های آیکن (برای آپلود روی GitHub)</button><p class="note">⚠️ اگر repo عمومی باشد، با آپلود این فایل‌ها عکسِ تو برای همه قابل دیدن می‌شود. روش خودکار بالا عکس را فقط روی گوشی نگه می‌دارد.</p>`)
 +sec('n','🔔 اعلان یادآوری','<button data-a="nt">فعال‌سازی اعلان‌ها</button>')
@@ -488,7 +563,6 @@ $('#sb').onclick=async e=>{const b=e.target.closest('button');if(!b)return;if(b.
  else if(b.dataset.dc){if(confirm('دسته حذف شود؟ مدارکش به «سایر» می‌روند.')){await retag('cat',b.dataset.dc,'other');prof.cats=prof.cats.filter(x=>x.id!==b.dataset.dc);await saveProf();if(cat===b.dataset.dc)cat=''}}
  else if(a==='bn'){const w=await doBackup({ask:true,dl:true});if(w)toast(bkMsg(w))}
  else if(a==='pd'){if(await pickDir()){const w=await doBackup({ask:true});if(w)toast(bkMsg(w))}}
- else if(a==='bs'){const w=await doBackup({share:true});if(w)toast(bkMsg(w))}
  else if(a==='rs')return $('#rfile').click();
  else if(a==='cp'){if(!await askPin('رمز فعلی را وارد کن'))return;const p=prompt('رمز جدید (حداقل ۴ رقم):');if(p&&p.length>=4){await wrapPin(p);await saveCfg();toast('رمز تغییر کرد ✓')}return}
  else if(a==='nc'){if(!await askPin('رمز را وارد کن'))return;const c=await newCode();await saveCfg();showCode(c);return}
